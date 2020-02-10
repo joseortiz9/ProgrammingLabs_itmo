@@ -9,15 +9,23 @@ public class CollectionManager {
     private FileManager fileManager;
 
     {
-        this.collection = new HashMap<Integer, Dragon>();
+
     }
 
     public CollectionManager(String dataFilePath) throws IOException {
         this.fileManager = new FileManager(dataFilePath);
-        this.collection = fileManager.getCollectionFromXML();
+        this.collection = fileManager.getCollectionFromFile();
     }
 
 
+    public void save() {
+        this.getFileManager().SaveCollectionInXML(this.getCollection());
+    }
+
+
+    public FileManager getFileManager() {
+        return fileManager;
+    }
     public HashMap<Integer, Dragon> getCollection() {
         return this.collection;
     }

@@ -7,13 +7,13 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         TesterFiller tester = new TesterFiller();
-        tester.collectionToXML();
+        //tester.collectionToXML();
         //tester.printCollection();
 
         String pathToData = "/home/joseortiz09/Documents/ProgrammingProjects/IdeaProjects/Lab5/src/data.xml";
-        //ConsoleCommander console = new ConsoleCommander(new CollectionManager(pathToData));
+        ConsoleCommander console = new ConsoleCommander(new CollectionManager(pathToData));
         //console.startInteraction();
-        //console.printCollection();
+        console.printCollection();
 
         /*Map<String, String> env = System.getenv();
         for (String envName : env.keySet()) {

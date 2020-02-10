@@ -18,6 +18,7 @@ public class ConsoleCommander {
     public void startInteraction() {
         try(Scanner commandReader = new Scanner(System.in)) {
             while (!fullInputCommand.equals("exit")) {
+                System.out.println("\nWrite a command: ");
                 fullInputCommand = commandReader.nextLine();
                 String[] userCommand = fullInputCommand.trim().split(" ", 3);
                 switch (userCommand[0]) {
@@ -26,7 +27,7 @@ public class ConsoleCommander {
                         this.getManager().help();
                         break;
                     case "info":
-                        this.getManager().toString();
+                        System.out.println(this.getManager().toString());
                         break;
                     case "show":
                         this.getManager().show();

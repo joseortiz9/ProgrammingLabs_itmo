@@ -8,11 +8,11 @@
         <x>2</x>
         <y>2.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.283589+03:00[Europe/Moscow]</creationDate>
-      <age>1</age>
-      <color>ORANGE</color>
-      <type>FIRE</type>
-      <character>CHAOTIC</character>
+      <creationDate>2020-02-10T03:56:02.234482+03:00[Europe/Moscow]</creationDate>
+      <age>0</age>
+      <color>RED</color>
+      <type>UNDERGROUND</type>
+      <character>GOOD</character>
       <head>
         <eyesCount>2.0</eyesCount>
       </head>
@@ -27,11 +27,11 @@
         <x>15</x>
         <y>15.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.28433+03:00[Europe/Moscow]</creationDate>
-      <age>2</age>
+      <creationDate>2020-02-10T03:56:02.234923+03:00[Europe/Moscow]</creationDate>
+      <age>6</age>
       <color>ORANGE</color>
       <type>FIRE</type>
-      <character>CUNNING</character>
+      <character>GOOD</character>
       <head>
         <eyesCount>15.0</eyesCount>
       </head>
@@ -46,11 +46,11 @@
         <x>9</x>
         <y>9.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.283949+03:00[Europe/Moscow]</creationDate>
-      <age>1</age>
+      <creationDate>2020-02-10T03:56:02.234715+03:00[Europe/Moscow]</creationDate>
+      <age>7</age>
       <color>RED</color>
-      <type>FIRE</type>
-      <character>GOOD</character>
+      <type>AIR</type>
+      <character>WISE</character>
       <head>
         <eyesCount>9.0</eyesCount>
       </head>
@@ -65,10 +65,10 @@
         <x>3</x>
         <y>3.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.283643+03:00[Europe/Moscow]</creationDate>
-      <age>8</age>
+      <creationDate>2020-02-10T03:56:02.234516+03:00[Europe/Moscow]</creationDate>
+      <age>1</age>
       <color>ORANGE</color>
-      <type>UNDERGROUND</type>
+      <type>WATER</type>
       <character>WISE</character>
       <head>
         <eyesCount>3.0</eyesCount>
@@ -84,11 +84,11 @@
         <x>16</x>
         <y>16.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.284408+03:00[Europe/Moscow]</creationDate>
-      <age>6</age>
-      <color>RED</color>
-      <type>FIRE</type>
-      <character>EVIL</character>
+      <creationDate>2020-02-10T03:56:02.23496+03:00[Europe/Moscow]</creationDate>
+      <age>0</age>
+      <color>ORANGE</color>
+      <type>AIR</type>
+      <character>GOOD</character>
       <head>
         <eyesCount>16.0</eyesCount>
       </head>
@@ -103,11 +103,11 @@
         <x>10</x>
         <y>10.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.283997+03:00[Europe/Moscow]</creationDate>
-      <age>8</age>
-      <color>WHITE</color>
-      <type>UNDERGROUND</type>
-      <character>GOOD</character>
+      <creationDate>2020-02-10T03:56:02.234747+03:00[Europe/Moscow]</creationDate>
+      <age>0</age>
+      <color>BLUE</color>
+      <type>FIRE</type>
+      <character>EVIL</character>
       <head>
         <eyesCount>10.0</eyesCount>
       </head>
@@ -122,10 +122,10 @@
         <x>4</x>
         <y>4.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.2837+03:00[Europe/Moscow]</creationDate>
-      <age>3</age>
-      <color>ORANGE</color>
-      <type>AIR</type>
+      <creationDate>2020-02-10T03:56:02.234553+03:00[Europe/Moscow]</creationDate>
+      <age>1</age>
+      <color>WHITE</color>
+      <type>UNDERGROUND</type>
       <character>WISE</character>
       <head>
         <eyesCount>4.0</eyesCount>
@@ -141,11 +141,11 @@
         <x>17</x>
         <y>17.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.284469+03:00[Europe/Moscow]</creationDate>
-      <age>6</age>
+      <creationDate>2020-02-10T03:56:02.234993+03:00[Europe/Moscow]</creationDate>
+      <age>4</age>
       <color>BLUE</color>
-      <type>FIRE</type>
-      <character>EVIL</character>
+      <type>AIR</type>
+      <character>CHAOTIC</character>
       <head>
         <eyesCount>17.0</eyesCount>
       </head>
@@ -160,11 +160,11 @@
         <x>11</x>
         <y>11.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.28407+03:00[Europe/Moscow]</creationDate>
-      <age>2</age>
+      <creationDate>2020-02-10T03:56:02.234787+03:00[Europe/Moscow]</creationDate>
+      <age>7</age>
       <color>WHITE</color>
       <type>AIR</type>
-      <character>CHAOTIC</character>
+      <character>WISE</character>
       <head>
         <eyesCount>11.0</eyesCount>
       </head>
@@ -179,11 +179,11 @@
         <x>5</x>
         <y>5.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.283749+03:00[Europe/Moscow]</creationDate>
-      <age>5</age>
-      <color>YELLOW</color>
-      <type>WATER</type>
-      <character>CHAOTIC</character>
+      <creationDate>2020-02-10T03:56:02.234586+03:00[Europe/Moscow]</creationDate>
+      <age>7</age>
+      <color>BLUE</color>
+      <type>UNDERGROUND</type>
+      <character>WISE</character>
       <head>
         <eyesCount>5.0</eyesCount>
       </head>
@@ -198,11 +198,11 @@
         <x>18</x>
         <y>18.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.284534+03:00[Europe/Moscow]</creationDate>
-      <age>4</age>
-      <color>RED</color>
-      <type>UNDERGROUND</type>
-      <character>WISE</character>
+      <creationDate>2020-02-10T03:56:02.235029+03:00[Europe/Moscow]</creationDate>
+      <age>3</age>
+      <color>BLUE</color>
+      <type>WATER</type>
+      <character>EVIL</character>
       <head>
         <eyesCount>18.0</eyesCount>
       </head>
@@ -217,11 +217,11 @@
         <x>12</x>
         <y>12.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.284126+03:00[Europe/Moscow]</creationDate>
-      <age>8</age>
+      <creationDate>2020-02-10T03:56:02.234819+03:00[Europe/Moscow]</creationDate>
+      <age>1</age>
       <color>RED</color>
-      <type>UNDERGROUND</type>
-      <character>CHAOTIC</character>
+      <type>AIR</type>
+      <character>WISE</character>
       <head>
         <eyesCount>12.0</eyesCount>
       </head>
@@ -236,11 +236,11 @@
         <x>6</x>
         <y>6.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.283798+03:00[Europe/Moscow]</creationDate>
-      <age>2</age>
-      <color>RED</color>
+      <creationDate>2020-02-10T03:56:02.234617+03:00[Europe/Moscow]</creationDate>
+      <age>5</age>
+      <color>ORANGE</color>
       <type>UNDERGROUND</type>
-      <character>CUNNING</character>
+      <character>GOOD</character>
       <head>
         <eyesCount>6.0</eyesCount>
       </head>
@@ -255,11 +255,11 @@
         <x>19</x>
         <y>19.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.28459+03:00[Europe/Moscow]</creationDate>
-      <age>2</age>
-      <color>YELLOW</color>
+      <creationDate>2020-02-10T03:56:02.23506+03:00[Europe/Moscow]</creationDate>
+      <age>3</age>
+      <color>RED</color>
       <type>AIR</type>
-      <character>GOOD</character>
+      <character>CHAOTIC</character>
       <head>
         <eyesCount>19.0</eyesCount>
       </head>
@@ -274,11 +274,11 @@
         <x>0</x>
         <y>0.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.280955+03:00[Europe/Moscow]</creationDate>
-      <age>0</age>
+      <creationDate>2020-02-10T03:56:02.232363+03:00[Europe/Moscow]</creationDate>
+      <age>1</age>
       <color>RED</color>
-      <type>FIRE</type>
-      <character>WISE</character>
+      <type>WATER</type>
+      <character>CUNNING</character>
       <head>
         <eyesCount>0.0</eyesCount>
       </head>
@@ -293,11 +293,11 @@
         <x>13</x>
         <y>13.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.284205+03:00[Europe/Moscow]</creationDate>
+      <creationDate>2020-02-10T03:56:02.23486+03:00[Europe/Moscow]</creationDate>
       <age>3</age>
-      <color>RED</color>
-      <type>AIR</type>
-      <character>EVIL</character>
+      <color>WHITE</color>
+      <type>WATER</type>
+      <character>GOOD</character>
       <head>
         <eyesCount>13.0</eyesCount>
       </head>
@@ -312,9 +312,9 @@
         <x>7</x>
         <y>7.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.283847+03:00[Europe/Moscow]</creationDate>
+      <creationDate>2020-02-10T03:56:02.234648+03:00[Europe/Moscow]</creationDate>
       <age>7</age>
-      <color>RED</color>
+      <color>WHITE</color>
       <type>UNDERGROUND</type>
       <character>EVIL</character>
       <head>
@@ -331,11 +331,11 @@
         <x>1</x>
         <y>1.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.283512+03:00[Europe/Moscow]</creationDate>
-      <age>1</age>
-      <color>YELLOW</color>
-      <type>WATER</type>
-      <character>GOOD</character>
+      <creationDate>2020-02-10T03:56:02.234433+03:00[Europe/Moscow]</creationDate>
+      <age>7</age>
+      <color>ORANGE</color>
+      <type>FIRE</type>
+      <character>CUNNING</character>
       <head>
         <eyesCount>1.0</eyesCount>
       </head>
@@ -350,11 +350,11 @@
         <x>14</x>
         <y>14.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.284266+03:00[Europe/Moscow]</creationDate>
-      <age>4</age>
+      <creationDate>2020-02-10T03:56:02.234892+03:00[Europe/Moscow]</creationDate>
+      <age>1</age>
       <color>ORANGE</color>
       <type>AIR</type>
-      <character>EVIL</character>
+      <character>CHAOTIC</character>
       <head>
         <eyesCount>14.0</eyesCount>
       </head>
@@ -369,11 +369,11 @@
         <x>8</x>
         <y>8.0</y>
       </coordinates>
-      <creationDate>2020-02-10T03:31:10.283895+03:00[Europe/Moscow]</creationDate>
-      <age>2</age>
-      <color>RED</color>
+      <creationDate>2020-02-10T03:56:02.234679+03:00[Europe/Moscow]</creationDate>
+      <age>0</age>
+      <color>ORANGE</color>
       <type>FIRE</type>
-      <character>CHAOTIC</character>
+      <character>GOOD</character>
       <head>
         <eyesCount>8.0</eyesCount>
       </head>

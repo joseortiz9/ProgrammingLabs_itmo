@@ -71,7 +71,7 @@ public class Dragon {
 
     @Override
     public String toString() {
-        return this.getName() + this.creationDate.toString() + this.getCoordinates();
+        return this.getName() + this.getCoordinates();
     }
 }
 

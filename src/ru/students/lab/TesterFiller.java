@@ -30,7 +30,7 @@ public class TesterFiller {
         }
     }
 
-    public void collectionToXML() throws IOException {
+    public void collectionToXML() {
         new FileManager("/home/joseortiz09/Documents/ProgrammingProjects/IdeaProjects/Lab5/src/data.xml").SaveCollectionInXML(this.getCollection());
     }
 

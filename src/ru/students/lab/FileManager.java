@@ -2,7 +2,6 @@ package ru.students.lab;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-import ru.students.lab.exceptions.NullValueException;
 
 import java.io.*;
 import java.util.HashMap;
@@ -10,7 +9,6 @@ import java.util.HashMap;
 public class FileManager {
 
     private XStream xmlParser;
-    private BufferedInputStream bufferedInputStream;
     private File xmlDragons;
 
     FileManager(String dataFilePath) {
@@ -22,13 +20,6 @@ public class FileManager {
                 this.xmlDragons = new File(dataFilePath);
         } catch (FileNotFoundException ex) {
             System.out.println("There is not such file!");
-            System.exit(1);
-        }
-
-        try {
-            bufferedInputStream = new BufferedInputStream(new FileInputStream(this.getXmlDragons()));
-        } catch (Exception e) {
-            System.out.println("This is a strange error!: " + e.getMessage());
             System.exit(1);
         }
 
@@ -65,8 +56,6 @@ public class FileManager {
     }
 
     public String getStrFromFile() {
-        String dataStr = "";
-        ByteArrayOutputStream buf = new ByteArrayOutputStream();
         try {
             if (this.getXmlDragons().length() == 0)
                 throw new Exception("File is empty!");
@@ -82,7 +71,9 @@ public class FileManager {
             System.exit(1);
         }
 
-        try {
+        String dataStr = "";
+        try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(this.getXmlDragons()));
+             ByteArrayOutputStream buf = new ByteArrayOutputStream()) {
             int result;
             while((result = bufferedInputStream.read()) != -1)
                 buf.write((byte) result);

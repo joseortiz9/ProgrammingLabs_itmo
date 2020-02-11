@@ -2,10 +2,7 @@ package ru.students.lab;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class CollectionManager {
 
@@ -253,9 +250,8 @@ public class CollectionManager {
             if (newDragon.compareTo(this.getCollection().get(key)) > 0) {
                 this.getCollection().put(key, newDragon);
                 System.out.println("Successfully Replaced!");
-            } else {
+            } else
                 System.out.println("Is not old enough!");
-            }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -265,14 +261,15 @@ public class CollectionManager {
     public void remove_greater_key(Integer key) {
         try {
             int initialSize = this.getCollection().size();
-            for (HashMap.Entry<Integer, Dragon> dragonEntry : this.getCollection().entrySet())
-                if (dragonEntry.getKey() > key)
-                    this.getCollection().remove(dragonEntry.getKey());
+
+            this.getCollection()
+                    .entrySet()
+                    .removeIf(dragonEntry -> dragonEntry.getKey() > key);
 
             int finalSize = this.getCollection().size();
 
             if (initialSize == finalSize)
-                throw new Exception("No Dragons removed");
+                System.out.println("No Dragons removed");
             else
                 System.out.println("A total of " + (initialSize - finalSize) + " were removed");
         } catch (Exception ex) {
@@ -283,14 +280,15 @@ public class CollectionManager {
     public void remove_lower_key(Integer key) {
         try {
             int initialSize = this.getCollection().size();
-            for (HashMap.Entry<Integer, Dragon> dragonEntry : this.getCollection().entrySet())
-                if (key > dragonEntry.getKey())
-                    this.getCollection().remove(dragonEntry.getKey());
+
+            this.getCollection()
+                    .entrySet()
+                    .removeIf(dragonEntry -> key > dragonEntry.getKey());
 
             int finalSize = this.getCollection().size();
 
             if (initialSize == finalSize)
-                throw new Exception("No Dragons removed");
+                System.out.println("No Dragons removed");
             else
                 System.out.println("A total of " + (initialSize - finalSize) + " were removed");
         } catch (Exception ex) {
@@ -301,20 +299,16 @@ public class CollectionManager {
 
     public void filter_contains_name(String name) {
         try {
-            int foundKey = 0;
-            for (HashMap.Entry<Integer, Dragon> dragonEntry : this.getCollection().entrySet()) {
-                if (dragonEntry.getValue().getName().equals(name)) {
-                    foundKey = dragonEntry.getKey();
-                    break;
-                }
-            }
+            Optional<Dragon> foundDragon = this.getCollection()
+                    .values()
+                    .stream()
+                    .filter(dragon -> dragon.getName().equals(name))
+                    .findFirst();
 
-            if (foundKey == 0)
+            if (foundDragon.isEmpty())
                 throw new Exception("The dragon with the name '" + name + "' doesn't exist");
-            else {
-                Dragon foundDragon = this.getCollection().get(foundKey);
-                System.out.println("There you are! " + foundDragon.toString());
-            }
+            else
+                System.out.println("There you are! " + foundDragon.get().toString());
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -323,20 +317,18 @@ public class CollectionManager {
     public void filter_starts_with_name(String name) {
         try {
             String regex = "^("+name+").*$";
-            int foundKey = 0;
-            for (HashMap.Entry<Integer, Dragon> dragonEntry : this.getCollection().entrySet()) {
-                if (dragonEntry.getValue().getName().matches(regex)) {
-                    foundKey = dragonEntry.getKey();
-                    break;
-                }
-            }
 
-            if (foundKey == 0)
+            Dragon foundDragon = this.getCollection()
+                    .values()
+                    .stream()
+                    .filter(dragon -> dragon.getName().matches(regex))
+                    .findFirst()
+                    .orElse(null);
+
+            if (foundDragon == null)
                 throw new Exception("The dragon with the name '" + name + "' doesn't exist");
-            else {
-                Dragon foundDragon = this.getCollection().get(foundKey);
+            else
                 System.out.println("There you are! " + foundDragon.toString());
-            }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }

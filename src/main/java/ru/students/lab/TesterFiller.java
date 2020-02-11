@@ -1,6 +1,5 @@
 package ru.students.lab;
 
-import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Random;
@@ -30,8 +29,8 @@ public class TesterFiller {
         }
     }
 
-    public void collectionToXML() {
-        new FileManager("/home/joseortiz09/Documents/ProgrammingProjects/IdeaProjects/Lab5/src/main/java/data.xml").SaveCollectionInXML(this.getCollection());
+    public void collectionToXML(String pathToData) {
+        new FileManager(pathToData).SaveCollectionInXML(this.getCollection());
     }
 
     public void printCollection() {

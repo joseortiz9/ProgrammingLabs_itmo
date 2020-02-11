@@ -31,7 +31,7 @@ public class TesterFiller {
     }
 
     public void collectionToXML() {
-        new FileManager("/home/joseortiz09/Documents/ProgrammingProjects/IdeaProjects/Lab5/src/data.xml").SaveCollectionInXML(this.getCollection());
+        new FileManager("/home/joseortiz09/Documents/ProgrammingProjects/IdeaProjects/Lab5/src/main/java/data.xml").SaveCollectionInXML(this.getCollection());
     }
 
     public void printCollection() {

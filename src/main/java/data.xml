@@ -1,382 +1,401 @@
-<map>
+<root>
   <entry>
     <int>353</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>2</id>
       <name>Dragon2</name>
       <coordinates>
         <x>2</x>
         <y>2.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.596873+03:00[Europe/Moscow]</creationDate>
-      <age>9</age>
-      <color>YELLOW</color>
-      <type>AIR</type>
-      <character>CUNNING</character>
+      <creationDate>2020-02-11T02:09:01.531944+03:00[Europe/Moscow]</creationDate>
+      <age>3</age>
+      <color>ORANGE</color>
+      <type>FIRE</type>
+      <character>CHAOTIC</character>
       <head>
         <eyesCount>2.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
   <entry>
     <int>834</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>15</id>
       <name>Dragon15</name>
       <coordinates>
         <x>15</x>
         <y>15.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.597457+03:00[Europe/Moscow]</creationDate>
-      <age>0</age>
-      <color>WHITE</color>
-      <type>WATER</type>
-      <character>GOOD</character>
+      <creationDate>2020-02-11T02:09:01.532337+03:00[Europe/Moscow]</creationDate>
+      <age>5</age>
+      <color>ORANGE</color>
+      <type>FIRE</type>
+      <character>EVIL</character>
       <head>
         <eyesCount>15.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
+  </entry>
+  <entry>
+    <int>354</int>
+    <dragon>
+      <id>100</id>
+      <name>DragonMegaPowered</name>
+      <coordinates>
+        <x>25</x>
+        <y>2123.0</y>
+      </coordinates>
+      <creationDate>2020-02-11T02:09:01.531944+03:00[Europe/Moscow]</creationDate>
+      <age>3</age>
+      <color>ORANGE</color>
+      <type>FIRE</type>
+      <character>CHAOTIC</character>
+      <head>
+        <eyesCount>2.0</eyesCount>
+      </head>
+    </dragon>
   </entry>
   <entry>
     <int>612</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>9</id>
       <name>Dragon9</name>
       <coordinates>
         <x>9</x>
         <y>9.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.597219+03:00[Europe/Moscow]</creationDate>
-      <age>5</age>
-      <color>RED</color>
-      <type>WATER</type>
-      <character>WISE</character>
+      <creationDate>2020-02-11T02:09:01.532154+03:00[Europe/Moscow]</creationDate>
+      <age>4</age>
+      <color>ORANGE</color>
+      <type>AIR</type>
+      <character>CHAOTIC</character>
       <head>
         <eyesCount>9.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
   <entry>
     <int>390</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>3</id>
       <name>Dragon3</name>
       <coordinates>
         <x>3</x>
         <y>3.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.596934+03:00[Europe/Moscow]</creationDate>
-      <age>4</age>
-      <color>BLUE</color>
-      <type>WATER</type>
-      <character>EVIL</character>
+      <creationDate>2020-02-11T02:09:01.531975+03:00[Europe/Moscow]</creationDate>
+      <age>0</age>
+      <color>YELLOW</color>
+      <type>UNDERGROUND</type>
+      <character>GOOD</character>
       <head>
         <eyesCount>3.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
   <entry>
     <int>871</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>16</id>
       <name>Dragon16</name>
       <coordinates>
         <x>16</x>
         <y>16.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.597514+03:00[Europe/Moscow]</creationDate>
-      <age>0</age>
-      <color>ORANGE</color>
-      <type>FIRE</type>
-      <character>EVIL</character>
+      <creationDate>2020-02-11T02:09:01.532378+03:00[Europe/Moscow]</creationDate>
+      <age>7</age>
+      <color>RED</color>
+      <type>WATER</type>
+      <character>CHAOTIC</character>
       <head>
         <eyesCount>16.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
   <entry>
     <int>649</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>10</id>
       <name>Dragon10</name>
       <coordinates>
         <x>10</x>
         <y>10.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.59725+03:00[Europe/Moscow]</creationDate>
-      <age>2</age>
-      <color>BLUE</color>
+      <creationDate>2020-02-11T02:09:01.532182+03:00[Europe/Moscow]</creationDate>
+      <age>5</age>
+      <color>RED</color>
       <type>FIRE</type>
-      <character>CUNNING</character>
+      <character>WISE</character>
       <head>
         <eyesCount>10.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
   <entry>
     <int>427</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>4</id>
       <name>Dragon4</name>
       <coordinates>
         <x>4</x>
         <y>4.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.596987+03:00[Europe/Moscow]</creationDate>
-      <age>2</age>
+      <creationDate>2020-02-11T02:09:01.532009+03:00[Europe/Moscow]</creationDate>
+      <age>8</age>
       <color>YELLOW</color>
-      <type>FIRE</type>
-      <character>WISE</character>
+      <type>UNDERGROUND</type>
+      <character>EVIL</character>
       <head>
         <eyesCount>4.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
   <entry>
     <int>908</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>17</id>
       <name>Dragon17</name>
       <coordinates>
         <x>17</x>
         <y>17.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.597561+03:00[Europe/Moscow]</creationDate>
-      <age>4</age>
-      <color>BLUE</color>
-      <type>FIRE</type>
-      <character>CHAOTIC</character>
+      <creationDate>2020-02-11T02:09:01.532411+03:00[Europe/Moscow]</creationDate>
+      <age>9</age>
+      <color>RED</color>
+      <type>WATER</type>
+      <character>GOOD</character>
       <head>
         <eyesCount>17.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
   <entry>
     <int>686</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>11</id>
       <name>Dragon11</name>
       <coordinates>
         <x>11</x>
         <y>11.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.597288+03:00[Europe/Moscow]</creationDate>
-      <age>6</age>
-      <color>RED</color>
-      <type>WATER</type>
-      <character>WISE</character>
+      <creationDate>2020-02-11T02:09:01.53221+03:00[Europe/Moscow]</creationDate>
+      <age>3</age>
+      <color>YELLOW</color>
+      <type>AIR</type>
+      <character>GOOD</character>
       <head>
         <eyesCount>11.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
   <entry>
     <int>464</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>5</id>
       <name>Dragon5</name>
       <coordinates>
         <x>5</x>
         <y>5.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.597034+03:00[Europe/Moscow]</creationDate>
-      <age>9</age>
-      <color>RED</color>
+      <creationDate>2020-02-11T02:09:01.53204+03:00[Europe/Moscow]</creationDate>
+      <age>2</age>
+      <color>BLUE</color>
       <type>FIRE</type>
-      <character>WISE</character>
+      <character>GOOD</character>
       <head>
         <eyesCount>5.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
   <entry>
     <int>945</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>18</id>
       <name>Dragon18</name>
       <coordinates>
         <x>18</x>
         <y>18.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.597615+03:00[Europe/Moscow]</creationDate>
-      <age>1</age>
-      <color>ORANGE</color>
-      <type>AIR</type>
-      <character>CHAOTIC</character>
+      <creationDate>2020-02-11T02:09:01.532443+03:00[Europe/Moscow]</creationDate>
+      <age>5</age>
+      <color>WHITE</color>
+      <type>FIRE</type>
+      <character>CUNNING</character>
       <head>
         <eyesCount>18.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
   <entry>
     <int>723</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>12</id>
       <name>Dragon12</name>
       <coordinates>
         <x>12</x>
         <y>12.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.597317+03:00[Europe/Moscow]</creationDate>
-      <age>6</age>
-      <color>ORANGE</color>
+      <creationDate>2020-02-11T02:09:01.532238+03:00[Europe/Moscow]</creationDate>
+      <age>4</age>
+      <color>BLUE</color>
       <type>WATER</type>
-      <character>GOOD</character>
+      <character>CUNNING</character>
       <head>
         <eyesCount>12.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
   <entry>
     <int>501</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>6</id>
       <name>Dragon6</name>
       <coordinates>
         <x>6</x>
         <y>6.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.59708+03:00[Europe/Moscow]</creationDate>
-      <age>2</age>
-      <color>ORANGE</color>
-      <type>AIR</type>
+      <creationDate>2020-02-11T02:09:01.532068+03:00[Europe/Moscow]</creationDate>
+      <age>9</age>
+      <color>BLUE</color>
+      <type>FIRE</type>
       <character>GOOD</character>
       <head>
         <eyesCount>6.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
   <entry>
     <int>982</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>19</id>
       <name>Dragon19</name>
       <coordinates>
         <x>19</x>
         <y>19.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.597661+03:00[Europe/Moscow]</creationDate>
-      <age>7</age>
+      <creationDate>2020-02-11T02:09:01.532471+03:00[Europe/Moscow]</creationDate>
+      <age>2</age>
       <color>YELLOW</color>
-      <type>FIRE</type>
-      <character>WISE</character>
+      <type>AIR</type>
+      <character>EVIL</character>
       <head>
         <eyesCount>19.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
   <entry>
     <int>279</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>0</id>
       <name>Dragon0</name>
       <coordinates>
         <x>0</x>
         <y>0.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.594801+03:00[Europe/Moscow]</creationDate>
-      <age>1</age>
-      <color>RED</color>
+      <creationDate>2020-02-11T02:09:01.529911+03:00[Europe/Moscow]</creationDate>
+      <age>2</age>
+      <color>WHITE</color>
       <type>WATER</type>
-      <character>GOOD</character>
+      <character>EVIL</character>
       <head>
         <eyesCount>0.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
   <entry>
     <int>760</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>13</id>
       <name>Dragon13</name>
       <coordinates>
         <x>13</x>
         <y>13.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.597362+03:00[Europe/Moscow]</creationDate>
-      <age>0</age>
-      <color>RED</color>
-      <type>AIR</type>
-      <character>GOOD</character>
+      <creationDate>2020-02-11T02:09:01.532281+03:00[Europe/Moscow]</creationDate>
+      <age>2</age>
+      <color>WHITE</color>
+      <type>UNDERGROUND</type>
+      <character>EVIL</character>
       <head>
         <eyesCount>13.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
   <entry>
     <int>538</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>7</id>
       <name>Dragon7</name>
       <coordinates>
         <x>7</x>
         <y>7.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.597125+03:00[Europe/Moscow]</creationDate>
-      <age>8</age>
-      <color>BLUE</color>
+      <creationDate>2020-02-11T02:09:01.532096+03:00[Europe/Moscow]</creationDate>
+      <age>6</age>
+      <color>WHITE</color>
       <type>UNDERGROUND</type>
-      <character>GOOD</character>
+      <character>WISE</character>
       <head>
         <eyesCount>7.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
   <entry>
     <int>316</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>1</id>
       <name>Dragon1</name>
       <coordinates>
         <x>1</x>
         <y>1.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.596812+03:00[Europe/Moscow]</creationDate>
-      <age>3</age>
-      <color>YELLOW</color>
-      <type>FIRE</type>
-      <character>EVIL</character>
+      <creationDate>2020-02-11T02:09:01.531888+03:00[Europe/Moscow]</creationDate>
+      <age>4</age>
+      <color>ORANGE</color>
+      <type>WATER</type>
+      <character>CHAOTIC</character>
       <head>
         <eyesCount>1.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
   <entry>
     <int>797</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>14</id>
       <name>Dragon14</name>
       <coordinates>
         <x>14</x>
         <y>14.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.597409+03:00[Europe/Moscow]</creationDate>
-      <age>2</age>
-      <color>BLUE</color>
+      <creationDate>2020-02-11T02:09:01.532309+03:00[Europe/Moscow]</creationDate>
+      <age>7</age>
+      <color>RED</color>
       <type>FIRE</type>
-      <character>WISE</character>
+      <character>CHAOTIC</character>
       <head>
         <eyesCount>14.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
   <entry>
     <int>575</int>
-    <ru.students.lab.Dragon>
+    <dragon>
       <id>8</id>
       <name>Dragon8</name>
       <coordinates>
         <x>8</x>
         <y>8.0</y>
       </coordinates>
-      <creationDate>2020-02-10T04:48:45.597171+03:00[Europe/Moscow]</creationDate>
+      <creationDate>2020-02-11T02:09:01.532126+03:00[Europe/Moscow]</creationDate>
       <age>4</age>
-      <color>ORANGE</color>
+      <color>BLUE</color>
       <type>WATER</type>
-      <character>GOOD</character>
+      <character>EVIL</character>
       <head>
         <eyesCount>8.0</eyesCount>
       </head>
-    </ru.students.lab.Dragon>
+    </dragon>
   </entry>
-</map>
+</root>

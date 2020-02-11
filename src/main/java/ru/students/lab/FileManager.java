@@ -12,7 +12,6 @@ public class FileManager {
     private File xmlDragons;
 
     FileManager(String dataFilePath) {
-
         try {
             if (dataFilePath == null || !(new File(dataFilePath).exists()))
                 throw new FileNotFoundException();
@@ -24,7 +23,8 @@ public class FileManager {
         }
 
         xmlParser = new XStream(new DomDriver());
-        xmlParser.alias("HashMap", java.util.HashMap.class);
+        xmlParser.alias("root", java.util.Map.class);
+        xmlParser.alias("dragon", Dragon.class);
     }
 
 
@@ -36,6 +36,11 @@ public class FileManager {
             System.out.println("Can not save the data, some kind of problem happened");
             e.printStackTrace();
         }
+    }
+
+
+    public Dragon getDragonFromStr(String dragonStr) {
+        return (Dragon) this.xmlParser.fromXML(dragonStr);
     }
 
 

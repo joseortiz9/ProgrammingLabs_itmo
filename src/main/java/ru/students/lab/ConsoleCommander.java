@@ -26,6 +26,9 @@ public class ConsoleCommander {
                     case "help":
                         this.getManager().help();
                         break;
+                    case "man":
+                        this.getManager().man(userCommand[1]);
+                        break;
                     case "info":
                         System.out.println(this.getManager().toString());
                         break;

@@ -40,13 +40,14 @@ public class Dragon {
     public Integer getId() {
         return id;
     }
-
     public String getName() {
         return name;
     }
-
     public Coordinates getCoordinates() {
         return coordinates;
+    }
+    public ZonedDateTime getCreationDate() {
+        return creationDate;
     }
 
     @Override

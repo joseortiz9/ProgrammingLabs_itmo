@@ -60,10 +60,8 @@ public class Dragon implements Comparable<Dragon> {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Dragon))
-            return false;
-        if (obj == this)
-            return true;
+        if (!(obj instanceof Dragon)) return false;
+        if (obj == this) return true;
         Dragon objDragon = (Dragon) obj;
         return this.getId().equals(objDragon.getId()) &&
                 this.getName().equals(objDragon.getName()) &&
@@ -120,10 +118,8 @@ class Coordinates {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Coordinates))
-            return false;
-        if (obj == this)
-            return true;
+        if (!(obj instanceof Coordinates)) return false;
+        if (obj == this) return true;
         Coordinates objCoord = (Coordinates) obj;
         return this.getX().equals(objCoord.getX()) &&
                 this.getY().equals(objCoord.getY());

@@ -1,5 +1,7 @@
 package ru.students.lab;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Date;
 import java.util.HashMap;
 
@@ -27,13 +29,72 @@ public class CollectionManager {
         helpCommands.put("remove_lower_key", "удалить из коллекции все элементы, ключ которых меньше, чем заданный.\nSyntax: remove_lower_key key");
         helpCommands.put("filter_contains_name", "вывести элементы, значение поля name которых содержит заданную.\nSyntax: filter_contains_name name");
         helpCommands.put("filter_starts_with_name", "вывести элементы, значение поля name которых начинается с заданной подстроки.\nSyntax: filter_starts_with_name name");
-        helpCommands.put("print_descending", "вывести элементы коллекции в порядке убывания.\nSyntax: print_descending -{k/i/n} где: -k=key / -i=id / -n=name");
+        helpCommands.put("print_descending", "вывести элементы коллекции в порядке убывания.\nSyntax: print_descending -{k/i/n/d} где: -k=key / -i=id / -n=name / -d=creation_date");
     }
 
     public CollectionManager(String dataFilePath) {
         this.fileManager = new FileManager(dataFilePath);
         this.collection = fileManager.getCollectionFromFile();
         this.collectionCreationDate = new Date();
+    }
+
+
+    public void runCollectionMethod(@NotNull String fullInputCommand) {
+        String[] userCommand = fullInputCommand.trim().split(" ", 3);
+        switch (userCommand[0]) {
+            case "": break;
+            case "help":
+                this.help();
+                break;
+            case "man":
+                this.man(userCommand[1]);
+                break;
+            case "info":
+                System.out.println(this.toString());
+                break;
+            case "show":
+                this.show();
+                break;
+            case "clear":
+                this.clear();
+                break;
+            case "save":
+            case "exit":
+                this.save();
+                break;
+            case "print_descending":
+                this.print_descending(userCommand[1]);
+                break;
+            case "insert":
+                this.insert(Integer.valueOf(userCommand[1]), userCommand[2]);
+                break;
+            case "update":
+                this.update(Integer.valueOf(userCommand[1]), userCommand[2]);
+                break;
+            case "remove_key":
+                this.remove_key(Integer.valueOf(userCommand[1]));
+                break;
+            case "execute_script":
+                this.execute_script(userCommand[1]);
+                break;
+            case "replace_if_lower":
+                this.replace_if_lower(Integer.valueOf(userCommand[1]), userCommand[2]);
+                break;
+            case "remove_greater_key":
+                this.remove_greater_key(Integer.valueOf(userCommand[1]));
+                break;
+            case "remove_lower_key":
+                this.remove_lower_key(Integer.valueOf(userCommand[1]));
+                break;
+            case "filter_contains_name":
+                this.filter_contains_name(userCommand[1]);
+                break;
+            case "filter_starts_with_name":
+                this.filter_starts_with_name(userCommand[1]);
+                break;
+            default:
+                System.out.println("What are u writing? type 'help' for the available commands");
+        }
     }
 
     public void help() {
@@ -60,7 +121,7 @@ public class CollectionManager {
         System.out.println("All elems saved successfully!");
     }
 
-    public void print_descending() {
+    public void print_descending(String arg) {
         //System.out.println("Some Commands for you! \n" + this.getHelpCommands().keySet());
     }
 
@@ -116,13 +177,21 @@ public class CollectionManager {
     }
 
     public void execute_script(String fileName) {
-        //System.out.println("Some Commands for you! \n" + this.getHelpCommands().keySet());
+        try {
+            String commandsStr = this.getFileManager().getStrFromFile(fileName);
+            String[] commands = commandsStr.trim().split("\n");
+            for (String command : commands) {
+                System.out.println();
+                this.runCollectionMethod(command);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     public void replace_if_lower(Integer key, String newDragonXml) {
         try {
             Dragon newDragon = this.getFileManager().getDragonFromStr(newDragonXml);
-
             //is newer
             if (newDragon.compareTo(this.getCollection().get(key)) > 0) {
                 this.getCollection().put(key, newDragon);
@@ -216,10 +285,10 @@ public class CollectionManager {
         }
     }
 
-
     public void printRunSave() {
         System.out.println("Run 'save' to save all the changes in the file");
     }
+
 
     public HashMap<String, String> getHelpCommands() {
         return helpCommands;
@@ -230,15 +299,26 @@ public class CollectionManager {
     public HashMap<Integer, Dragon> getCollection() {
         return this.collection;
     }
+    public Date getColCreationDate() {
+        return collectionCreationDate;
+    }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int result = 25;
+        result += this.getColCreationDate().hashCode();
+        result >>= 4;
+        result += (this.getCollection().hashCode());
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (!(obj instanceof CollectionManager)) return false;
+        if (obj == this) return true;
+        CollectionManager objCManager = (CollectionManager) obj;
+        return this.getCollection().equals(objCManager.getCollection()) &&
+                this.getColCreationDate().equals(objCManager.getColCreationDate());
     }
 
     @Override

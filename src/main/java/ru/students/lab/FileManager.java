@@ -46,7 +46,7 @@ public class FileManager {
 
     public HashMap<Integer, Dragon> getCollectionFromFile() {
         HashMap<Integer, Dragon> collection = new HashMap<Integer, Dragon>();
-        String dataStr = this.getStrFromFile();
+        String dataStr = this.getStrFromFile("");
 
         try {
             if (!dataStr.equals(""))
@@ -60,24 +60,33 @@ public class FileManager {
         return collection;
     }
 
-    public String getStrFromFile() {
+    public String getStrFromFile(String filePath) {
+        File fileToRetrieve;
         try {
-            if (this.getXmlDragons().length() == 0)
+            if (filePath.equals(""))
+                fileToRetrieve = this.getXmlDragons();
+            else
+                fileToRetrieve = new File(filePath);
+
+            if (!fileToRetrieve.exists())
+                throw new FileNotFoundException("There is not such file!");
+            else if (fileToRetrieve.length() == 0)
                 throw new Exception("File is empty!");
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
+            return "";
         }
 
         try {
-            if (!this.getXmlDragons().canRead() || !this.getXmlDragons().canWrite())
+            if (!fileToRetrieve.canRead() || !fileToRetrieve.canWrite())
                 throw new SecurityException("The file has read and/or write protection.");
         } catch (SecurityException ex) {
             System.out.println(ex.getMessage());
-            System.exit(1);
+            return "";
         }
 
         String dataStr = "";
-        try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(this.getXmlDragons()));
+        try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(fileToRetrieve));
              ByteArrayOutputStream buf = new ByteArrayOutputStream()) {
             int result;
             while((result = bufferedInputStream.read()) != -1)
@@ -86,7 +95,7 @@ public class FileManager {
             dataStr = buf.toString();
         }catch(Exception e){
             e.printStackTrace();
-            System.exit(1);
+            return "";
         }
 
         return dataStr;

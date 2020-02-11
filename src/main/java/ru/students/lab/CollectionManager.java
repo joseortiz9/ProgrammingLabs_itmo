@@ -2,8 +2,10 @@ package ru.students.lab;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 public class CollectionManager {
 
@@ -40,60 +42,65 @@ public class CollectionManager {
 
 
     public void runCollectionMethod(@NotNull String fullInputCommand) {
-        String[] userCommand = fullInputCommand.trim().split(" ", 3);
-        switch (userCommand[0]) {
-            case "": break;
-            case "help":
-                this.help();
-                break;
-            case "man":
-                this.man(userCommand[1]);
-                break;
-            case "info":
-                System.out.println(this.toString());
-                break;
-            case "show":
-                this.show();
-                break;
-            case "clear":
-                this.clear();
-                break;
-            case "save":
-            case "exit":
-                this.save();
-                break;
-            case "print_descending":
-                this.print_descending(userCommand[1]);
-                break;
-            case "insert":
-                this.insert(Integer.valueOf(userCommand[1]), userCommand[2]);
-                break;
-            case "update":
-                this.update(Integer.valueOf(userCommand[1]), userCommand[2]);
-                break;
-            case "remove_key":
-                this.remove_key(Integer.valueOf(userCommand[1]));
-                break;
-            case "execute_script":
-                this.execute_script(userCommand[1]);
-                break;
-            case "replace_if_lower":
-                this.replace_if_lower(Integer.valueOf(userCommand[1]), userCommand[2]);
-                break;
-            case "remove_greater_key":
-                this.remove_greater_key(Integer.valueOf(userCommand[1]));
-                break;
-            case "remove_lower_key":
-                this.remove_lower_key(Integer.valueOf(userCommand[1]));
-                break;
-            case "filter_contains_name":
-                this.filter_contains_name(userCommand[1]);
-                break;
-            case "filter_starts_with_name":
-                this.filter_starts_with_name(userCommand[1]);
-                break;
-            default:
-                System.out.println("What are u writing? type 'help' for the available commands");
+        try {
+            String[] userCommand = fullInputCommand.trim().split(" ", 3);
+            switch (userCommand[0]) {
+                case "": break;
+                case "help":
+                    this.help();
+                    break;
+                case "man":
+                    this.man(userCommand[1]);
+                    break;
+                case "info":
+                    System.out.println(this.toString());
+                    break;
+                case "show":
+                    this.show();
+                    break;
+                case "clear":
+                    this.clear();
+                    break;
+                case "save":
+                case "exit":
+                    this.save();
+                    break;
+                case "print_descending":
+                    this.print_descending(userCommand[1]);
+                    break;
+                case "insert":
+                    this.insert(Integer.valueOf(userCommand[1]), userCommand[2]);
+                    break;
+                case "update":
+                    this.update(Integer.valueOf(userCommand[1]), userCommand[2]);
+                    break;
+                case "remove_key":
+                    this.remove_key(Integer.valueOf(userCommand[1]));
+                    break;
+                case "execute_script":
+                    this.execute_script(userCommand[1]);
+                    break;
+                case "replace_if_lower":
+                    this.replace_if_lower(Integer.valueOf(userCommand[1]), userCommand[2]);
+                    break;
+                case "remove_greater_key":
+                    this.remove_greater_key(Integer.valueOf(userCommand[1]));
+                    break;
+                case "remove_lower_key":
+                    this.remove_lower_key(Integer.valueOf(userCommand[1]));
+                    break;
+                case "filter_contains_name":
+                    this.filter_contains_name(userCommand[1]);
+                    break;
+                case "filter_starts_with_name":
+                    this.filter_starts_with_name(userCommand[1]);
+                    break;
+                default:
+                    System.out.println("What are u writing? type 'help' for the available commands");
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            //ex.printStackTrace();
         }
     }
 
@@ -121,8 +128,58 @@ public class CollectionManager {
         System.out.println("All elems saved successfully!");
     }
 
-    public void print_descending(String arg) {
-        //System.out.println("Some Commands for you! \n" + this.getHelpCommands().keySet());
+
+    public void sortByKey(){
+        System.out.println("Sorting by key...");
+        this.getCollection()
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByKey())
+                .forEach(e -> System.out.println("key:" + e.getKey() + " -> " + e.getValue().toString()));
+    }
+    public void sortById(){
+        System.out.println("Sorting by ID...");
+        this.getCollection()
+                .entrySet()
+                .stream()
+                .sorted(Comparator.comparing(x -> x.getValue().getId()))
+                .forEach(e -> System.out.println("key:" + e.getKey() + " -> " + e.getValue().toString()));
+    }
+    public void sortByName(){
+        System.out.println("Sorting by Name...");
+        this.getCollection()
+                .entrySet()
+                .stream()
+                .sorted((x, y) -> x.getValue().getName().compareTo(y.getValue().getName()))
+                .forEach(e -> System.out.println("key:" + e.getKey() + " -> " + e.getValue().toString()));
+    }
+    public void sortByCreationDate(){
+        System.out.println("Sorting by Creation Date...");
+        this.getCollection()
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .forEach(e -> System.out.println("key:" + e.getKey() + " -> " + e.getValue().toString()));
+    }
+
+    public void print_descending(@NotNull String arg) {
+        switch (arg) {
+            case "":
+            case "-k":
+                this.sortByKey();
+                break;
+            case "-i":
+                this.sortById();
+                break;
+            case "-n":
+                this.sortByName();
+                break;
+            case "-d":
+                this.sortByCreationDate();
+                break;
+            default:
+                System.out.println("This option is not available. Correct= -{k/i/n/d}");
+        }
     }
 
     public void insert(Integer key, String newDragonXml) {

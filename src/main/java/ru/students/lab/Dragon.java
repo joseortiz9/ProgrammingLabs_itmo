@@ -1,9 +1,7 @@
 package ru.students.lab;
 
-import ru.students.lab.exceptions.IncorrectCoordException;
-import ru.students.lab.exceptions.NullValueException;
-
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 public class Dragon implements Comparable<Dragon> {
@@ -49,6 +47,15 @@ public class Dragon implements Comparable<Dragon> {
     public ZonedDateTime getCreationDate() {
         return creationDate;
     }
+    public String getFormattedCDate() {
+        return this.getCreationDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy-HH:mm:ss.SSS-z"));
+    }
+    public Long getAge() {
+        return age;
+    }
+    public Color getColor() {
+        return color;
+    }
 
     @Override
     public int hashCode() {
@@ -70,7 +77,11 @@ public class Dragon implements Comparable<Dragon> {
 
     @Override
     public String toString() {
-        return this.getName() + this.getCoordinates();
+        return "{ID=" + this.getId() + "," +
+                "name=" + this.getName() + ", " +
+                "creationDate=[" + this.getFormattedCDate() + "], " +
+                "Color=" + this.getColor().toString() + ", " +
+                "Location="+this.getCoordinates() + "}";
     }
 
     @Override
@@ -127,7 +138,7 @@ class Coordinates {
 
     @Override
     public String toString() {
-        return " [x=" + this.getX() + ", y=" + this.getY() + "]";
+        return "[x=" + this.getX() + ", y=" + this.getY() + "]";
     }
 }
 

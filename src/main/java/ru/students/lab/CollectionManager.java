@@ -198,18 +198,17 @@ public class CollectionManager {
         try {
             Dragon newDragon = this.getFileManager().getDragonFromStr(newDragonXml);
 
-            int foundKey = 0;
-            for (HashMap.Entry<Integer, Dragon> dragonEntry : this.getCollection().entrySet()) {
-                if (dragonEntry.getValue().getId().equals(id)) {
-                    foundKey = dragonEntry.getKey();
-                    break;
-                }
-            }
+            Optional<Map.Entry<Integer, Dragon>> oldDragonKey =
+                    this.getCollection()
+                    .entrySet()
+                    .stream()
+                    .filter(dragonEntry -> dragonEntry.getValue().getId().equals(id))
+                    .findFirst();
 
-            if (foundKey == 0)
+            if (oldDragonKey.isEmpty())
                 throw new Exception("The ID '" + id + "' doesn't exist");
             else {
-                this.getCollection().put(foundKey, newDragon);
+                this.getCollection().replace(oldDragonKey.get().getKey(), newDragon);
                 System.out.println(newDragon.toString() + " Successfully updated!");
                 this.printRunSave();
             }
@@ -245,10 +244,13 @@ public class CollectionManager {
 
     public void replace_if_lower(Integer key, String newDragonXml) {
         try {
+            if (!this.getCollection().containsKey(key))
+                throw new Exception("This key doesn't exist!");
+
             Dragon newDragon = this.getFileManager().getDragonFromStr(newDragonXml);
             //is newer
             if (newDragon.compareTo(this.getCollection().get(key)) > 0) {
-                this.getCollection().put(key, newDragon);
+                this.getCollection().replace(key, newDragon);
                 System.out.println("Successfully Replaced!");
             } else
                 System.out.println("Is not old enough!");

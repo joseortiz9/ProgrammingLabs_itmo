@@ -6,7 +6,7 @@ import ru.students.lab.exceptions.NullValueException;
 import java.time.ZonedDateTime;
 import java.util.Random;
 
-public class Dragon {
+public class Dragon implements Comparable<Dragon> {
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -73,6 +73,15 @@ public class Dragon {
     @Override
     public String toString() {
         return this.getName() + this.getCoordinates();
+    }
+
+    @Override
+    public int compareTo(Dragon dragon) {
+        long difference = this.getCreationDate().compareTo(dragon.getCreationDate());
+
+        if(difference > 0) return 1; //first one is newer than the second
+        else if(difference < 0) return -1;
+        else return 0;
     }
 }
 

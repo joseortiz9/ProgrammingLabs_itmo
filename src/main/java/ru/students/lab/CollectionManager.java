@@ -84,9 +84,12 @@ public class CollectionManager {
             Dragon newDragon = this.getFileManager().getDragonFromStr(newDragonXml);
 
             int foundKey = 0;
-            for (HashMap.Entry<Integer, Dragon> dragonEntry : this.getCollection().entrySet())
-                if (dragonEntry.getValue().getId().equals(id))
+            for (HashMap.Entry<Integer, Dragon> dragonEntry : this.getCollection().entrySet()) {
+                if (dragonEntry.getValue().getId().equals(id)) {
                     foundKey = dragonEntry.getKey();
+                    break;
+                }
+            }
 
             if (foundKey == 0)
                 throw new Exception("The ID '" + id + "' doesn't exist");
@@ -116,25 +119,101 @@ public class CollectionManager {
         //System.out.println("Some Commands for you! \n" + this.getHelpCommands().keySet());
     }
 
-    public void replace_if_lower(Integer key, String newDragon) {
-        //System.out.println("Some Commands for you! \n" + this.getHelpCommands().keySet());
+    public void replace_if_lower(Integer key, String newDragonXml) {
+        try {
+            Dragon newDragon = this.getFileManager().getDragonFromStr(newDragonXml);
+
+            //is newer
+            if (newDragon.compareTo(this.getCollection().get(key)) > 0) {
+                this.getCollection().put(key, newDragon);
+                System.out.println("Successfully Replaced!");
+            } else {
+                System.out.println("Is not old enough!");
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
     }
 
     public void remove_greater_key(Integer key) {
-        //System.out.println("Some Commands for you! \n" + this.getHelpCommands().keySet());
+        try {
+            int initialSize = this.getCollection().size();
+            for (HashMap.Entry<Integer, Dragon> dragonEntry : this.getCollection().entrySet())
+                if (dragonEntry.getKey() > key)
+                    this.getCollection().remove(dragonEntry.getKey());
+
+            int finalSize = this.getCollection().size();
+
+            if (initialSize == finalSize)
+                throw new Exception("No Dragons removed");
+            else
+                System.out.println("A total of " + (initialSize - finalSize) + " were removed");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     public void remove_lower_key(Integer key) {
-        //System.out.println("Some Commands for you! \n" + this.getHelpCommands().keySet());
+        try {
+            int initialSize = this.getCollection().size();
+            for (HashMap.Entry<Integer, Dragon> dragonEntry : this.getCollection().entrySet())
+                if (key > dragonEntry.getKey())
+                    this.getCollection().remove(dragonEntry.getKey());
+
+            int finalSize = this.getCollection().size();
+
+            if (initialSize == finalSize)
+                throw new Exception("No Dragons removed");
+            else
+                System.out.println("A total of " + (initialSize - finalSize) + " were removed");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
 
     public void filter_contains_name(String name) {
-        //System.out.println("Some Commands for you! \n" + this.getHelpCommands().keySet());
+        try {
+            int foundKey = 0;
+            for (HashMap.Entry<Integer, Dragon> dragonEntry : this.getCollection().entrySet()) {
+                if (dragonEntry.getValue().getName().equals(name)) {
+                    foundKey = dragonEntry.getKey();
+                    break;
+                }
+            }
+
+            if (foundKey == 0)
+                throw new Exception("The dragon with the name '" + name + "' doesn't exist");
+            else {
+                Dragon foundDragon = this.getCollection().get(foundKey);
+                System.out.println("There you are! " + foundDragon.toString());
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     public void filter_starts_with_name(String name) {
-        //System.out.println("Some Commands for you! \n" + this.getHelpCommands().keySet());
+        try {
+            String regex = "^("+name+").*$";
+            int foundKey = 0;
+            for (HashMap.Entry<Integer, Dragon> dragonEntry : this.getCollection().entrySet()) {
+                if (dragonEntry.getValue().getName().matches(regex)) {
+                    foundKey = dragonEntry.getKey();
+                    break;
+                }
+            }
+
+            if (foundKey == 0)
+                throw new Exception("The dragon with the name '" + name + "' doesn't exist");
+            else {
+                Dragon foundDragon = this.getCollection().get(foundKey);
+                System.out.println("There you are! " + foundDragon.toString());
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
 

@@ -1,5 +1,7 @@
 package ru.students.lab;
 
+import ru.students.lab.managers.CommandManager;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -8,7 +10,7 @@ public class Main {
         //fill the xml file with random data
         //new TesterFiller().collectionToXML(pathToData);
 
-        ConsoleCommander console = new ConsoleCommander(new CollectionManager(pathToData));
-        console.startInteraction();
+        CommandManager manager = new CommandManager(pathToData);
+        manager.startInteraction();
     }
 }

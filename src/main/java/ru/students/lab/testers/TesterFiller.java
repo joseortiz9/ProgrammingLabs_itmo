@@ -1,4 +1,7 @@
-package ru.students.lab;
+package ru.students.lab.testers;
+
+import ru.students.lab.managers.FileManager;
+import ru.students.lab.models.*;
 
 import java.time.ZonedDateTime;
 import java.util.HashMap;

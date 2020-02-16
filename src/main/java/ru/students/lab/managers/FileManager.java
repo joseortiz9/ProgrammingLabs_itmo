@@ -1,7 +1,8 @@
-package ru.students.lab;
+package ru.students.lab.managers;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import ru.students.lab.models.Dragon;
 
 import java.io.*;
 import java.util.HashMap;
@@ -11,7 +12,7 @@ public class FileManager {
     private XStream xmlParser;
     private File xmlDragons;
 
-    FileManager(String dataFilePath) {
+    public FileManager(String dataFilePath) {
         try {
             if (dataFilePath == null || !(new File(dataFilePath).exists()))
                 throw new FileNotFoundException();

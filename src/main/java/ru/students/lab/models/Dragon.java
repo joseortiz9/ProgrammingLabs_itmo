@@ -1,8 +1,10 @@
 package ru.students.lab.models;
 
+import ru.students.lab.exceptions.IncorrectAgeException;
+import ru.students.lab.exceptions.NullValueException;
+
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Random;
 
 public class Dragon implements Comparable<Dragon> {
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
@@ -15,24 +17,27 @@ public class Dragon implements Comparable<Dragon> {
     private DragonCharacter character; //Поле не может быть null
     private DragonHead head;
 
-    public Dragon(Integer id,
-                  String name,
+    public Dragon() {
+        this.setId();
+        this.setCreationDate();
+    }
+
+    public Dragon(String name,
                   Coordinates coordinates,
-                  ZonedDateTime creationDate,
                   Long age,
                   Color color,
                   DragonType type,
                   DragonCharacter character,
                   DragonHead head) {
-        this.id = id;
-        this.name = name;
-        this.coordinates = coordinates;
-        this.creationDate = creationDate;
-        this.age = age;
-        this.color = color;
-        this.type = type;
-        this.character = character;
-        this.head = head;
+        this.setId();
+        this.setName(name);
+        this.setCoordinates(coordinates);
+        this.setCreationDate();
+        this.setAge(age);
+        this.setColor(color);
+        this.setType(type);
+        this.setCharacter(character);
+        this.setHead(head);
     }
 
     public Integer getId() {
@@ -57,10 +62,93 @@ public class Dragon implements Comparable<Dragon> {
         return color;
     }
 
+
+    public void setId() {
+        //ToDo: generate automatic and unique ID
+        this.id = 1;
+    }
+
+    public String setName(String name) {
+        try {
+            if (name.isEmpty())
+                throw new NullValueException("name");
+            this.name = name;
+            return "";
+        } catch (NullValueException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+        return "";
+    }
+
+    public String setAge(Long age) {
+        try {
+            if (age <= 0)
+                throw new IncorrectAgeException();
+            this.age = age;
+            return "";
+        } catch (IncorrectAgeException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String setColor(Color color) {
+        try {
+            if (color == null)
+                throw new NullValueException();
+            this.color = color;
+            return "";
+        } catch (NullValueException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String setHead(DragonHead head) {
+        try {
+            if (head == null)
+                throw new NullValueException();
+            this.head = head;
+            return "";
+        } catch (NullValueException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String setCharacter(DragonCharacter character) {
+        try {
+            if (character == null)
+                throw new NullValueException();
+            this.character = character;
+            return "";
+        } catch (NullValueException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String setType(DragonType type) {
+        try {
+            if (type == null)
+                throw new NullValueException();
+            this.type = type;
+            return "";
+        } catch (NullValueException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public void setCreationDate() {
+        this.creationDate = ZonedDateTime.now();
+    }
+
+
     @Override
     public int hashCode() {
         int result = 7;
-        result += (this.getId()) << 2;
+        result += (this.getCreationDate().hashCode()) >> 2;
+        result += this.getName().hashCode();
         result += this.getCoordinates().hashCode();
         return result;
     }

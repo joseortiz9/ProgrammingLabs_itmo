@@ -1,17 +1,18 @@
 package ru.students.lab.models;
 
+import ru.students.lab.exceptions.IncorrectCoordException;
+import ru.students.lab.exceptions.NullValueException;
+
 public class Coordinates {
     private Long x; //Значение поля должно быть больше -328, Поле не может быть null
     private Float y; //Поле не может быть null
 
-    public Coordinates(Long x, Float y) /*throws NullValueException, IncorrectCoordException*/ {
-        /*if (x.equals(null) || y.equals(null))
-            throw new NullValueException(x.toString());
-        else if (x <= -328)
-            throw new IncorrectCoordException("Value of X should be more than -328, digit x=" + x.toString());
-        */
-        this.x = x;
-        this.y = y;
+    public Coordinates() {
+    }
+
+    public Coordinates(Long x, Float y) {
+        this.setX(x);
+        this.setY(y);
     }
 
     public Long getX() {
@@ -20,6 +21,30 @@ public class Coordinates {
 
     public Float getY() {
         return y;
+    }
+
+    public String setX(Long x) {
+        try {
+            if (x == null)
+                throw new NullValueException();
+            else if (x <= -328)
+                throw new IncorrectCoordException("X should be bigger than -328");
+            this.x = x;
+            return "";
+        } catch (NullValueException | IncorrectCoordException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String setY(Float y) {
+        try {
+            if (y == null)
+                throw new NullValueException();
+            this.y = y;
+            return "";
+        } catch (NullValueException ex) {
+            return ex.getMessage();
+        }
     }
 
     @Override

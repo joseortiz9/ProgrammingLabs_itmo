@@ -42,10 +42,10 @@ public class CommandManager {
         String[] commandInputArgs;
         ICommand command;
         do {
-            //consoleHandler.readCommandLine();
+            consoleHandler.readCommandLine();
             commandInputKey = consoleHandler.getCommandKey();
             commandInputArgs = consoleHandler.getCommandArgs();
-            if (this.getCommands().containsKey(commandInputKey) || commandInputKey != null) {
+            if (this.getCommands().containsKey(commandInputKey)) {
                 command = this.getCommand(commandInputKey);
                 command.execute(commandInputArgs);
                 System.out.println(command.getResultExecution());

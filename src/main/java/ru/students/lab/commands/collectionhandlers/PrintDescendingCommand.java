@@ -4,7 +4,6 @@ import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ICommand;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.models.Dragon;
-import ru.students.lab.models.DragonCreator;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +20,7 @@ public class PrintDescendingCommand extends AbsCommand implements ICommand {
     @Override
     public void execute(String[] args) {
         List<Map.Entry<Integer, Dragon>> sortedDragons = null;
+
         switch (args[0]) {
             case "":
             case "-k":

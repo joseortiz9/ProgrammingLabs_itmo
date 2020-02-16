@@ -1,30 +1,24 @@
 package ru.students.lab.client;
 
-import ru.students.lab.managers.CollectionManager;
-import ru.students.lab.managers.CommandManager;
-
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class ConsoleHandler {
 
     private String[] fullInputCommand;
-    String[] inputArgs;
+    private String[] inputArgs;
+    private Scanner commandReader;
 
     public ConsoleHandler() {
-        this.fullInputCommand = new String[3];
+        this.fullInputCommand = new String[2];
         this.inputArgs = new String[2];
+        commandReader = new Scanner(System.in);
     }
 
     public void readCommandLine() {
-        try(Scanner commandReader = new Scanner(System.in)) {
-            System.out.println("\nWrite a command: ");
-            String input = commandReader.nextLine();
-            fullInputCommand = input.trim().split(" ");
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        }
+        System.out.println("\nWrite a command: ");
+        String input = commandReader.nextLine();
+        fullInputCommand = input.trim().split(" ");
     }
 
     public String getCommandKey() {
@@ -33,7 +27,7 @@ public class ConsoleHandler {
 
     public String[] getCommandArgs() {
         try {
-            setInputArgs(Arrays.copyOfRange(fullInputCommand, 1, fullInputCommand.length));
+            inputArgs = Arrays.copyOfRange(fullInputCommand, 1, fullInputCommand.length);
         }catch (ArrayIndexOutOfBoundsException | IllegalArgumentException | NullPointerException ex) {
             System.out.println(ex.getMessage());
         }
@@ -44,7 +38,9 @@ public class ConsoleHandler {
         return inputArgs;
     }
 
-    public void setInputArgs(String[] inputArgs) {
-        this.inputArgs = inputArgs;
+    public String readDragonAttr(String attr) {
+        System.out.print("Dragon's " + attr + ": ");
+        return commandReader.nextLine();
     }
+
 }

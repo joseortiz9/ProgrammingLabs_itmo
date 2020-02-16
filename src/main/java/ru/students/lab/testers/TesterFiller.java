@@ -19,10 +19,8 @@ public class TesterFiller {
     public void fillCollection() {
         for (int i = 0; i < 20; i++) {
             Dragon dragon = new Dragon(
-                    i,
                     "Dragon" + i,
                     new Coordinates((long) i, (float) i),
-                    ZonedDateTime.now(),
                     (long) new Random().nextInt(10),
                     Color.getRand(),
                     DragonType.getRand(),

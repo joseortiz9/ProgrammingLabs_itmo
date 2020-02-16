@@ -4,25 +4,22 @@ import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ICommand;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.models.Dragon;
-import ru.students.lab.models.DragonCreator;
-
-import java.util.Map;
-import java.util.Optional;
+import ru.students.lab.factories.DragonFactory;
 
 public class UpdateCommand extends AbsCommand implements ICommand {
 
     public static final String DESCRIPTION = "обновить значение элемента коллекции, id которого равен заданному.\nSyntax: update id {element}";
     private CollectionManager collectionManager;
-    private DragonCreator dragonCreator;
+    private DragonFactory dragonFactory;
 
     public UpdateCommand(CollectionManager collectionManager) {
         this.collectionManager = collectionManager;
-        this.dragonCreator = new DragonCreator();
+        this.dragonFactory = new DragonFactory();
     }
 
     @Override
     public void execute(String[] args) {
-        Dragon newDragon = dragonCreator.generateDragon();
+        Dragon newDragon = dragonFactory.generateDragonFromConsole();
 
         // If it successfully replace it, returns the value of the old mapped object
         if (this.collectionManager.update(Integer.valueOf(args[0]), newDragon) != null)

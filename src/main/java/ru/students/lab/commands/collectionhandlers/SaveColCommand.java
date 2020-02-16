@@ -4,7 +4,6 @@ import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ICommand;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.managers.FileManager;
-import ru.students.lab.models.DragonCreator;
 
 public class SaveColCommand extends AbsCommand implements ICommand {
 

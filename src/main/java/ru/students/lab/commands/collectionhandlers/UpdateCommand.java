@@ -19,12 +19,21 @@ public class UpdateCommand extends AbsCommand implements ICommand {
 
     @Override
     public void execute(String[] args) {
-        Dragon newDragon = dragonFactory.generateDragonFromConsole();
+        try {
+            Dragon newDragon = dragonFactory.generateDragonFromConsole();
 
-        // If it successfully replace it, returns the value of the old mapped object
-        if (this.collectionManager.update(Integer.valueOf(args[0]), newDragon) != null)
-            setResultExecution(newDragon.toString() + " Successfully Updated!");
-        else
-            setResultExecution("The ID '" + Integer.valueOf(args[0]) + "' doesn't exist");
+            // If it successfully replace it, returns the value of the old mapped object
+            if (this.collectionManager.update(Integer.valueOf(args[0]), newDragon) != null)
+                setResultExecution(0,newDragon.toString() + " Successfully Updated!");
+            else
+                setResultExecution(1,"The ID '" + Integer.valueOf(args[0]) + "' doesn't exist");
+        } catch (NumberFormatException ex) {
+            setResultExecution(1,"Incorrect format of the entered key");
+        }
+    }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
     }
 }

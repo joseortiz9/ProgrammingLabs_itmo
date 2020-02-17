@@ -8,4 +8,9 @@ public class ExitCommand extends AbsCommand implements ICommand {
     public void execute(String[] args) {
         System.exit(0);
     }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
+    }
 }

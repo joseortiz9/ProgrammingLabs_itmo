@@ -1,7 +1,7 @@
 package ru.students.lab.commands;
 
 public abstract class AbsCommand implements ICommand {
-    private String resultExecution;
+    private String resultExecution = "0___ ";
 
     @Override
     public String getResultExecution() {
@@ -9,8 +9,8 @@ public abstract class AbsCommand implements ICommand {
     }
 
     @Override
-    public void setResultExecution(String resultExecution) {
-        this.resultExecution = resultExecution;
+    public void setResultExecution(int code, String resultExecution) {
+        this.resultExecution = code + "___" + resultExecution;
     }
 
     @Override

@@ -15,13 +15,22 @@ public class RemoveLowerKeyCommand extends AbsCommand implements ICommand {
 
     @Override
     public void execute(String[] args) {
-        int initialSize = this.collectionManager.getCollection().size();
-        this.collectionManager.removeLowerKey(Integer.valueOf(args[0]));
-        int finalSize = this.collectionManager.getCollection().size();
+        try {
+            int initialSize = this.collectionManager.getCollection().size();
+            this.collectionManager.removeLowerKey(Integer.valueOf(args[0]));
+            int finalSize = this.collectionManager.getCollection().size();
 
-        if (initialSize == finalSize)
-            setResultExecution("No Dragons removed");
-        else
-            setResultExecution("A total of " + (initialSize - finalSize) + " were removed");
+            if (initialSize == finalSize)
+                setResultExecution(0,"No Dragons removed");
+            else
+                setResultExecution(0,"A total of " + (initialSize - finalSize) + " were removed");
+        } catch (NumberFormatException ex) {
+            setResultExecution(1,"Incorrect format of the entered key");
+        }
+    }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
     }
 }

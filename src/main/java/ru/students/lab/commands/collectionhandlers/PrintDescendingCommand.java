@@ -40,9 +40,16 @@ public class PrintDescendingCommand extends AbsCommand implements ICommand {
                 sortedDragons = this.collectionManager.sortByCreationDate();
                 break;
             default:
-                setResultExecution("This option is not available. Correct= -{k/i/n/d}");
+                setResultExecution(1,"This option is not available. Correct= -{k/i/n/d}");
         }
-        if (sortedDragons != null)
+        if (sortedDragons != null) {
             sortedDragons.forEach(e -> System.out.println("key:" + e.getKey() + " -> " + e.getValue().toString()));
+            setResultExecution(0, "Elements found: " + sortedDragons.size());
+        }
+    }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
     }
 }

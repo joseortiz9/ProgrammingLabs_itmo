@@ -16,5 +16,11 @@ public class ShowCommand extends AbsCommand implements ICommand {
     @Override
     public void execute(String[] args) {
         this.collectionManager.getCollection().forEach((key, value) -> System.out.println("key:" + key + " -> " + value));
+        setResultExecution(0,"Successfully done");
+    }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
     }
 }

@@ -1,7 +1,9 @@
 package ru.students.lab.managers;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.XStreamException;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import ru.students.lab.exceptions.EmptyFileException;
 import ru.students.lab.models.Dragon;
 
 import java.io.*;
@@ -33,9 +35,9 @@ public class FileManager {
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.getXmlDragons())))) {
             String xml = this.getXmlParser().toXML(collection);
             writer.write(xml);
-        } catch (Exception e) {
+        } catch (XStreamException | IOException e) {
             System.out.println("Can not save the data, some kind of problem happened");
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -52,7 +54,7 @@ public class FileManager {
         try {
             if (!dataStr.equals(""))
                 collection = (HashMap<Integer,Dragon>) xmlParser.fromXML(dataStr);
-        } catch (Exception e) {
+        } catch (XStreamException e) {
             System.out.println("sorry, couldn't make it...");
             e.printStackTrace();
             System.exit(1);
@@ -72,8 +74,8 @@ public class FileManager {
             if (!fileToRetrieve.exists())
                 throw new FileNotFoundException("There is not such file!");
             else if (fileToRetrieve.length() == 0)
-                throw new Exception("File is empty!");
-        } catch (Exception ex) {
+                throw new EmptyFileException("File is empty!");
+        } catch (FileNotFoundException | EmptyFileException ex) {
             System.out.println(ex.getMessage());
             return "";
         }
@@ -94,8 +96,8 @@ public class FileManager {
                 buf.write((byte) result);
 
             dataStr = buf.toString();
-        }catch(Exception e){
-            e.printStackTrace();
+        }catch(IOException e){
+            System.out.println(e.getMessage());;
             return "";
         }
 

@@ -19,14 +19,23 @@ public class InsertCommand extends AbsCommand implements ICommand {
 
     @Override
     public void execute(String[] args) {
-        if (this.collectionManager.getCollection().containsKey(Integer.valueOf(args[0]))) {
-            setResultExecution("The key '" + Integer.valueOf(args[0]) + "' already exist");
-            return;
-        }
+        try {
+            if (this.collectionManager.getCollection().containsKey(Integer.valueOf(args[0]))) {
+                setResultExecution(1,"The key '" + Integer.valueOf(args[0]) + "' already exist");
+                return;
+            }
 
-        Dragon newDragon = dragonFactory.generateDragonFromConsole();
-        // If it doesn't exist and it successfully put it, so it returns null
-        if (this.collectionManager.insert(Integer.valueOf(args[0]), newDragon) == null)
-            setResultExecution(newDragon.toString() + " Successfully saved!");
+            Dragon newDragon = dragonFactory.generateDragonFromConsole();
+            // If it doesn't exist and it successfully put it, so it returns null
+            if (this.collectionManager.insert(Integer.valueOf(args[0]), newDragon) == null)
+                setResultExecution(0,newDragon.toString() + " Successfully saved!");
+        } catch (NumberFormatException ex) {
+            setResultExecution(1,"Incorrect format of the entered key");
+        }
+    }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
     }
 }

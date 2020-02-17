@@ -19,12 +19,21 @@ public class ReplaceIfLowerCommand extends AbsCommand implements ICommand {
 
     @Override
     public void execute(String[] args) {
-        Dragon newDragon = dragonFactory.generateDragonFromConsole();
+        try {
+            Dragon newDragon = dragonFactory.generateDragonFromConsole();
 
-        // If it successfully replace it, returns the value of the old mapped object
-        if (this.collectionManager.replaceIfLower(Integer.valueOf(args[0]), newDragon) != null)
-            setResultExecution(newDragon.toString() + " Successfully Replaced the young poor dragon!");
-        else
-            setResultExecution("The key '" + Integer.valueOf(args[0]) + "' doesn't exist or is not old enough!");
+            // If it successfully replace it, returns the value of the old mapped object
+            if (this.collectionManager.replaceIfLower(Integer.valueOf(args[0]), newDragon) != null)
+                setResultExecution(0,newDragon.toString() + " Successfully Replaced the young poor dragon!");
+            else
+                setResultExecution(1,"The key '" + Integer.valueOf(args[0]) + "' doesn't exist or is not old enough!");
+        } catch (NumberFormatException ex) {
+            setResultExecution(1,"Incorrect format of the entered key");
+        }
+    }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
     }
 }

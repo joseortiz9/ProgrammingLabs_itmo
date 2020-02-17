@@ -51,9 +51,13 @@ public class DragonFactory {
 
         result = "running...";
         while (!result.equals("")) {
-            Arrays.asList(Color.values()).forEach(c -> System.out.print(c.toString()+ ","));
-            String attrStr = inputHandler.readDragonAttr("Color");
-            result = (String) newDragon.setColor(Color.valueOf(attrStr));
+            try {
+                Arrays.asList(Color.values()).forEach(c -> System.out.print(c.toString()+ ","));
+                String attrStr = inputHandler.readDragonAttr("Color");
+                result = (String) newDragon.setColor(Color.valueOf(attrStr));
+            } catch (NullPointerException | IllegalArgumentException ex) {
+                result = ex.getMessage();
+            }
             System.out.println(result);
         }
 
@@ -99,7 +103,7 @@ public class DragonFactory {
                     result = (String) mToRun.invoke(newDragon, attr);
                     System.out.println(result);
                 }
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | IllegalArgumentException ex) {
                 ex.printStackTrace();
             }
         }*/

@@ -15,9 +15,18 @@ public class RemoveKeyCommand extends AbsCommand implements ICommand {
 
     @Override
     public void execute(String[] args) {
-        if (this.collectionManager.removeKey(Integer.valueOf(args[0])) != null)
-            setResultExecution("k:" + args[0] + " Successfully removed!");
-        else
-            setResultExecution("The key '" + args[0] + "' doesn't exist");
+        try {
+            if (this.collectionManager.removeKey(Integer.valueOf(args[0])) != null)
+                setResultExecution(0,"k:" + args[0] + " Successfully removed!");
+            else
+                setResultExecution(1,"The key '" + args[0] + "' doesn't exist");
+        } catch (NumberFormatException ex) {
+            setResultExecution(1,"Incorrect format of the entered key");
+        }
+    }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
     }
 }

@@ -13,6 +13,11 @@ public class InfoCommand extends AbsCommand implements ICommand {
 
     @Override
     public void execute(String[] args) {
-        setResultExecution(this.collectionManager.toString());
+        setResultExecution(0,this.collectionManager.toString());
+    }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
     }
 }

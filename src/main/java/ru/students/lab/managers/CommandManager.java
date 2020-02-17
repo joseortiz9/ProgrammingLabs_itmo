@@ -18,7 +18,7 @@ public class CommandManager {
         this.collectionManager =  new CollectionManager(fileManager.getCollectionFromFile());
         this.commands = new HashMap<>();
         commands.put("help", new HelpCommand(this.getKeysCommands()));
-        commands.put("man", new ManDescriptorCommand());
+        commands.put("man", new ManDescriptorCommand(this.getCommands()));
         commands.put("info", new InfoCommand(this.getCollectionManager()));
         commands.put("show", new ShowCommand(this.getCollectionManager()));
         commands.put("insert", new InsertCommand(this.getCollectionManager()));
@@ -26,7 +26,7 @@ public class CommandManager {
         commands.put("remove_key", new RemoveKeyCommand(this.getCollectionManager()));
         commands.put("clear", new ClearCommand(this.getCollectionManager()));
         commands.put("save", new SaveColCommand(this.getCollectionManager(), this.getFileManager()));
-        commands.put("execute_script", new ExecuteScriptCommand(this.getFileManager()));
+        commands.put("execute_script", new ExecuteScriptCommand(this.getFileManager(), this.getCommands()));
         commands.put("exit", new ExitCommand());
         commands.put("replace_if_lower", new ReplaceIfLowerCommand(this.getCollectionManager()));
         commands.put("remove_greater_key", new RemoveGreaterKeyCommand(this.getCollectionManager()));
@@ -47,8 +47,13 @@ public class CommandManager {
             commandInputArgs = consoleHandler.getCommandArgs();
             if (this.getCommands().containsKey(commandInputKey)) {
                 command = this.getCommand(commandInputKey);
-                command.execute(commandInputArgs);
-                System.out.println(command.getResultExecution());
+                try {
+                    command.execute(commandInputArgs);
+                } catch (ArrayIndexOutOfBoundsException | NullPointerException ex) {
+                    command.setResultExecution(1, "arguments expected NO passed!");
+                } finally {
+                    consoleHandler.printResultOfExecution(command.getResultExecution());
+                }
             }
             else
                 System.out.println("What are u writing? type 'help' for the available commands. \nUnknown: '" + commandInputKey + "'");

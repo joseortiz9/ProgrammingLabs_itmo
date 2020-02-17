@@ -19,6 +19,11 @@ public class SaveColCommand extends AbsCommand implements ICommand {
     @Override
     public void execute(String[] args) {
         this.fileManager.SaveCollectionInXML(this.collectionManager.getCollection());
-        setResultExecution("All elems saved successfully!");
+        setResultExecution(0,"All elems saved successfully!");
+    }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
     }
 }

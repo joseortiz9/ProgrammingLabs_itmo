@@ -31,11 +31,13 @@ public class ConsoleHandler {
         }catch (ArrayIndexOutOfBoundsException | IllegalArgumentException | NullPointerException ex) {
             System.out.println(ex.getMessage());
         }
-
-        if (fullInputCommand.length == 1)
-            return new String[2];
-
         return inputArgs;
+    }
+
+    public void printResultOfExecution(String newMsgStr) {
+        String[] newMsg = newMsgStr.split("___");
+        String result = newMsg[1];
+        System.out.println(result);
     }
 
     public String readDragonAttr(String attr) {

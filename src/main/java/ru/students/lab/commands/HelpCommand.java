@@ -13,6 +13,11 @@ public class HelpCommand extends AbsCommand {
 
     @Override
     public void execute(String[] args) {
-        setResultExecution("Some Commands for you! \n" + this.keysCommands.toString() + "\n Write man {key} to have some details");
+        setResultExecution(0,"Some Commands for you! \n" + this.keysCommands.toString() + "\n Write man {key} to have some details");
+    }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
     }
 }

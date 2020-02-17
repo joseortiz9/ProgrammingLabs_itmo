@@ -16,6 +16,11 @@ public class ClearCommand extends AbsCommand implements ICommand {
     @Override
     public void execute(String[] args) {
         this.collectionManager.clear();
-        setResultExecution("All elems deleted successfully!");
+        setResultExecution(0,"All elems deleted successfully!");
+    }
+
+    @Override
+    public String getDescription() {
+        return DESCRIPTION;
     }
 }

@@ -26,7 +26,7 @@ public class Coordinates {
     public String setX(Long x) {
         try {
             if (x == null)
-                throw new NullValueException();
+                throw new NullValueException("X");
             else if (x <= -328)
                 throw new IncorrectCoordException("X should be bigger than -328");
             this.x = x;

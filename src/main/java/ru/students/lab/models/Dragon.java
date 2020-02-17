@@ -7,6 +7,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Dragon implements Comparable<Dragon> {
+    private static Integer IDcounter = 1;
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -61,11 +62,13 @@ public class Dragon implements Comparable<Dragon> {
     public Color getColor() {
         return color;
     }
-
+    public DragonHead getHead() {
+        return head;
+    }
 
     public void setId() {
-        //ToDo: generate automatic and unique ID
-        this.id = 1;
+        this.id = IDcounter;
+        IDcounter += 1;
     }
 
     public String setName(String name) {
@@ -87,7 +90,7 @@ public class Dragon implements Comparable<Dragon> {
     public String setAge(Long age) {
         try {
             if (age <= 0)
-                throw new IncorrectAgeException();
+                throw new IncorrectAgeException("Age can not be a negative number!");
             this.age = age;
             return "";
         } catch (IncorrectAgeException ex) {
@@ -101,7 +104,7 @@ public class Dragon implements Comparable<Dragon> {
                 throw new NullValueException();
             this.color = color;
             return "";
-        } catch (NullValueException ex) {
+        } catch (NullValueException | IllegalArgumentException ex) {
             return ex.getMessage();
         }
     }
@@ -147,8 +150,7 @@ public class Dragon implements Comparable<Dragon> {
     @Override
     public int hashCode() {
         int result = 7;
-        result += (this.getCreationDate().hashCode()) >> 2;
-        result += this.getName().hashCode();
+        result += (this.getId()) << 2;
         result += this.getCoordinates().hashCode();
         return result;
     }

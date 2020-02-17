@@ -1,7 +1,7 @@
 package ru.students.lab;
 
-import ru.students.lab.factories.DragonFactory;
 import ru.students.lab.managers.CommandManager;
+import ru.students.lab.testers.TesterFiller;
 
 public class Main {
 

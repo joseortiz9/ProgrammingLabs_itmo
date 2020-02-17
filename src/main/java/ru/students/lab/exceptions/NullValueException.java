@@ -6,6 +6,6 @@ public class NullValueException extends Exception {
     }
 
     public NullValueException(String str) {
-        super(str + "Can not be empty!");
+        super(str + " can not be empty!");
     }
 }

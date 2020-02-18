@@ -16,7 +16,7 @@ public class ShowCommand implements ICommand {
     @Override
     public void execute(IHandlerInput userInputHandler, String[] args) {
         this.collectionManager.getCollection().forEach((key, value) -> userInputHandler.printElemOfList("key:" + key + " -> " + value));
-        userInputHandler.printLn(0,"show done");
+        userInputHandler.printLn(0, "Elements found: " + collectionManager.getCollection().size());
     }
 
     @Override

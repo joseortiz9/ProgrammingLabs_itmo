@@ -19,7 +19,7 @@ public class TesterFiller {
     }
 
     public void fillCollection() {
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 50; i++) {
             Dragon dragon = new Dragon(
                     "Dragon" + i,
                     new Coordinates((long) i, (float) i),
@@ -28,6 +28,7 @@ public class TesterFiller {
                     DragonType.getRand(),
                     DragonCharacter.getRand(),
                     new DragonHead((double) i));
+            dragon.setId(i);
             this.getCollection().put(dragon.hashCode(), dragon);
         }
     }

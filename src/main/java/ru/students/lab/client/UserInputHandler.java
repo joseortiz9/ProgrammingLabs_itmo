@@ -11,13 +11,6 @@ public class UserInputHandler implements IHandlerInput {
         commandReader = new Scanner(System.in);
     }
 
-    public String readDragonAttr(String attr) {
-        System.out.print("Dragon's " + attr + ": ");
-        return this.read();
-    }
-
-
-
     @Override
     public String read() {
         return commandReader.nextLine();

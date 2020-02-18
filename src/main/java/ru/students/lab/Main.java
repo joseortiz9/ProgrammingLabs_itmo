@@ -4,7 +4,6 @@ import com.thoughtworks.xstream.XStreamException;
 import org.jetbrains.annotations.NotNull;
 import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.client.UserInputHandler;
-import ru.students.lab.factories.DragonFactory;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.managers.CommandManager;
 import ru.students.lab.managers.FileManager;
@@ -18,13 +17,16 @@ public class Main {
     public static void main(@NotNull String[] args) {
 
         IHandlerInput userInputHandler = new UserInputHandler();
-        /*if (args.length > 0) {
+        if (args.length > 0) {
             try {
                 String pathToFile = Paths.get(args[0]).toAbsolutePath().toString();
                 FileManager fileManager = new FileManager(pathToFile);
+
                 CollectionManager collectionManager = new CollectionManager(fileManager.getCollectionFromFile());
+
                 CommandManager manager = new CommandManager(userInputHandler, fileManager, collectionManager);
                 manager.startInteraction();
+
             } catch (InvalidPathException ex) {
                 userInputHandler.printLn(1, "Invalid file's path or/and security problem trying to access it");
             } catch (SecurityException ex) {
@@ -36,12 +38,10 @@ public class Main {
             }
         } else {
             userInputHandler.printLn(1, "No path passed as parameter, please specify a file name.");
-        }*/
-
-        new DragonFactory().generateDragonByInput(userInputHandler);
+        }
 
         //fill the xml file with random data
-        //new TesterFiller().collectionToXML(pathToData);
+        //new TesterFiller().collectionToXML(pathToFile);
 
     }
 }

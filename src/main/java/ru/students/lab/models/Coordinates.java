@@ -1,8 +1,5 @@
 package ru.students.lab.models;
 
-import ru.students.lab.exceptions.IncorrectCoordException;
-import ru.students.lab.exceptions.NullValueException;
-
 public class Coordinates {
     private Long x; //Значение поля должно быть больше -328, Поле не может быть null
     private Float y; //Поле не может быть null
@@ -23,28 +20,12 @@ public class Coordinates {
         return y;
     }
 
-    public String setX(Long x) {
-        try {
-            if (x == null)
-                throw new NullValueException("X");
-            else if (x <= -328)
-                throw new IncorrectCoordException("X should be bigger than -328");
-            this.x = x;
-            return "";
-        } catch (NullValueException | IncorrectCoordException ex) {
-            return ex.getMessage();
-        }
+    public void setX(Long x) {
+        this.x = x;
     }
 
-    public String setY(Float y) {
-        try {
-            if (y == null)
-                throw new NullValueException();
-            this.y = y;
-            return "";
-        } catch (NullValueException ex) {
-            return ex.getMessage();
-        }
+    public void setY(Float y) {
+        this.y = y;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package ru.students.lab.managers;
 
-import org.jetbrains.annotations.NotNull;
 import ru.students.lab.models.Dragon;
 
 import java.util.*;
@@ -8,12 +7,19 @@ import java.util.stream.Collectors;
 
 public class CollectionManager {
 
+    private Integer nextIDToAdd = 1;
     private HashMap<Integer, Dragon> collection;
     private Date collectionCreationDate;
+
+    public CollectionManager() {
+        this.collection = new HashMap<>();
+        this.collectionCreationDate = new Date();
+    }
 
     public CollectionManager(HashMap<Integer, Dragon> collection) {
         this.collection = collection;
         this.collectionCreationDate = new Date();
+        this.nextIDToAdd = collection.size() + 1;
     }
 
     public void clear() {
@@ -55,6 +61,8 @@ public class CollectionManager {
     }
 
     public Object insert(Integer key, Dragon newDragon) {
+        newDragon.setId(nextIDToAdd);
+        nextIDToAdd += 1;
         return this.getCollection().putIfAbsent(key, newDragon);
     }
 
@@ -67,6 +75,9 @@ public class CollectionManager {
                 .filter(dragonEntry -> dragonEntry.getValue().getId().equals(id))
                 .findFirst();
 
+        newDragon.setId(nextIDToAdd);
+        nextIDToAdd += 1;
+
         return oldDragonKey.map(integerDragonEntry ->
                 this.getCollection().replace(integerDragonEntry.getKey(), newDragon)).orElse(null);
     }
@@ -77,14 +88,17 @@ public class CollectionManager {
     }
 
 
-    public Object replaceIfLower(Integer key, Dragon dragon)
+    public Object replaceIfLower(Integer key, Dragon newDragon)
     {
         if (!this.getCollection().containsKey(key))
             return null;
 
         //is newer
-        if (dragon.compareTo(this.getCollection().get(key)) > 0)
-            return this.getCollection().replace(key, dragon);
+        if (newDragon.compareTo(this.getCollection().get(key)) > 0) {
+            newDragon.setId(nextIDToAdd);
+            nextIDToAdd += 1;
+            return this.getCollection().replace(key, newDragon);
+        }
         return null;
     }
 

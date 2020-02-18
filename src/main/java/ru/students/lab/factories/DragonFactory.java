@@ -9,73 +9,73 @@ import java.util.Arrays;
 
 public class DragonFactory {
 
+    private IHandlerInput inputHandler;
+
     public DragonFactory() {
     }
 
-    public Dragon generateDragonByInput(IHandlerInput inputHandler) {
-        Dragon newDragon = new Dragon();
-        try {
-            Class<?> dClass = newDragon.getClass();
+    public Dragon generateDragonByInput(IHandlerInput inputHandler)
+    {
+        this.inputHandler = inputHandler;
 
-            Method mToRun = dClass.getMethod("setName", String.class);
-            this.saveAttr(mToRun, newDragon, "name", inputHandler);
+        String name = (String) validateDragonProp("name", "", false, String.class);
 
-            newDragon.setCoordinates(new Coordinates());
-            Class<?> cClass = newDragon.getCoordinates().getClass();
-            mToRun = cClass.getMethod("setX", Long.class);
-            this.saveAttr(mToRun, newDragon.getCoordinates(), "coordinate{X}", inputHandler);
-            mToRun = cClass.getMethod("setY", Float.class);
-            //this.saveAttr(mToRun, newDragon.getCoordinates(), "coordinate{Y}");
+        Long x = (Long) this.validateDragonProp("coordinate{X}", " [should be more than -328]", false, Long.class, -328);
+        Float y = (Float) this.validateDragonProp("coordinate{Y}", "", false, Float.class);
+        Coordinates coordinates = new Coordinates(x,y);
 
-            mToRun = dClass.getMethod("setAge", Long.class);
-            //this.saveAttr(mToRun, newDragon, "age");
+        Long age = (Long) validateDragonProp("age"," [should be more than 0]", false, Long.class, 0);
+        Color dColor = (Color) validateDragonProp("color", Arrays.asList(Color.values()).toString(), false, Color.class);
+        DragonType dType = (DragonType) validateDragonProp("dragonType", Arrays.asList(DragonType.values()).toString(), false, DragonType.class);
+        DragonCharacter dCharacter = (DragonCharacter) validateDragonProp("dragonCharacter", Arrays.asList(DragonCharacter.values()).toString(), false, DragonCharacter.class);
 
-            mToRun = dClass.getMethod("setColor", Color.class);
-            //this.saveAttr(mToRun, newDragon, "color");
+        Double numEyes = (Double) this.validateDragonProp("dragonHead{NumberEyes}", "[empty or more than 0]", true, Double.class, 0);
+        DragonHead dHead = new DragonHead(numEyes);
 
-            mToRun = dClass.getMethod("setCharacter", DragonCharacter.class);
-            //this.saveAttr(mToRun, newDragon, "DragonCharacter");
-
-            mToRun = dClass.getMethod("setType", DragonType.class);
-            //this.saveAttr(mToRun, newDragon, "DragonType");
-
-            newDragon.setHead(new DragonHead());
-            Class<?> hClass = newDragon.getHead().getClass();
-            mToRun = hClass.getMethod("setEyesCount", Double.class);
-            //this.saveAttr(mToRun, newDragon.getHead(), "DragonHead{NumberEyes}");
-
-        } catch (NoSuchMethodException ex) {
-            System.out.println(ex.getMessage());
-        }
-
-        return newDragon;
+        return new Dragon(name, coordinates, age, dColor, dType, dCharacter, dHead);
     }
 
-    private void saveAttr(Method mToRun, Object obj, String fType, IHandlerInput inputHandler) {
-        String result = "running...";
-        while (!result.equals("")) {
+    private Object validateDragonProp(String fType, String desc, boolean nullable, Class<?> toClass) {
+        Object obj = null;
+        String input = "";
+        boolean errorHappened;
+        do {
+            errorHappened = false;
+            input = inputHandler.readWithMessage("Dragon's " +fType+desc+": ");
+
+            if (nullable && input.isEmpty())
+                return null;
+
             try {
-                if (mToRun.getParameterTypes()[0].isEnum()) {
-                    Arrays.asList(getValues((Class<? extends Enum>) mToRun.getParameterTypes()[0]))
-                            .forEach(c -> System.out.print(c.toString()+ ","));
-                    System.out.println();
-                }
-                String attrStr = inputHandler.read();
-                try {
-                    Object objFromInput = AttrDragonFactory.getObjectOfAttr(fType, attrStr);
-                    result = (String) mToRun.invoke(obj, objFromInput);
-                } catch (IllegalArgumentException ex) {
-                    result = ex.getMessage();
-                }
-                System.out.println(result);
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException ex) {
-                System.out.println(ex.getMessage());
+                obj = getValueOf(toClass, input);
+            } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                inputHandler.printLn(1, "Invalid value passed!");
+                errorHappened = true;
             }
-        }
+            input = input.isEmpty() ? null : input;
+        } while ((!nullable && input == null) || errorHappened);
+        return obj;
     }
 
-    public static Object[] getValues(Class<? extends Enum> enu) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
-        Method method = enu.getMethod("values");
-        return (Object[]) method.invoke(null);
+    private Object validateDragonProp(String fType, String desc, boolean nullable, Class<?> toClass, int min) {
+        Object obj = null;
+        do {
+            obj = validateDragonProp(fType, desc, nullable, toClass);
+        } while (!checkValidNumber((toClass.equals(Long.class)) ? (Long) obj : (Double) obj, min));
+        return obj;
     }
+
+    public boolean checkValidNumber(Long num, int min) {
+        return num > min;
+    }
+    public boolean checkValidNumber(Double num, int min) {
+        return num > min;
+    }
+
+    public static Object getValueOf(Class<?> toClass, String s) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+        if (toClass.equals(String.class) || s.equals("")) return s;
+        Method method = toClass.getMethod("valueOf", String.class);
+        return method.invoke(null, s);
+    }
+
 }

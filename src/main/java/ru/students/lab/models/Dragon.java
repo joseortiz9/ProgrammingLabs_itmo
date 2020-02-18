@@ -1,13 +1,9 @@
 package ru.students.lab.models;
 
-import ru.students.lab.exceptions.IncorrectAgeException;
-import ru.students.lab.exceptions.NullValueException;
-
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Dragon implements Comparable<Dragon> {
-    private static Integer IDcounter = 1;
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -19,7 +15,6 @@ public class Dragon implements Comparable<Dragon> {
     private DragonHead head;
 
     public Dragon() {
-        this.setId();
         this.setCreationDate();
     }
 
@@ -30,15 +25,33 @@ public class Dragon implements Comparable<Dragon> {
                   DragonType type,
                   DragonCharacter character,
                   DragonHead head) {
-        this.setId();
-        this.setName(name);
-        this.setCoordinates(coordinates);
+        this.name = name;
+        this.coordinates = coordinates;
         this.setCreationDate();
-        this.setAge(age);
-        this.setColor(color);
-        this.setType(type);
-        this.setCharacter(character);
-        this.setHead(head);
+        this.age = age;
+        this.color = color;
+        this.type = type;
+        this.character = character;
+        this.head = head;
+    }
+
+    public Dragon(Integer id,
+                  String name,
+                  Coordinates coordinates,
+                  Long age,
+                  Color color,
+                  DragonType type,
+                  DragonCharacter character,
+                  DragonHead head) {
+        this.id = id;
+        this.name = name;
+        this.coordinates = coordinates;
+        this.setCreationDate();
+        this.age = age;
+        this.color = color;
+        this.type = type;
+        this.character = character;
+        this.head = head;
     }
 
     public Integer getId() {
@@ -66,82 +79,30 @@ public class Dragon implements Comparable<Dragon> {
         return head;
     }
 
-    public void setId() {
-        this.id = IDcounter;
-        IDcounter += 1;
+    public void setId(Integer id) {
+        this.id = id;
     }
-
-    public String setName(String name) {
-        try {
-            if (name.isEmpty())
-                throw new NullValueException("name");
-            this.name = name;
-            return "";
-        } catch (NullValueException ex) {
-            return ex.getMessage();
-        }
+    public void setName(String name) {
+        this.name = name;
     }
-
-    public String setCoordinates(Coordinates coordinates) {
+    public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
-        return "";
     }
-
-    public String setAge(Long age) {
-        try {
-            if (age <= 0)
-                throw new IncorrectAgeException("Age can not be a negative number!");
-            this.age = age;
-            return "";
-        } catch (IncorrectAgeException ex) {
-            return ex.getMessage();
-        }
+    public void setAge(Long age) {
+        this.age = age;
     }
-
-    public String setColor(Color color) {
-        try {
-            if (color == null)
-                throw new NullValueException();
-            this.color = color;
-            return "";
-        } catch (NullValueException | IllegalArgumentException ex) {
-            return ex.getMessage();
-        }
+    public void setColor(Color color) {
+        this.color = color;
     }
-
-    public String setHead(DragonHead head) {
-        try {
-            if (head == null)
-                throw new NullValueException();
-            this.head = head;
-            return "";
-        } catch (NullValueException ex) {
-            return ex.getMessage();
-        }
+    public void setHead(DragonHead head) {
+        this.head = head;
     }
-
-    public String setCharacter(DragonCharacter character) {
-        try {
-            if (character == null)
-                throw new NullValueException();
-            this.character = character;
-            return "";
-        } catch (NullValueException ex) {
-            return ex.getMessage();
-        }
+    public void setCharacter(DragonCharacter character) {
+        this.character = character;
     }
-
-    public String setType(DragonType type) {
-        try {
-            if (type == null)
-                throw new NullValueException();
-            this.type = type;
-            return "";
-        } catch (NullValueException ex) {
-            return ex.getMessage();
-        }
+    public void setType(DragonType type) {
+        this.type = type;
     }
-
     public void setCreationDate() {
         this.creationDate = ZonedDateTime.now();
     }

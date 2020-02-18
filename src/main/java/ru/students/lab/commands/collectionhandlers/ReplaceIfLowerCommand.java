@@ -20,7 +20,7 @@ public class ReplaceIfLowerCommand implements ICommand {
     @Override
     public void execute(IHandlerInput userInputHandler, String[] args) throws NumberFormatException {
 
-        Dragon newDragon = dragonFactory.generateDragonFromConsole();
+        Dragon newDragon = dragonFactory.generateDragonByInput(userInputHandler);
 
         // If it successfully replace it, returns the value of the old mapped object
         if (this.collectionManager.replaceIfLower(Integer.valueOf(args[0]), newDragon) != null)

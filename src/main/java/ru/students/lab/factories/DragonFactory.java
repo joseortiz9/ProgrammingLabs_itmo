@@ -9,43 +9,40 @@ import java.util.Arrays;
 
 public class DragonFactory {
 
-    private IHandlerInput inputHandler;
-
-    public DragonFactory(IHandlerInput inputHandler) {
-        this.inputHandler = inputHandler;
+    public DragonFactory() {
     }
 
-    public Dragon generateDragonFromConsole() {
+    public Dragon generateDragonByInput(IHandlerInput inputHandler) {
         Dragon newDragon = new Dragon();
         try {
             Class<?> dClass = newDragon.getClass();
 
             Method mToRun = dClass.getMethod("setName", String.class);
-            this.saveAttr(mToRun, newDragon, "name");
+            this.saveAttr(mToRun, newDragon, "name", inputHandler);
 
             newDragon.setCoordinates(new Coordinates());
             Class<?> cClass = newDragon.getCoordinates().getClass();
             mToRun = cClass.getMethod("setX", Long.class);
-            this.saveAttr(mToRun, newDragon.getCoordinates(), "coordinate{X}");
+            this.saveAttr(mToRun, newDragon.getCoordinates(), "coordinate{X}", inputHandler);
             mToRun = cClass.getMethod("setY", Float.class);
-            this.saveAttr(mToRun, newDragon.getCoordinates(), "coordinate{Y}");
+            //this.saveAttr(mToRun, newDragon.getCoordinates(), "coordinate{Y}");
 
             mToRun = dClass.getMethod("setAge", Long.class);
-            this.saveAttr(mToRun, newDragon, "age");
+            //this.saveAttr(mToRun, newDragon, "age");
 
             mToRun = dClass.getMethod("setColor", Color.class);
-            this.saveAttr(mToRun, newDragon, "color");
+            //this.saveAttr(mToRun, newDragon, "color");
 
             mToRun = dClass.getMethod("setCharacter", DragonCharacter.class);
-            this.saveAttr(mToRun, newDragon, "DragonCharacter");
+            //this.saveAttr(mToRun, newDragon, "DragonCharacter");
 
             mToRun = dClass.getMethod("setType", DragonType.class);
-            this.saveAttr(mToRun, newDragon, "DragonType");
+            //this.saveAttr(mToRun, newDragon, "DragonType");
 
             newDragon.setHead(new DragonHead());
             Class<?> hClass = newDragon.getHead().getClass();
             mToRun = hClass.getMethod("setEyesCount", Double.class);
-            this.saveAttr(mToRun, newDragon.getHead(), "DragonHead{NumberEyes}");
+            //this.saveAttr(mToRun, newDragon.getHead(), "DragonHead{NumberEyes}");
 
         } catch (NoSuchMethodException ex) {
             System.out.println(ex.getMessage());
@@ -54,7 +51,7 @@ public class DragonFactory {
         return newDragon;
     }
 
-    private void saveAttr(Method mToRun, Object obj, String fType) {
+    private void saveAttr(Method mToRun, Object obj, String fType, IHandlerInput inputHandler) {
         String result = "running...";
         while (!result.equals("")) {
             try {
@@ -63,7 +60,7 @@ public class DragonFactory {
                             .forEach(c -> System.out.print(c.toString()+ ","));
                     System.out.println();
                 }
-                String attrStr = "";//inputHandler.readDragonAttr(fType);
+                String attrStr = inputHandler.read();
                 try {
                     Object objFromInput = AttrDragonFactory.getObjectOfAttr(fType, attrStr);
                     result = (String) mToRun.invoke(obj, objFromInput);

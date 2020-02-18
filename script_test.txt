@@ -3,9 +3,14 @@ info
 man show
 man what
 holaaaa
+insert vfeavs
+
+insert
 show
 insert 126
 filter_contains_name melo
+
 filter_starts_with_name Dragon1
+insert
 save
 exit

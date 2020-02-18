@@ -1,5 +1,6 @@
 package ru.students.lab;
 
+import com.thoughtworks.xstream.XStreamException;
 import org.jetbrains.annotations.NotNull;
 import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.client.UserInputHandler;
@@ -30,6 +31,8 @@ public class Main {
                 userInputHandler.printLn(1, "Security problems trying to access to the file (Can not be read or edited)");
             } catch (IOException ex) {
                 userInputHandler.printLn(1, "I/O problems, I have no idea what you just did: " + ex.getMessage());
+            } catch (XStreamException ex) {
+                userInputHandler.printLn(1,"Problems trying to parse object from/into a file");
             }
         } else {
             userInputHandler.printLn(1, "No path passed as parameter, please specify a file name.");

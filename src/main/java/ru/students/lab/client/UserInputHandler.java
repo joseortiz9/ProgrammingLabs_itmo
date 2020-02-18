@@ -11,17 +11,10 @@ public class UserInputHandler implements IHandlerInput {
         commandReader = new Scanner(System.in);
     }
 
-    public void printResultOfExecution(String newMsgStr) {
-        String[] newMsg = newMsgStr.split("___");
-        String result = newMsg[1];
-        System.out.println(result);
-    }
-
     public String readDragonAttr(String attr) {
         System.out.print("Dragon's " + attr + ": ");
         return this.read();
     }
-
 
 
 

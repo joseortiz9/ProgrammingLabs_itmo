@@ -1,8 +1,10 @@
 package ru.students.lab.commands;
 
+import ru.students.lab.client.IHandlerInput;
+
 import java.util.Set;
 
-public class HelpCommand extends AbsCommand {
+public class HelpCommand implements ICommand {
 
     public static final String DESCRIPTION = "вывести справку по доступным командам";
     private Set<String> keysCommands;
@@ -12,8 +14,8 @@ public class HelpCommand extends AbsCommand {
     }
 
     @Override
-    public void execute(String[] args) {
-        setResultExecution(0,"Some Commands for you! \n" + this.keysCommands.toString() + "\n Write man {key} to have some details");
+    public void execute(IHandlerInput userInputHandler, String[] args) {
+        userInputHandler.printLn("Some Commands for you! \n" + this.keysCommands.toString() + "\n Write man {key} to have some details");
     }
 
     @Override

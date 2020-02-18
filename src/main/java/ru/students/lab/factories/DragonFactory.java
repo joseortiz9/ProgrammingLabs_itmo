@@ -1,20 +1,18 @@
 package ru.students.lab.factories;
 
-import ru.students.lab.client.ConsoleHandler;
+import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.models.*;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.Arrays;
 
 public class DragonFactory {
 
-    private ConsoleHandler inputHandler;
+    private IHandlerInput inputHandler;
 
-    public DragonFactory() {
-        inputHandler = new ConsoleHandler();
+    public DragonFactory(IHandlerInput inputHandler) {
+        this.inputHandler = inputHandler;
     }
 
     public Dragon generateDragonFromConsole() {
@@ -53,45 +51,6 @@ public class DragonFactory {
             System.out.println(ex.getMessage());
         }
 
-        /*Field[] attrs = dClass.getDeclaredFields();
-        for (Field field: attrs) {
-            try {
-                if (field.getName().equals("id") || field.getName().equals("creationDate"))
-                    continue;
-
-                String fType = field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
-                String result = "running...";
-
-                Coordinates coord = new Coordinates();
-                if (field.getType() == Coordinates.class) {
-                    for (Field fieldCoord: Coordinates.class.getDeclaredFields()) {
-                        fType = fieldCoord.getName().substring(0, 1).toUpperCase() + fieldCoord.getName().substring(1);
-                        while (!result.equals("")) {
-                            Method mToRun = field.getClass().getMethod("set"+fType, fieldCoord.getType());
-                            String attr = inputHandler.readDragonAttr(fType);
-                            Object objFromInput = AttrDragonFactory.getObjectOfAttr(attr);
-                            result = (String) mToRun.invoke(coord, objFromInput);
-                            System.out.println(result);
-                        }
-                    }
-                }
-
-                while (!result.equals("")) {
-                    Method mToRun = dClass.getMethod("set"+fType, field.getType());
-                    if (field.getType() != Coordinates.class) {
-                        String attr = inputHandler.readDragonAttr(fType);
-                        Object objFromInput = AttrDragonFactory.getObjectOfAttr(attr);
-                        result = (String) mToRun.invoke(newDragon, objFromInput);
-                    } else {
-                        result = (String) mToRun.invoke(newDragon, coord);
-                    }
-                    System.out.println(result);
-                }
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | IllegalArgumentException ex) {
-                ex.printStackTrace();
-            }
-        }*/
-
         return newDragon;
     }
 
@@ -104,7 +63,7 @@ public class DragonFactory {
                             .forEach(c -> System.out.print(c.toString()+ ","));
                     System.out.println();
                 }
-                String attrStr = inputHandler.readDragonAttr(fType);
+                String attrStr = "";//inputHandler.readDragonAttr(fType);
                 try {
                     Object objFromInput = AttrDragonFactory.getObjectOfAttr(fType, attrStr);
                     result = (String) mToRun.invoke(obj, objFromInput);

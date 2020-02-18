@@ -3,6 +3,8 @@ package ru.students.lab.testers;
 import ru.students.lab.managers.FileManager;
 import ru.students.lab.models.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Random;
@@ -30,7 +32,7 @@ public class TesterFiller {
         }
     }
 
-    public void collectionToXML(String pathToData) {
+    public void collectionToXML(String pathToData) throws IOException {
         new FileManager(pathToData).SaveCollectionInXML(this.getCollection());
     }
 

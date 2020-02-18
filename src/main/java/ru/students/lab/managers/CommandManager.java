@@ -1,21 +1,26 @@
 package ru.students.lab.managers;
 
-import ru.students.lab.client.ConsoleHandler;
+import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.commands.*;
 import ru.students.lab.commands.collectionhandlers.*;
+import ru.students.lab.exceptions.NoSuchCommandException;
+
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class CommandManager {
-    private HashMap<String, ICommand> commands;
+    private Map<String, ICommand> commands;
     private CollectionManager collectionManager;
     private FileManager fileManager;
-    private ConsoleHandler consoleHandler;
+    private IHandlerInput userInputHandler;
 
-    public CommandManager(String dataFilePath) {
-        this.fileManager = new FileManager(dataFilePath);
-        this.consoleHandler = new ConsoleHandler();
-        this.collectionManager =  new CollectionManager(fileManager.getCollectionFromFile());
+    public CommandManager(IHandlerInput userInputHandler, FileManager fileManager, CollectionManager collectionManager) {
+        this.fileManager = fileManager;
+        this.userInputHandler = userInputHandler;
+        this.collectionManager =  collectionManager;
         this.commands = new HashMap<>();
         commands.put("help", new HelpCommand(this.getKeysCommands()));
         commands.put("man", new ManDescriptorCommand(this.getCommands()));
@@ -38,46 +43,44 @@ public class CommandManager {
 
     public void startInteraction()
     {
-        String commandInputKey = "";
-        String[] commandInputArgs;
-        ICommand command;
-        do {
-            consoleHandler.readCommandLine();
-            commandInputKey = consoleHandler.getCommandKey();
-            commandInputArgs = consoleHandler.getCommandArgs();
-            if (this.getCommands().containsKey(commandInputKey)) {
-                command = this.getCommand(commandInputKey);
-                try {
-                    command.execute(commandInputArgs);
-                } catch (ArrayIndexOutOfBoundsException | NullPointerException ex) {
-                    command.setResultExecution(1, "arguments expected NO passed!");
-                } finally {
-                    consoleHandler.printResultOfExecution(command.getResultExecution());
-                }
+        while(true) {
+            String commandStr = userInputHandler.readWithMessage("Write Command: ");
+            try {
+                String[] cmd = this.getCommandFromStr(commandStr);
+                ICommand command = this.getCommand(cmd[0]);
+                command.execute(userInputHandler, this.getCommandArgs(cmd));
+            } catch (NoSuchCommandException | IOException ex) {
+                userInputHandler.printLn(1, ex.getMessage());
+            } catch (NumberFormatException ex) {
+                userInputHandler.printLn(1,"Incorrect format of the entered value");
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                userInputHandler.printLn(1,"There is a problem in the amount of args passed");
             }
-            else
-                System.out.println("What are u writing? type 'help' for the available commands. \nUnknown: '" + commandInputKey + "'");
-
-        } while (!commandInputKey.equals("exit"));
+        }
     }
 
-    public ICommand getCommand(String key) {
-        return this.getCommands().get(key);
+    public String[] getCommandFromStr(String s) {
+        return s.trim().split(" ");
     }
 
-    public void runCommand(String key, String[] args) {
-        this.getCommand(key).execute(args);
+    public String[] getCommandArgs(String[] fullStr) {
+        String[] inputArgs = new String[2];
+        inputArgs = Arrays.copyOfRange(fullStr, 1, fullStr.length);
+        return inputArgs;
     }
 
-    public String getDescriptionCommand(String key) {
-        return this.getCommand(key).getDescription();
+    public ICommand getCommand(String key) throws NoSuchCommandException {
+        if (!commands.containsKey(key)) {
+            throw new NoSuchCommandException("What are u writing? type 'help' for the available commands. \nUnknown: '" + key + "'");
+        }
+        return commands.getOrDefault(key, null);
     }
 
     public Set<String> getKeysCommands() {
         return this.getCommands().keySet();
     }
 
-    public HashMap<String, ICommand> getCommands() {
+    public Map<String, ICommand> getCommands() {
         return this.commands;
     }
     public FileManager getFileManager() {

@@ -1,6 +1,8 @@
 package ru.students.lab.exceptions;
 
-public class EmptyFileException extends Exception {
+import java.io.IOException;
+
+public class EmptyFileException extends IOException {
     public EmptyFileException(String s) {
         super(s);
     }

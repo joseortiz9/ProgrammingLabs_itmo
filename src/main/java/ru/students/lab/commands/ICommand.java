@@ -1,9 +1,11 @@
 package ru.students.lab.commands;
 
+import ru.students.lab.client.IHandlerInput;
+
+import java.io.IOException;
+
 public interface ICommand {
     String DESCRIPTION = "No Description";
-    void execute(String[] args);
+    void execute(IHandlerInput userInputHandler, String[] args) throws IOException;
     String getDescription();
-    void setResultExecution(int code, String resultExecution);
-    String getResultExecution();
 }

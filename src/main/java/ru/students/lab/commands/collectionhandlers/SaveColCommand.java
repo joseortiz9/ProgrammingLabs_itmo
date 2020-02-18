@@ -1,11 +1,13 @@
 package ru.students.lab.commands.collectionhandlers;
 
-import ru.students.lab.commands.AbsCommand;
+import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.commands.ICommand;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.managers.FileManager;
 
-public class SaveColCommand extends AbsCommand implements ICommand {
+import java.io.IOException;
+
+public class SaveColCommand implements ICommand {
 
     public static final String DESCRIPTION = "сохранить коллекцию в файл";
     private CollectionManager collectionManager;
@@ -17,9 +19,9 @@ public class SaveColCommand extends AbsCommand implements ICommand {
     }
 
     @Override
-    public void execute(String[] args) {
+    public void execute(IHandlerInput userInputHandler, String[] args) throws IOException {
         this.fileManager.SaveCollectionInXML(this.collectionManager.getCollection());
-        setResultExecution(0,"All elems saved successfully!");
+        userInputHandler.printLn(0,"All elems saved!");
     }
 
     @Override

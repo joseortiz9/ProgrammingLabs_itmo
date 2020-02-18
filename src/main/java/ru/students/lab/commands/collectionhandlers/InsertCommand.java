@@ -1,12 +1,12 @@
 package ru.students.lab.commands.collectionhandlers;
 
-import ru.students.lab.commands.AbsCommand;
+import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.commands.ICommand;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.models.Dragon;
 import ru.students.lab.factories.DragonFactory;
 
-public class InsertCommand extends AbsCommand implements ICommand {
+public class InsertCommand implements ICommand {
 
     public static final String DESCRIPTION = "добавить новый элемент с заданным ключом.\nSyntax: insert key {element}";
     private CollectionManager collectionManager;
@@ -18,20 +18,16 @@ public class InsertCommand extends AbsCommand implements ICommand {
     }
 
     @Override
-    public void execute(String[] args) {
-        try {
-            if (this.collectionManager.getCollection().containsKey(Integer.valueOf(args[0]))) {
-                setResultExecution(1,"The key '" + Integer.valueOf(args[0]) + "' already exist");
-                return;
-            }
-
-            Dragon newDragon = dragonFactory.generateDragonFromConsole();
-            // If it doesn't exist and it successfully put it, so it returns null
-            if (this.collectionManager.insert(Integer.valueOf(args[0]), newDragon) == null)
-                setResultExecution(0,newDragon.toString() + " Successfully saved!");
-        } catch (NumberFormatException ex) {
-            setResultExecution(1,"Incorrect format of the entered key");
+    public void execute(IHandlerInput userInputHandler, String[] args) throws NumberFormatException {
+        if (this.collectionManager.getCollection().containsKey(Integer.valueOf(args[0]))) {
+            userInputHandler.printLn(1,"The key '" + Integer.valueOf(args[0]) + "' already exist");
+            return;
         }
+
+        Dragon newDragon = dragonFactory.generateDragonFromConsole();
+        // If it doesn't exist and it successfully put it, so it returns null
+        if (this.collectionManager.insert(Integer.valueOf(args[0]), newDragon) == null)
+            userInputHandler.printLn(0,newDragon.toString() + " saved!");
     }
 
     @Override

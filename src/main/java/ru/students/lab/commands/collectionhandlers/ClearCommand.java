@@ -1,10 +1,10 @@
 package ru.students.lab.commands.collectionhandlers;
 
-import ru.students.lab.commands.AbsCommand;
+import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.commands.ICommand;
 import ru.students.lab.managers.CollectionManager;
 
-public class ClearCommand extends AbsCommand implements ICommand {
+public class ClearCommand implements ICommand {
 
     public static final String DESCRIPTION = "очистить коллекцию";
     private CollectionManager collectionManager;
@@ -14,9 +14,9 @@ public class ClearCommand extends AbsCommand implements ICommand {
     }
 
     @Override
-    public void execute(String[] args) {
+    public void execute(IHandlerInput userInputHandler, String[] args) {
         this.collectionManager.clear();
-        setResultExecution(0,"All elems deleted successfully!");
+        userInputHandler.printLn(0,"All elems deleted successfully!");
     }
 
     @Override

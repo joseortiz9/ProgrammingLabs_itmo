@@ -1,10 +1,10 @@
 package ru.students.lab.commands.collectionhandlers;
 
-import ru.students.lab.commands.AbsCommand;
+import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.commands.ICommand;
 import ru.students.lab.managers.CollectionManager;
 
-public class RemoveKeyCommand extends AbsCommand implements ICommand {
+public class RemoveKeyCommand implements ICommand {
 
     public static final String DESCRIPTION = "удалить элемент из коллекции по его ключу.\nSyntax: remove_key key";
     private CollectionManager collectionManager;
@@ -14,15 +14,12 @@ public class RemoveKeyCommand extends AbsCommand implements ICommand {
     }
 
     @Override
-    public void execute(String[] args) {
-        try {
-            if (this.collectionManager.removeKey(Integer.valueOf(args[0])) != null)
-                setResultExecution(0,"k:" + args[0] + " Successfully removed!");
-            else
-                setResultExecution(1,"The key '" + args[0] + "' doesn't exist");
-        } catch (NumberFormatException ex) {
-            setResultExecution(1,"Incorrect format of the entered key");
-        }
+    public void execute(IHandlerInput userInputHandler, String[] args) throws NumberFormatException {
+
+        if (this.collectionManager.removeKey(Integer.valueOf(args[0])) != null)
+            userInputHandler.printLn(0,"k:" + args[0] + " Successfully removed!");
+        else
+            userInputHandler.printLn(1,"The key '" + args[0] + "' doesn't exist");
     }
 
     @Override

@@ -1,6 +1,6 @@
 package ru.students.lab.commands.collectionhandlers;
 
-import ru.students.lab.commands.AbsCommand;
+import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.commands.ICommand;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.models.Dragon;
@@ -8,7 +8,7 @@ import ru.students.lab.models.Dragon;
 import java.util.List;
 import java.util.Map;
 
-public class PrintDescendingCommand extends AbsCommand implements ICommand {
+public class PrintDescendingCommand implements ICommand {
 
     public static final String DESCRIPTION = "вывести элементы коллекции в порядке убывания.\nSyntax: print_descending -{k/i/n/d} где: -k=key / -i=id / -n=name / -d=creation_date";
     private CollectionManager collectionManager;
@@ -18,7 +18,7 @@ public class PrintDescendingCommand extends AbsCommand implements ICommand {
     }
 
     @Override
-    public void execute(String[] args) {
+    public void execute(IHandlerInput userInputHandler, String[] args) {
         List<Map.Entry<Integer, Dragon>> sortedDragons = null;
 
         switch (args[0]) {
@@ -40,11 +40,11 @@ public class PrintDescendingCommand extends AbsCommand implements ICommand {
                 sortedDragons = this.collectionManager.sortByCreationDate();
                 break;
             default:
-                setResultExecution(1,"This option is not available. Correct= -{k/i/n/d}");
+                userInputHandler.printLn(1,"This option is not available. Correct= -{k/i/n/d}");
         }
         if (sortedDragons != null) {
-            sortedDragons.forEach(e -> System.out.println("key:" + e.getKey() + " -> " + e.getValue().toString()));
-            setResultExecution(0, "Elements found: " + sortedDragons.size());
+            sortedDragons.forEach(e -> userInputHandler.printElemOfList("key:" + e.getKey() + " -> " + e.getValue().toString()));
+            userInputHandler.printLn(0, "Elements found: " + sortedDragons.size());
         }
     }
 

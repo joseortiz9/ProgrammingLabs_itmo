@@ -1,5 +1,6 @@
 package ru.students.lab.managers;
 
+import com.sun.org.apache.bcel.internal.generic.ATHROW;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.XStreamException;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -14,16 +15,11 @@ public class FileManager {
     private XStream xmlParser;
     private File xmlDragons;
 
-    public FileManager(String dataFilePath) {
-        try {
-            if (dataFilePath == null || !(new File(dataFilePath).exists()))
-                throw new FileNotFoundException();
-            else
-                this.xmlDragons = new File(dataFilePath);
-        } catch (FileNotFoundException ex) {
-            System.out.println("There is not such file!");
-            System.exit(1);
-        }
+    public FileManager(String dataFilePath) throws FileNotFoundException {
+        if (dataFilePath == null || !(new File(dataFilePath).exists()))
+            throw new FileNotFoundException("There is not such file!");
+        else
+            this.xmlDragons = new File(dataFilePath);
 
         xmlParser = new XStream(new DomDriver());
         xmlParser.alias("root", java.util.Map.class);
@@ -31,62 +27,38 @@ public class FileManager {
     }
 
 
-    public void SaveCollectionInXML(HashMap<Integer, Dragon> collection) {
+    public void SaveCollectionInXML(HashMap<Integer, Dragon> collection) throws XStreamException, IOException {
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.getXmlDragons())))) {
             String xml = this.getXmlParser().toXML(collection);
             writer.write(xml);
-        } catch (XStreamException | IOException e) {
-            System.out.println("Can not save the data, some kind of problem happened");
-            System.out.println(e.getMessage());
         }
     }
 
 
-    public Dragon getDragonFromStr(String dragonStr) {
-        return (Dragon) this.xmlParser.fromXML(dragonStr);
-    }
-
-
-    public HashMap<Integer, Dragon> getCollectionFromFile() {
+    public HashMap<Integer, Dragon> getCollectionFromFile() throws XStreamException, IOException {
         HashMap<Integer, Dragon> collection = new HashMap<Integer, Dragon>();
         String dataStr = this.getStrFromFile("");
 
-        try {
-            if (!dataStr.equals(""))
-                collection = (HashMap<Integer,Dragon>) xmlParser.fromXML(dataStr);
-        } catch (XStreamException e) {
-            System.out.println("sorry, couldn't make it...");
-            e.printStackTrace();
-            System.exit(1);
-        }
+        if (!dataStr.equals(""))
+            collection = (HashMap<Integer,Dragon>) xmlParser.fromXML(dataStr);
 
         return collection;
     }
 
-    public String getStrFromFile(String filePath) {
+    public String getStrFromFile(String filePath) throws IOException {
         File fileToRetrieve;
-        try {
-            if (filePath.equals(""))
-                fileToRetrieve = this.getXmlDragons();
-            else
-                fileToRetrieve = new File(filePath);
+        if (filePath.equals(""))
+            fileToRetrieve = this.getXmlDragons();
+        else
+            fileToRetrieve = new File(filePath);
 
-            if (!fileToRetrieve.exists())
-                throw new FileNotFoundException("There is not such file!");
-            else if (fileToRetrieve.length() == 0)
-                throw new EmptyFileException("File is empty!");
-        } catch (FileNotFoundException | EmptyFileException ex) {
-            System.out.println(ex.getMessage());
-            return "";
-        }
+        if (!fileToRetrieve.exists())
+            throw new FileNotFoundException("There is not such file!");
+        else if (fileToRetrieve.length() == 0)
+            throw new EmptyFileException("File is empty!");
 
-        try {
-            if (!fileToRetrieve.canRead() || !fileToRetrieve.canWrite())
-                throw new SecurityException("The file has read and/or write protection.");
-        } catch (SecurityException ex) {
-            System.out.println(ex.getMessage());
-            return "";
-        }
+        if (!fileToRetrieve.canRead() || !fileToRetrieve.canWrite())
+            throw new SecurityException();
 
         String dataStr = "";
         try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(fileToRetrieve));
@@ -96,9 +68,6 @@ public class FileManager {
                 buf.write((byte) result);
 
             dataStr = buf.toString();
-        }catch(IOException e){
-            System.out.println(e.getMessage());;
-            return "";
         }
 
         return dataStr;

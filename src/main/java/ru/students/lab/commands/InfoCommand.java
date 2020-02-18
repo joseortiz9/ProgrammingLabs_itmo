@@ -1,8 +1,9 @@
 package ru.students.lab.commands;
 
+import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.managers.CollectionManager;
 
-public class InfoCommand extends AbsCommand implements ICommand {
+public class InfoCommand implements ICommand {
 
     public static final String DESCRIPTION = "вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)";
     private CollectionManager collectionManager;
@@ -12,8 +13,8 @@ public class InfoCommand extends AbsCommand implements ICommand {
     }
 
     @Override
-    public void execute(String[] args) {
-        setResultExecution(0,this.collectionManager.toString());
+    public void execute(IHandlerInput userInputHandler, String[] args) {
+        userInputHandler.printLn(this.collectionManager.toString());
     }
 
     @Override

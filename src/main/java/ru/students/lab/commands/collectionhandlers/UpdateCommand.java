@@ -1,12 +1,12 @@
 package ru.students.lab.commands.collectionhandlers;
 
-import ru.students.lab.commands.AbsCommand;
+import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.commands.ICommand;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.models.Dragon;
 import ru.students.lab.factories.DragonFactory;
 
-public class UpdateCommand extends AbsCommand implements ICommand {
+public class UpdateCommand implements ICommand {
 
     public static final String DESCRIPTION = "обновить значение элемента коллекции, id которого равен заданному.\nSyntax: update id {element}";
     private CollectionManager collectionManager;
@@ -18,18 +18,14 @@ public class UpdateCommand extends AbsCommand implements ICommand {
     }
 
     @Override
-    public void execute(String[] args) {
-        try {
-            Dragon newDragon = dragonFactory.generateDragonFromConsole();
+    public void execute(IHandlerInput userInputHandler, String[] args) throws NumberFormatException {
+        Dragon newDragon = dragonFactory.generateDragonFromConsole();
 
-            // If it successfully replace it, returns the value of the old mapped object
-            if (this.collectionManager.update(Integer.valueOf(args[0]), newDragon) != null)
-                setResultExecution(0,newDragon.toString() + " Successfully Updated!");
-            else
-                setResultExecution(1,"The ID '" + Integer.valueOf(args[0]) + "' doesn't exist");
-        } catch (NumberFormatException ex) {
-            setResultExecution(1,"Incorrect format of the entered key");
-        }
+        // If it successfully replace it, returns the value of the old mapped object
+        if (this.collectionManager.update(Integer.valueOf(args[0]), newDragon) != null)
+            userInputHandler.printLn(0,newDragon.toString() + " Updated!");
+        else
+            userInputHandler.printLn(1,"The ID '" + Integer.valueOf(args[0]) + "' doesn't exist");
     }
 
     @Override

@@ -1,23 +1,24 @@
 package ru.students.lab.commands;
 
+import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.managers.FileManager;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Map;
 
-public class ExecuteScriptCommand extends AbsCommand implements ICommand {
+public class ExecuteScriptCommand implements ICommand {
 
     public static final String DESCRIPTION = "считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.\nSyntax: execute_script file_name";
     FileManager fileManager;
-    private HashMap<String, ICommand> commsDictionary;
+    private Map<String, ICommand> commsDictionary;
 
-    public ExecuteScriptCommand(FileManager fileManager, HashMap<String, ICommand> commandsDictionary) {
+    public ExecuteScriptCommand(FileManager fileManager, Map<String, ICommand> commandsDictionary) {
         this.fileManager = fileManager;
         this.commsDictionary = commandsDictionary;
     }
 
     @Override
-    public void execute(String[] args) {
+    public void execute(IHandlerInput userInputHandler, String[] args) {
         try {
             String commandsStr = this.fileManager.getStrFromFile(args[0]);
             String[] commands = commandsStr.trim().split("\n");
@@ -27,11 +28,9 @@ public class ExecuteScriptCommand extends AbsCommand implements ICommand {
                 if (this.commsDictionary.containsKey(comFragmented[0])) {
                     ICommand command = this.commsDictionary.get(comFragmented[0]);
                     try {
-                        command.execute(getCommandArgs(comFragmented));
+                        command.execute(userInputHandler, getCommandArgs(comFragmented));
                     } catch (ArrayIndexOutOfBoundsException | NullPointerException ex) {
-                        command.setResultExecution(1, "arguments expected NO passed!");
-                    } finally {
-                        System.out.println(command.getResultExecution());
+                        userInputHandler.printLn(1, "arguments expected NO passed!");
                     }
                 }
                 else

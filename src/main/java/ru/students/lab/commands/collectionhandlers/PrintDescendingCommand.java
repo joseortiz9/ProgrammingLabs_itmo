@@ -7,12 +7,19 @@ import ru.students.lab.models.Dragon;
 
 import java.util.List;
 import java.util.Map;
-
+ /** 
+ * Класс для выполнения и получения информации о функции вывода элементов коллекции в порядке убывания
+ * @autor Хосе Ортис
+ * @version 1.0
+*/
 public class PrintDescendingCommand implements ICommand {
 
     public static final String DESCRIPTION = "вывести элементы коллекции в порядке убывания.\nSyntax: print_descending -{k/i/n/d} где: -k=key / -i=id / -n=name / -d=creation_date";
     private CollectionManager collectionManager;
-
+    /** 
+     * Конструктор - создает объект класса PrintDescendingCommand и экземпляр класса collectionManager для последущей работе с коллекцией
+     * @see PrintDescendingCommand#PrintDescendingCommand(CollectionManager)
+     */
     public PrintDescendingCommand(CollectionManager collectionManager) {
         this.collectionManager = collectionManager;
     }

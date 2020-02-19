@@ -7,12 +7,20 @@ import ru.students.lab.models.Dragon;
 
 import java.util.List;
 import java.util.Map;
+ /** 
+ * Класс для выполнения и получения информации о функции получения экземпляров класса Dragon, у которых значение поля name начинается с заданной подстроки
+ * @autor Хосе Ортис
+ * @version 1.0
+*/
 
 public class FilterColByNearNameCommand implements ICommand {
 
     public static final String DESCRIPTION = "вывести элементы, значение поля name которых начинается с заданной подстроки.\nSyntax: filter_starts_with_name name";
     private CollectionManager collectionManager;
-
+    /** 
+     * Конструктор - создает объект класса FilterColByNearNameCommand и экземпляр класса collectionManager для последующей работы с коллекцией
+     * @see FilterColByNearNameCommand#FilterColByNearNameCommand(CollectionManager)
+     */
     public FilterColByNearNameCommand(CollectionManager collectionManager) {
         this.collectionManager = collectionManager;
     }

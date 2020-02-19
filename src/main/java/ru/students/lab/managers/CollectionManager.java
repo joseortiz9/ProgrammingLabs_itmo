@@ -24,8 +24,6 @@ public class CollectionManager {
     /** 
      * Конструктор - создает объект класса CollectionManager для работы с коллекцией, создает непустую коллекцию с его датой создания и следующим свободным номером
      * @param collection - Хэшмэп, представляющую коллекцию экземпляров класса Dragon
-     * @param collectionCreationDate - дата инициализации коллекции
-     * @param nextIDToAdd - следующий свободный ID {@link Dragon#ID}
      * @see CollectionManager#CollectionManager(HashMap<Integer, Dragon>, Date)
      */
     public CollectionManager(HashMap<Integer, Dragon> collection) {

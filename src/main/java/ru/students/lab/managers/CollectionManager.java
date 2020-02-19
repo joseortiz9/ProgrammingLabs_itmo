@@ -14,7 +14,7 @@ public class CollectionManager {
     private HashMap<Integer, Dragon> collection;
     private Date collectionCreationDate;
     /** 
-     * Конструктор - создание нового объекта
+     * Конструктор - создает объект класса CollectionManager для работы с коллекцией, создает пустую коллекцию с его датой создания
      * @see CollectionManager#CollectionManager(HashMap<Integer, Dragon>, Date)
      */
     public CollectionManager() {
@@ -22,10 +22,10 @@ public class CollectionManager {
         this.collectionCreationDate = new Date();
     }
     /** 
-     * Конструктор - создание нового объекта c определенными значениями
-     * param collection - Хэшмэп, представляющую коллекцию экземпляров класса Dragon
-     * param collectionCreationDate - дата инициализации коллекции
-     * param nextIDToAdd - следующий свободный ID {@link Dragon#ID}
+     * Конструктор - создает объект класса CollectionManager для работы с коллекцией, создает непустую коллекцию с его датой создания и следующим свободным номером
+     * @param collection - Хэшмэп, представляющую коллекцию экземпляров класса Dragon
+     * @param collectionCreationDate - дата инициализации коллекции
+     * @param nextIDToAdd - следующий свободный ID {@link Dragon#ID}
      * @see CollectionManager#CollectionManager(HashMap<Integer, Dragon>, Date)
      */
     public CollectionManager(HashMap<Integer, Dragon> collection) {
@@ -79,7 +79,7 @@ public class CollectionManager {
     }
     /**
      * Функция сортировки коллекции
-     * @return возвращает отсортированную по дате создания элемента {@link Dragon#creationDate} коллекцию
+     * @return возвращает отсортированную по дате создания элемента коллекцию
      */
     public List<Map.Entry<Integer, Dragon>> sortByCreationDate() {
 
@@ -91,8 +91,8 @@ public class CollectionManager {
     }
     /**
      * Функция изменения коллекции 
-     * param key - ключ для добавления экземпляра класса Dragon
-     * param newDragon - экземпляр класса Dragon
+     * @param key - ключ для добавления экземпляра класса Dragon
+     * @param newDragon - экземпляр класса Dragon
      * @return возвращает коллекцию с добавлением нового элемента
      */
     public Object insert(Integer key, Dragon newDragon) {
@@ -101,9 +101,9 @@ public class CollectionManager {
         return this.getCollection().putIfAbsent(key, newDragon);
     }
     /**
-     * Функция изменения коллекции {@link CollectionManager#collection}
-     * param id - номер обновляемого экземпляра класса Dragon
-     * param newDragon - новый экземпляр класса Dragon с номером id
+     * Функция изменения коллекции 
+     * @param id - номер обновляемого экземпляра класса Dragon
+     * @param newDragon - новый экземпляр класса Dragon с номером id
      * @return возвращает коллекцию с измененным элементом 
      */
     public Object update(Integer id, Dragon newDragon)
@@ -123,7 +123,7 @@ public class CollectionManager {
     }
     /**
      * Функция изменения коллекции - удаление элемента по ключу
-     * param key - ключ для удаления экземпляра класса Dragon
+     * @param key - ключ для удаления экземпляра класса Dragon
      * @return возвращает измененную коллекцию 
      */
 
@@ -134,8 +134,8 @@ public class CollectionManager {
 
     /**
      * Функция изменения коллекции - изменение элемента коллекции в случае если ключ экземпляра меньше заданного 
-     * param key - ключ для обновления экземпляра класса Dragon
-     * param newDragon - экземпляр класса Dragon
+     * @param key - ключ для обновления экземпляра класса Dragon
+     * @param newDragon - экземпляр класса Dragon
      * @return возвращает измененную коллекцию 
      */
     public Object replaceIfLower(Integer key, Dragon newDragon)
@@ -153,7 +153,7 @@ public class CollectionManager {
     }
     /**
      * Функция изменения коллекции - удаление элементов коллекции, ключ которых больше заданного 
-     * param key - ключ коллекции
+     * @param key - ключ коллекции
      * @return возвращает измененную коллекцию 
      */
     public void removeGreaterKey(Integer key)
@@ -164,7 +164,7 @@ public class CollectionManager {
     }
     /**
      * Функция изменения коллекции - удаление элементов коллекции , ключ которых меньше заданного 
-     * param key - ключ коллекции
+     * @param key - ключ коллекции
      * @return возвращает измененную коллекцию 
      */
     public void removeLowerKey(Integer key)
@@ -175,7 +175,7 @@ public class CollectionManager {
     }
     /**
      * Функция фильтрации коллекции -  поиск элементов, с именем {@link Dragon#name}, содержащим данную подстроку
-     * param name - строка для поиска экземпляров класса Dragon
+     * @param name - строка для поиска экземпляров класса Dragon
      * @return возвращает измененную коллекцию 
      */
 
@@ -189,7 +189,7 @@ public class CollectionManager {
     }
     /**
      * Функция фильтрации коллекции - поиск элементов, с именем {@link Dragon#name}, начинающимся с данной подстроки
-     * param name - строка для поиска экземпляров класса Dragon
+     * @param name - строка для поиска экземпляров класса Dragon
      * @return возвращает измененную коллекцию 
      */
 
@@ -243,7 +243,7 @@ public class CollectionManager {
     }
     /**
      * Функция получения информации о коллекции
-     * @return строку с информацией о коллекции
+     * @return возвращает строку с информацией о коллекции
      */ 
     @Override
     public String toString() {

@@ -13,7 +13,7 @@ public class UserInputHandler implements IHandlerInput {
     private Scanner commandReader;
      /** 
      * Конструктор - создает объект класса UserInputHandler для работы со входными данными, создает сканер для считывания данных
-     * @see CollectionManager#CollectionManager(HashMap<Integer, Dragon>, Date)
+     * @see UserInputHandler#UserInputHandler()
      */
 
     public UserInputHandler() {

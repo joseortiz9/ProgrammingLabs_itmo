@@ -23,7 +23,7 @@ public class CollectionManager {
     }
     /** 
      * Конструктор - создает объект класса CollectionManager для работы с коллекцией, создает непустую коллекцию с его датой создания и следующим свободным номером
-     * @param collection - Хэшмэп, представляющую коллекцию экземпляров класса Dragon
+     * @param collection - Хэшмэп, представляющая коллекцию экземпляров класса Dragon
      * @see CollectionManager#CollectionManager(HashMap<Integer, Dragon>, Date)
      */
     public CollectionManager(HashMap<Integer, Dragon> collection) {

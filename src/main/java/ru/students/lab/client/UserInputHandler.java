@@ -2,10 +2,19 @@ package ru.students.lab.client;
 
 import java.util.Arrays;
 import java.util.Scanner;
+/** 
+ * Класс, реализующий функции интерфейса для получения входных данных и взаимодействия с пользователем 
+ * @autor Хосе Ортис
+ * @version 1.0
+*/
 
 public class UserInputHandler implements IHandlerInput {
 
     private Scanner commandReader;
+     /** 
+     * Конструктор - создает объект класса UserInputHandler для работы со входными данными, создает сканер для считывания данных
+     * @see CollectionManager#CollectionManager(HashMap<Integer, Dragon>, Date)
+     */
 
     public UserInputHandler() {
         commandReader = new Scanner(System.in);

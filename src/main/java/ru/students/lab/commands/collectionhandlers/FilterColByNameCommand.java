@@ -7,11 +7,20 @@ import ru.students.lab.models.Dragon;
 
 import java.util.List;
 import java.util.Map;
+ /** 
+ * Класс для выполнения и получения информации о функции поиска экземпляров класса Dragon, содержащих в поле name данную подстроку
+ * @autor Хосе Ортис
+ * @version 1.0
+*/
 
 public class FilterColByNameCommand implements ICommand {
 
     public static final String DESCRIPTION = "вывести элементы, значение поля name которых содержит заданную.\nSyntax: filter_contains_name name";
     private CollectionManager collectionManager;
+        /** 
+     * Конструктор - создает объект класса clearCommand и экземпляр класса collectionManager для последующей работы с коллекцией
+     * @see FilterColByNameCommand#FilterColByNameCommand(CollectionManager)
+     */
 
     public FilterColByNameCommand(CollectionManager collectionManager) {
         this.collectionManager = collectionManager;

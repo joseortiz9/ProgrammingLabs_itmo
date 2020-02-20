@@ -7,10 +7,19 @@ import ru.students.lab.models.Dragon;
 import ru.students.lab.factories.DragonFactory;
 
 public class UpdateCommand implements ICommand {
+     /** 
+ * Класс для выполнения и получения информации о функции замены элемента коллекции, id которого равен заданному
+ * @autor Хосе Ортис
+ * @version 1.0
+*/
 
     public static final String DESCRIPTION = "обновить значение элемента коллекции, id которого равен заданному.\nSyntax: update id {element}";
     private CollectionManager collectionManager;
     private DragonFactory dragonFactory;
+     /** 
+     * Конструктор - создает объект класса UpdateCommand и экземпляр класса collectionManager для последующей работы с коллекцией; создает экземпляр класса DragonFactory для создания экземпляра класса Dragon
+     * @see UpdateCommand#UpdateCommand(CollectionManager)
+     */
 
     public UpdateCommand(CollectionManager collectionManager) {
         this.collectionManager = collectionManager;

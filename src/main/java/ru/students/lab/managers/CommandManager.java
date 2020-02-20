@@ -11,13 +11,23 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
+ /** 
+ * Класс для управления командами
+ * @autor Хосе Ортис
+ * @version 1.0
+*/
 public class CommandManager {
     private Map<String, ICommand> commands;
     private CollectionManager collectionManager;
     private FileManager fileManager;
     private IHandlerInput userInputHandler;
-
+    /** 
+     * Конструктор - создает объект класса CommandManager
+     * @param fileManager - экземпляр класса для работы с файлами
+     * @param userInputHandler - экземпляр класса для работы с вводимыми в консоль данными
+     * @param collectionManager - экземпляр класса для работы с коллекцией
+     * @see CommandManager#CommandManager(CollectionManager)
+     */
     public CommandManager(IHandlerInput userInputHandler, FileManager fileManager, CollectionManager collectionManager) {
         this.fileManager = fileManager;
         this.userInputHandler = userInputHandler;
@@ -42,14 +52,20 @@ public class CommandManager {
         commands.put("print_descending", new PrintDescendingCommand(this.getCollectionManager()));
     }
 
-
+    /**
+     * Функция получения команды с консоли
+     */
     public void startInteraction() {
         while(true) {
             String commandStr = userInputHandler.readWithMessage("Write Command: ");
             executeCommand(commandStr, true);
         }
     }
-
+    /**
+     * Функция выполнения команды
+     * @param commandStr - строка, содержащая ключ команды
+     * @param interactive - определяет, является ли команда интерактивной
+     */
     public void executeCommand(String commandStr, boolean interactive) {
         try {
             String[] cmd = getCommandFromStr(commandStr);
@@ -68,12 +84,20 @@ public class CommandManager {
             userInputHandler.printLn(1,"Security problems trying to access to the file (Can not be read or edited)");
         }
     }
-
+    /**
+     * Функция разделения строки на слова
+     * @param s - строка входных данных
+     * @return возвращает массив слов из входных данных
+     */
 
     public String[] getCommandFromStr(String s) {
         return s.trim().split(" ");
     }
-
+    /**
+     * Функция получения аргументов команды из входных данных
+     * @param fullStr - строка входных данных
+     * @return возвращает массив аргументов команды
+     */
     public String[] getCommandArgs(String[] fullStr) {
         String[] inputArgs = new String[2];
         inputArgs = Arrays.copyOfRange(fullStr, 1, fullStr.length);

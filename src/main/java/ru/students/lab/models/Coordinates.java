@@ -1,12 +1,24 @@
 package ru.students.lab.models;
-
+ /** 
+ * Класс модели координат
+ * @autor Хосе Ортис
+ * @version 1.0
+*/
 public class Coordinates {
     private Long x; //Значение поля должно быть больше -328, Поле не может быть null
     private Float y; //Поле не может быть null
-
+    /** 
+     * Конструктор - создает пустой объект класса Coordinates
+     * @see Coordinates#Coordinates()
+     */
     public Coordinates() {
     }
-
+    /** 
+     * Конструктор - создает непустой объект класса Coordinates
+     * @param x - координата дракона по оси Х
+     * @param y - координата дракона по оси Y
+     * @see Coordinates#Coordinates()
+     */
     public Coordinates(Long x, Float y) {
         this.setX(x);
         this.setY(y);

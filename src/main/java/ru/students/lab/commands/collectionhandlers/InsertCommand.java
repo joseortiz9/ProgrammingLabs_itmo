@@ -5,13 +5,21 @@ import ru.students.lab.commands.ICommand;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.models.Dragon;
 import ru.students.lab.factories.DragonFactory;
+ /** 
+ * Класс для выполнения и получения информации о функции добавления в коллекцию элемента с заданным ключем
+ * @autor Хосе Ортис
+ * @version 1.0
+*/
 
 public class InsertCommand implements ICommand {
 
     public static final String DESCRIPTION = "добавить новый элемент с заданным ключом.\nSyntax: insert key {element}";
     private CollectionManager collectionManager;
     private DragonFactory dragonFactory;
-
+    /** 
+     * Конструктор - создает объект InsertCommand и экземпляр класса collectionManager для последующей работы с коллекцией; создает экземпляр класса DragonFactory для создания экземпляра класса Dragon
+     * @see InsertCommand#InsertCommand(CollectionManager)
+     */
     public InsertCommand(CollectionManager collectionManager) {
         this.collectionManager = collectionManager;
         this.dragonFactory = new DragonFactory();

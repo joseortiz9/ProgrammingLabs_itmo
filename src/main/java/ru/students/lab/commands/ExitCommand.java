@@ -1,6 +1,11 @@
 package ru.students.lab.commands;
 
 import ru.students.lab.client.IHandlerInput;
+ /** 
+ * Класс для выполнения и получения информации о функции сохранения коллекции в файл
+ * @autor Хосе Ортис
+ * @version 1.0
+*/
 
 public class ExitCommand implements ICommand {
 

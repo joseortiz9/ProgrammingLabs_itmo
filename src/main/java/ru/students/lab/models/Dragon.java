@@ -2,6 +2,11 @@ package ru.students.lab.models;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+ /** 
+ * Класс модели дракона
+ * @autor Хосе Ортис
+ * @version 1.0
+*/
 
 public class Dragon implements Comparable<Dragon> {
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
@@ -13,11 +18,23 @@ public class Dragon implements Comparable<Dragon> {
     private DragonType type; //Поле не может быть null
     private DragonCharacter character; //Поле не может быть null
     private DragonHead head;
-
+    /** 
+     * Конструктор - создает пустой экземпляр класса Dragon 
+     * @see Dragon#Dragon()
+     */
     public Dragon() {
         this.setCreationDate();
     }
-
+    /** 
+     * Конструктор - создает непустой экземпляр класса Dragon без поля id
+     * @param name - имя дракона
+     * @param coordinates - координаты дракона
+     * @param age - возраст дракона
+     * @param type - тип дракона
+     * @param character - характер дракона
+     * @param head - голова дракона
+     * @see Dragon#Dragon()
+     */
     public Dragon(String name,
                   Coordinates coordinates,
                   Long age,
@@ -34,7 +51,17 @@ public class Dragon implements Comparable<Dragon> {
         this.character = character;
         this.head = head;
     }
-
+    /** 
+     * Конструктор - создает непустой экземпляр класса Dragon 
+     * @param id - номер дракона
+     * @param name - имя дракона
+     * @param coordinates - координаты дракона
+     * @param age - возраст дракона
+     * @param type - тип дракона
+     * @param character - характер дракона
+     * @param head - голова дракона
+     * @see Dragon#Dragon()
+     */
     public Dragon(Integer id,
                   String name,
                   Coordinates coordinates,

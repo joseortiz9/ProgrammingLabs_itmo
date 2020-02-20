@@ -13,7 +13,7 @@ public class ManDescriptorCommand implements ICommand {
     public static final String DESCRIPTION = "Describe a command by its key";
     private Map<String, ICommand> commandsDictionary;
     /** 
-     * Конструктор - создает объект класса ManDescriptorCommandи экземпляр класса commandsDictionary для вывода информации о команде по ее ключу
+     * Конструктор - создает объект класса ManDescriptorCommand и экземпляр класса commandsDictionary для вывода информации о команде по ее ключу
      * @see ManDescriptorCommand#ManDescriptorCommand(commandsDictionary)
      */
     public ManDescriptorCommand(Map<String, ICommand> commandsDictionary) {

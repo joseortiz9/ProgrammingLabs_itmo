@@ -7,13 +7,30 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+/**
+ * Класс, Creator of Dragon instances
+ * @autor Хосе Ортис
+ * @version 1.0
+ */
 public class DragonFactory {
 
     private IHandlerInput inputHandler;
 
+    /**
+     * Конструктор - создает пустой экземпляр класса of a Dragon factory
+     * @see Dragon#Dragon()
+     */
     public DragonFactory() {
     }
 
+    /**
+     *
+     * Read what the user writes on, validates it and create the instance if
+     * everything is successfull
+     *
+     * @param inputHandler manages all related with the IO
+     * @return instance of a Dragon with the input entered
+     */
     public Dragon generateDragonByInput(IHandlerInput inputHandler)
     {
         this.inputHandler = inputHandler;
@@ -35,6 +52,17 @@ public class DragonFactory {
         return new Dragon(name, coordinates, age, dColor, dType, dCharacter, dHead);
     }
 
+    /**
+     *
+     * Reads the clients input and validates if is nullable or the input is in a incorrect
+     * format till it is successfully
+     *
+     * @param fType type of the input, just a String for printing
+     * @param desc description of the validation rules, just for printing
+     * @param nullable boolean if the value could be nullable
+     * @param toClass class of the Object that we want to validate
+     * @return Object that represents the validated wanted value
+     */
     private Object validateDragonProp(String fType, String desc, boolean nullable, Class<?> toClass) {
         Object obj = null;
         String input = "";
@@ -57,6 +85,17 @@ public class DragonFactory {
         return obj;
     }
 
+    /**
+     *
+     * Validates if the input comply with the validation rules till it is correct.
+     *
+     * @param fType type of the input, just a String for printing
+     * @param desc description of the validation rules, just for printing
+     * @param nullable boolean if the value could be nullable
+     * @param toClass class of the Object that we want to validate
+     * @param min validation rule for numbers
+     * @return Object that represents the validated wanted value
+     */
     private Object validateDragonProp(String fType, String desc, boolean nullable, Class<?> toClass, int min) {
         Object obj = null;
         do {
@@ -65,13 +104,40 @@ public class DragonFactory {
         return obj;
     }
 
+    /**
+     *
+     * check if the number comply the validation rule
+     *
+     * @param num Long representing the number to validate
+     * @param min int validation rule
+     * @return is bigger than the validation rule
+     */
     public boolean checkValidNumber(Long num, int min) {
         return num > min;
     }
+    /**
+     *
+     * check if the number comply the validation rule
+     *
+     * @param num DOuble representing the number to validate
+     * @param min int validation rule
+     * @return is bigger than the validation rule
+     */
     public boolean checkValidNumber(Double num, int min) {
         return num > min;
     }
 
+    /**
+     *
+     * gets the Object resulted from the valueOf method inside the passed class
+     *
+     * @param toClass class from which we want to get the method
+     * @param s parameter of the method
+     * @return the Object got after running the valueOf()
+     * @throws InvocationTargetException happens when the invoke method has a error
+     * @throws IllegalAccessException when the method invoked has no access to the specified class
+     * @throws NoSuchMethodException when the method is not found in the passed class
+     */
     public static Object getValueOf(Class<?> toClass, String s) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         if (toClass.equals(String.class) || s.equals("")) return s;
         Method method = toClass.getMethod("valueOf", String.class);

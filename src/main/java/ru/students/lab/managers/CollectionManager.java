@@ -49,7 +49,7 @@ public class CollectionManager {
                 .sorted(Map.Entry.comparingByKey())
                 .collect(Collectors.toList());
     }
-        }
+
     /**
      * Функция сортировки коллекции
      * @return возвращает отсортированную по ID {@link Dragon#ID} коллекцию

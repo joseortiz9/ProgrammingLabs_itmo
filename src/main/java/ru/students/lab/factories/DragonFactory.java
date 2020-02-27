@@ -3,7 +3,6 @@ package ru.students.lab.factories;
 import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.models.*;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -24,38 +23,34 @@ public class DragonFactory {
     public DragonFactory() {
     }
 
+    //execute_script script_test.txt
+    //execute_script insc.txt
+
     public Dragon generateFromScript(IHandlerInput inputHandler) {
-        Dragon dragon = new Dragon();
-        Class<? extends Dragon> dClass = dragon.getClass();
-        Field[] fields = dClass.getDeclaredFields();
         String[] inputs = inputHandler.getInputsAfterInsert();
-        for (int i = 0; i < fields.length; i++) {
-            String actField = fields[i].getName();
-            if (actField.equals("id") || actField.equals("creationDate"))
-                continue;
-            try {
-                if (actField.equals("coordinates")) {
-                    Coordinates coord = new Coordinates();
-                    Field[] coordFields = coord.getClass().getDeclaredFields();
-                    for (int j = 0; j < coordFields.length; j++) {
-                        Method mToRun = coord.getClass().getMethod(
-                                "set"+ coordFields[i].getName().substring(0, 1).toUpperCase() +
-                                        coordFields[i].getName().substring(1),
-                                coordFields[i].getType());
-                        mToRun.invoke(coord, inputs[i]);
-                    }
-                    dClass.getMethod("setCoordinates", Coordinates.class).invoke(dragon,coord);
-                    continue;
-                }
-                Method mToRun = dClass.getMethod(
-                        "set"+ actField.substring(0, 1).toUpperCase() + actField.substring(1),
-                        fields[i].getType());
-                mToRun.invoke(dragon, inputs[i]);
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
+        try {
+            String name = (String) getValueOf(String.class, inputs[0]);
+
+            Long x = (Long) getValueOf(Long.class, inputs[1]);
+            Float y = (Float) getValueOf(Float.class, inputs[2]);
+            Coordinates coordinates = new Coordinates(x,y);
+
+            Long age = (Long) getValueOf(Long.class, inputs[3]);
+            Color dColor = (Color) getValueOf(Color.class, inputs[4]);
+            DragonType dType = (DragonType) getValueOf(DragonType.class, inputs[5]);
+            DragonCharacter dCharacter = (DragonCharacter) getValueOf(DragonCharacter.class, inputs[6]);
+
+            Double numEyes =(Double) getValueOf(Double.class, inputs[7]);
+            DragonHead dHead = new DragonHead(numEyes);
+
+            if (x > -328 || age > 0 || numEyes > 0)
+                return new Dragon(name, coordinates, age, dColor, dType, dCharacter, dHead);
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException ex) {
+            inputHandler.printLn(1, "An input was not in the correct format. Run 'man insert' to know the rules for entering correct values");
+        } catch (ArrayIndexOutOfBoundsException | NullPointerException ex) {
+            inputHandler.printLn(1,"The number of inputs is not correct for the amount of attrs");
         }
-        return dragon;
+        return null;
     }
 
     /**

@@ -479,19 +479,19 @@
         <entry>
             <key>316</key>
             <value>
-                <id>1</id>
-                <name>Dragon1</name>
+                <id>54</id>
+                <name>badly_drako</name>
                 <coordinates>
-                    <x>1</x>
-                    <y>1.0</y>
+                    <x>-411</x>
+                    <y>32.0</y>
                 </coordinates>
-                <creationDate>2020-02-27T19:53:19.914+03:00[Europe/Moscow]</creationDate>
-                <age>9</age>
-                <color>YELLOW</color>
-                <type>FIRE</type>
-                <character>CHAOTIC</character>
+                <creationDate>2020-02-28T02:24:33.943+03:00[Europe/Moscow]</creationDate>
+                <age>21</age>
+                <color>WHITE</color>
+                <type>AIR</type>
+                <character>EVIL</character>
                 <head>
-                    <eyesCount>1.0</eyesCount>
+                    <eyesCount>16.0</eyesCount>
                 </head>
             </value>
         </entry>
@@ -605,6 +605,25 @@
                 <type>AIR</type>
                 <character>EVIL</character>
                 <head/>
+            </value>
+        </entry>
+        <entry>
+            <key>2122</key>
+            <value>
+                <id>53</id>
+                <name>nice_drako</name>
+                <coordinates>
+                    <x>23</x>
+                    <y>32.0</y>
+                </coordinates>
+                <creationDate>2020-02-28T02:21:55.154+03:00[Europe/Moscow]</creationDate>
+                <age>21</age>
+                <color>ORANGE</color>
+                <type>AIR</type>
+                <character>EVIL</character>
+                <head>
+                    <eyesCount>1.0</eyesCount>
+                </head>
             </value>
         </entry>
         <entry>

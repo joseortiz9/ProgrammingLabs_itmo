@@ -5,15 +5,19 @@ import ru.students.lab.commands.ICommand;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.models.Dragon;
 import ru.students.lab.factories.DragonFactory;
+
  /** 
  * Класс для выполнения и получения информации о функции добавления в коллекцию элемента с заданным ключем
  * @autor Хосе Ортис
  * @version 1.0
 */
-
 public class InsertCommand implements ICommand {
 
-    public static final String DESCRIPTION = "добавить новый элемент с заданным ключом.\nSyntax: insert key {element}";
+    public static final String DESCRIPTION = "добавить новый элемент с заданным ключом.\nSyntax: insert key {element}\n"
+            +"Rules:\n"
+            +"coord{X}    [should be more than -328]\n"
+            +"age         [should be more than 0]\n"
+            +"head{#Eyes} [empty or more than 0]";
     private CollectionManager collectionManager;
     private DragonFactory dragonFactory;
     /** 
@@ -35,6 +39,12 @@ public class InsertCommand implements ICommand {
         Dragon newDragon = (userInputHandler.isInteractive()) ?
                 dragonFactory.generateDragonByInput(userInputHandler) :
                 dragonFactory.generateFromScript(userInputHandler);
+
+        if (newDragon == null) {
+            userInputHandler.printLn(1,"That Dragon has format problems!");
+            return;
+        }
+
         // If it doesn't exist and it successfully put it, so it returns null
         if (this.collectionManager.insert(Integer.valueOf(args[0]), newDragon) == null)
             userInputHandler.printLn(0,newDragon.toString() + " saved!");

@@ -52,7 +52,7 @@ public class CollectionManager {
 
     /**
      * Функция сортировки коллекции
-     * @return возвращает отсортированную по ID {@link Dragon#ID} коллекцию
+     * @return возвращает отсортированную по ID {@link Dragon#id} коллекцию
      */
     public List<Map.Entry<Integer, Dragon>> sortById()
     {
@@ -94,10 +94,9 @@ public class CollectionManager {
      * @return возвращает коллекцию с добавлением нового элемента
      */
     public Object insert(Integer key, Dragon newDragon) {
-        if (newDragon != null) {
-            newDragon.setId(nextIDToAdd);
-            nextIDToAdd += 1;
-        }
+        newDragon.setId(nextIDToAdd);
+        nextIDToAdd += 1;
+
         return this.getCollection().putIfAbsent(key, newDragon);
     }
     /**

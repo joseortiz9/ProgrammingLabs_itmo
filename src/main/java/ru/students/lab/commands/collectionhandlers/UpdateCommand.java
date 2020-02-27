@@ -28,7 +28,14 @@ public class UpdateCommand implements ICommand {
 
     @Override
     public void execute(IHandlerInput userInputHandler, String[] args) throws NumberFormatException {
-        Dragon newDragon = dragonFactory.generateDragonByInput(userInputHandler);
+        Dragon newDragon = (userInputHandler.isInteractive()) ?
+                dragonFactory.generateDragonByInput(userInputHandler) :
+                dragonFactory.generateFromScript(userInputHandler);
+
+        if (newDragon == null) {
+            userInputHandler.printLn(1,"That Dragon has format problems!");
+            return;
+        }
 
         // If it successfully replace it, returns the value of the old mapped object
         if (this.collectionManager.update(Integer.valueOf(args[0]), newDragon) != null)

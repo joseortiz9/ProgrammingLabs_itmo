@@ -27,10 +27,8 @@ public class Main {
 
                 CollectionManager collectionManager = new CollectionManager(fileManager.getCollectionFromFile());
 
-                new DragonFactory().generateFromScript(new UserInputHandler(false));
-
-                //CommandManager manager = new CommandManager(userInputHandler, fileManager, collectionManager);
-                //manager.startInteraction();
+                CommandManager manager = new CommandManager(userInputHandler, fileManager, collectionManager);
+                manager.startInteraction();
 
             } catch (InvalidPathException ex) {
                 userInputHandler.printLn(1, "Invalid file's path or/and security problem trying to access it");

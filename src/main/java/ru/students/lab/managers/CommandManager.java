@@ -24,7 +24,6 @@ public class CommandManager {
      * @param fileManager - экземпляр класса для работы с файлами
      * @param userInputHandler - экземпляр класса для работы с вводимыми в консоль данными
      * @param collectionManager - экземпляр класса для работы с коллекцией
-     * @see CommandManager#CommandManager(CollectionManager)
      */
     public CommandManager(IHandlerInput userInputHandler, FileManager fileManager, CollectionManager collectionManager) {
         this.fileManager = fileManager;
@@ -59,19 +58,20 @@ public class CommandManager {
         while(true) {
             String commandStr;
             commandStr = userInputHandler.readWithMessage("Write Command: ");
-            executeCommand(commandStr, true);
+            executeCommand(commandStr, this.userInputHandler);
         }
     }
     /**
      * Функция выполнения команды
      * @param commandStr - строка, содержащая ключ команды
-     * @param interactive - определяет, является ли команда интерактивной
+     * @param userInputHandler - an instance of the input handler
      */
-    public void executeCommand(String commandStr, boolean interactive) {
+    public void executeCommand(String commandStr, IHandlerInput userInputHandler) {
         try {
             String[] cmd = getCommandFromStr(commandStr);
             ICommand command = this.getCommand(cmd[0]);
-            if (!interactive) userInputHandler.printLn("\nRUNNING COMMAND: " + commandStr);
+            if (!userInputHandler.isInteractive())
+                userInputHandler.printLn("\nRUNNING COMMAND: " + commandStr);
             command.execute(userInputHandler, this.getCommandArgs(cmd));
         } catch (NoSuchCommandException | IOException ex) {
             userInputHandler.printLn(1, ex.getMessage());

@@ -37,4 +37,13 @@ public interface IHandlerInput {
      * @param s - элемент списка и строка, выводящаяся в консоль
      */
     void printElemOfList(String s);
+
+    /**
+     * check if the inputs are handled by the client or the program
+     * @return interactive
+     */
+    boolean isInteractive();
+
+    String[] getInputsAfterInsert();
+    void setInputsAfterInsert(String[] numLineFile);
 }

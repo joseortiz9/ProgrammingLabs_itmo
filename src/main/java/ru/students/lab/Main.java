@@ -3,6 +3,7 @@ package ru.students.lab;
 import org.jetbrains.annotations.NotNull;
 import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.client.UserInputHandler;
+import ru.students.lab.factories.DragonFactory;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.managers.CommandManager;
 import ru.students.lab.managers.FileManager;
@@ -18,7 +19,7 @@ public class Main {
 
     public static void main(@NotNull String[] args) {
 
-        IHandlerInput userInputHandler = new UserInputHandler();
+        IHandlerInput userInputHandler = new UserInputHandler(true);
         if (args.length > 0) {
             try {
                 String pathToFile = Paths.get(args[0]).toAbsolutePath().toString();
@@ -26,8 +27,10 @@ public class Main {
 
                 CollectionManager collectionManager = new CollectionManager(fileManager.getCollectionFromFile());
 
-                CommandManager manager = new CommandManager(userInputHandler, fileManager, collectionManager);
-                manager.startInteraction();
+                new DragonFactory().generateFromScript(new UserInputHandler(false));
+
+                //CommandManager manager = new CommandManager(userInputHandler, fileManager, collectionManager);
+                //manager.startInteraction();
 
             } catch (InvalidPathException ex) {
                 userInputHandler.printLn(1, "Invalid file's path or/and security problem trying to access it");

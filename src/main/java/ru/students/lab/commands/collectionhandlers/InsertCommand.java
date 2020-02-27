@@ -32,7 +32,9 @@ public class InsertCommand implements ICommand {
             return;
         }
 
-        Dragon newDragon = dragonFactory.generateDragonByInput(userInputHandler);
+        Dragon newDragon = (userInputHandler.isInteractive()) ?
+                dragonFactory.generateDragonByInput(userInputHandler) :
+                dragonFactory.generateFromScript(userInputHandler);
         // If it doesn't exist and it successfully put it, so it returns null
         if (this.collectionManager.insert(Integer.valueOf(args[0]), newDragon) == null)
             userInputHandler.printLn(0,newDragon.toString() + " saved!");

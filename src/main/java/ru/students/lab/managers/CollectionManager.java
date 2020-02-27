@@ -94,8 +94,10 @@ public class CollectionManager {
      * @return возвращает коллекцию с добавлением нового элемента
      */
     public Object insert(Integer key, Dragon newDragon) {
-        newDragon.setId(nextIDToAdd);
-        nextIDToAdd += 1;
+        if (newDragon != null) {
+            newDragon.setId(nextIDToAdd);
+            nextIDToAdd += 1;
+        }
         return this.getCollection().putIfAbsent(key, newDragon);
     }
     /**

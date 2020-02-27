@@ -11,13 +11,17 @@ import java.util.Scanner;
 public class UserInputHandler implements IHandlerInput {
 
     private Scanner commandReader;
+    private boolean interactive;
+    private String[] inputsAfterInsert;
+
      /** 
      * Конструктор - создает объект класса UserInputHandler для работы со входными данными, создает сканер для считывания данных
-     * @see UserInputHandler#UserInputHandler()
+     * @see UserInputHandler#UserInputHandler(boolean)
      */
-
-    public UserInputHandler() {
-        commandReader = new Scanner(System.in);
+    public UserInputHandler(boolean interactive) {
+        this.commandReader = new Scanner(System.in);
+        this.interactive = interactive;
+        this.inputsAfterInsert = new String[8];
     }
 
     @Override
@@ -45,5 +49,19 @@ public class UserInputHandler implements IHandlerInput {
     @Override
     public void printElemOfList(String s) {
         System.out.println(s);
+    }
+
+    @Override
+    public boolean isInteractive() {
+        return interactive;
+    }
+
+    @Override
+    public String[] getInputsAfterInsert() {
+        return inputsAfterInsert;
+    }
+    @Override
+    public void setInputsAfterInsert(String[] inputsAfterInsert) {
+        this.inputsAfterInsert = inputsAfterInsert;
     }
 }

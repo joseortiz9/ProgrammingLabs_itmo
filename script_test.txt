@@ -7,8 +7,17 @@ insert vfeavs
 
 insert
 show
+insert 2122
+nice_drako
+23
+32
+21
+ORANGE
+AIR
+EVIL
+1
 insert 126
-NAME
+bad_drako
 12
 12
 asdf;kjsad
@@ -18,5 +27,6 @@ filter_contains_name melo
 
 filter_starts_with_name Dragon1
 insert
+print_descending -k
 save
 exit

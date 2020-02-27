@@ -1,17 +1,26 @@
 package ru.students.lab.models;
 
+import ru.students.lab.util.ZonedDateTimeSerializer;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
- /** 
+
+/**
  * Класс модели дракона
  * @autor Хосе Ортис
  * @version 1.0
 */
-
+@XmlRootElement(name = "dragon")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Dragon implements Comparable<Dragon> {
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
+    @XmlJavaTypeAdapter(value = ZonedDateTimeSerializer.class)
     private ZonedDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
     private Long age; //Значение поля должно быть больше 0, Поле может быть null
     private Color color; //Поле не может быть null
@@ -159,7 +168,8 @@ public class Dragon implements Comparable<Dragon> {
                 "name=" + this.getName() + ", " +
                 "creationDate=[" + this.getFormattedCDate() + "], " +
                 "Color=" + this.getColor().toString() + ", " +
-                "Location="+this.getCoordinates() + "}";
+                "Location="+this.getCoordinates() + "," +
+                "Head=["+this.getHead().getEyesCount() + " eyes]}";
     }
 
     @Override

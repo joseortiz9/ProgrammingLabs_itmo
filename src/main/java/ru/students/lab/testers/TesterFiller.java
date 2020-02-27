@@ -3,6 +3,7 @@ package ru.students.lab.testers;
 import ru.students.lab.managers.FileManager;
 import ru.students.lab.models.*;
 
+import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.ZonedDateTime;
@@ -33,7 +34,7 @@ public class TesterFiller {
         }
     }
 
-    public void collectionToXML(String pathToData) throws IOException {
+    public void collectionToXML(String pathToData) throws IOException, JAXBException {
         new FileManager(pathToData).SaveCollectionInXML(this.getCollection());
     }
 

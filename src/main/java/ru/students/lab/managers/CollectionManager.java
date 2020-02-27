@@ -182,7 +182,7 @@ public class CollectionManager {
         return this.getCollection()
                 .entrySet()
                 .stream()
-                .filter(dragon -> dragon.getValue().getName().equals(name))
+                .filter(dragon -> dragon.getValue().getName().contains(name))
                 .collect(Collectors.toList());
     }
     /**

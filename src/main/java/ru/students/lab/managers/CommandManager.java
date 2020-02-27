@@ -1,17 +1,15 @@
 package ru.students.lab.managers;
 
-import com.thoughtworks.xstream.XStreamException;
 import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.commands.*;
 import ru.students.lab.commands.collectionhandlers.*;
 import ru.students.lab.exceptions.NoSuchCommandException;
 
+import javax.xml.bind.JAXBException;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
- /** 
+import java.util.*;
+
+/**
  * Класс для управления командами
  * @autor Хосе Ортис
  * @version 1.0
@@ -53,11 +51,14 @@ public class CommandManager {
     }
 
     /**
-     * Функция получения команды с консоли
+     * Функция получения команды с консоли catch ( e) {
+            e.printStackTrace();
+        }
      */
     public void startInteraction() {
         while(true) {
-            String commandStr = userInputHandler.readWithMessage("Write Command: ");
+            String commandStr;
+            commandStr = userInputHandler.readWithMessage("Write Command: ");
             executeCommand(commandStr, true);
         }
     }
@@ -78,8 +79,6 @@ public class CommandManager {
             userInputHandler.printLn(1,"Incorrect format of the entered value");
         } catch (ArrayIndexOutOfBoundsException ex) {
             userInputHandler.printLn(1,"There is a problem in the amount of args passed");
-        } catch (XStreamException ex) {
-            userInputHandler.printLn(1,"Problems trying to parse object from/into a file");
         } catch (SecurityException ex) {
             userInputHandler.printLn(1,"Security problems trying to access to the file (Can not be read or edited)");
         }

@@ -46,7 +46,7 @@ public class DragonFactory {
         DragonType dType = (DragonType) validateDragonProp("dragonType", Arrays.asList(DragonType.values()).toString(), false, DragonType.class);
         DragonCharacter dCharacter = (DragonCharacter) validateDragonProp("dragonCharacter", Arrays.asList(DragonCharacter.values()).toString(), false, DragonCharacter.class);
 
-        Double numEyes = (Double) this.validateDragonProp("dragonHead{NumberEyes}", "[empty or more than 0]", true, Double.class, 0);
+        Double numEyes =(Double) this.validateDragonProp("dragonHead{NumberEyes}", "[empty or more than 0]", true, Double.class, 0);
         DragonHead dHead = new DragonHead(numEyes);
 
         return new Dragon(name, coordinates, age, dColor, dType, dCharacter, dHead);
@@ -100,6 +100,8 @@ public class DragonFactory {
         Object obj = null;
         do {
             obj = validateDragonProp(fType, desc, nullable, toClass);
+            if (obj == null)
+                return null;
         } while (!checkValidNumber((toClass.equals(Long.class)) ? (Long) obj : (Double) obj, min));
         return obj;
     }

@@ -1,16 +1,18 @@
 package ru.students.lab;
 
-import com.thoughtworks.xstream.XStreamException;
 import org.jetbrains.annotations.NotNull;
 import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.client.UserInputHandler;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.managers.CommandManager;
 import ru.students.lab.managers.FileManager;
+import ru.students.lab.testers.TesterFiller;
 
+import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
+import java.util.NoSuchElementException;
 
 public class Main {
 
@@ -31,10 +33,12 @@ public class Main {
                 userInputHandler.printLn(1, "Invalid file's path or/and security problem trying to access it");
             } catch (SecurityException ex) {
                 userInputHandler.printLn(1, "Security problems trying to access to the file (Can not be read or edited)");
+            } catch (JAXBException ex) {
+                userInputHandler.printLn(1, "Problem processing the data from/into the file: " + ex.getMessage());
             } catch (IOException ex) {
                 userInputHandler.printLn(1, "I/O problems, I have no idea what you just did: " + ex.getMessage());
-            } catch (XStreamException ex) {
-                userInputHandler.printLn(1,"Problems trying to parse object from/into a file");
+            } catch (NoSuchElementException ex) {
+                userInputHandler.printLn(1,"You wrote something strange");
             }
         } else {
             userInputHandler.printLn(1, "No path passed as parameter, please specify a file name.");
@@ -42,6 +46,5 @@ public class Main {
 
         //fill the xml file with random data
         //new TesterFiller().collectionToXML(pathToFile);
-
     }
 }

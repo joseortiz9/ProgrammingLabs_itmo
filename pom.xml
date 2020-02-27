@@ -39,23 +39,48 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+
+                <configuration>
+                    <archive>
+
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <packageName>ru.students.lab</packageName>
+                            <mainClass>ru.students.lab.Main</mainClass>
+                            <classpathLayoutType>simple</classpathLayoutType>
+
+                        </manifest>
+
+                    </archive>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream -->
+        <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
         <dependency>
-            <groupId>com.thoughtworks.xstream</groupId>
-            <artifactId>xstream</artifactId>
-            <version>1.4.11.1</version>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>19.0.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+        <!-- https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.4.11.1</version>
+        </dependency>
+        <https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -65,8 +90,8 @@
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
             <version>2.10.2</version>
-        </dependency>-->
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-modules-java8
+        </dependency>
+        <!- https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-modules-java8
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>

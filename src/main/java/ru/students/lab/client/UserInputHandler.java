@@ -1,6 +1,6 @@
 package ru.students.lab.client;
 
-import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 /** 
  * Класс, реализующий функции интерфейса для получения входных данных и взаимодействия с пользователем 

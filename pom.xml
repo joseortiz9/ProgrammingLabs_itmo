@@ -39,25 +39,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
-
-                <configuration>
-                    <archive>
-
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <packageName>ru.students.lab</packageName>
-                            <mainClass>ru.students.lab.Main</mainClass>
-                            <classpathLayoutType>simple</classpathLayoutType>
-
-                        </manifest>
-
-                    </archive>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
@@ -68,6 +49,18 @@
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
             <version>2.3.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/javax.activation/activation -->
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>2.3.2</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>

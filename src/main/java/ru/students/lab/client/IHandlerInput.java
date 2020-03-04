@@ -46,4 +46,5 @@ public interface IHandlerInput {
 
     String[] getInputsAfterInsert();
     void setInputsAfterInsert(String[] numLineFile);
+    int getResultCode();
 }

@@ -2,6 +2,25 @@
 <dragons_map>
     <dragons>
         <entry>
+            <key>256</key>
+            <value>
+                <id>55</id>
+                <name>nice_drako</name>
+                <coordinates>
+                    <x>23</x>
+                    <y>32.0</y>
+                </coordinates>
+                <creationDate>2020-03-05T01:32:12.765+03:00[Europe/Moscow]</creationDate>
+                <age>21</age>
+                <color>ORANGE</color>
+                <type>AIR</type>
+                <character>EVIL</character>
+                <head>
+                    <eyesCount>1.0</eyesCount>
+                </head>
+            </value>
+        </entry>
+        <entry>
             <key>1537</key>
             <value>
                 <id>34</id>
@@ -43,18 +62,18 @@
             <key>390</key>
             <value>
                 <id>3</id>
-                <name>Dragon3</name>
+                <name>badly_drako</name>
                 <coordinates>
-                    <x>3</x>
-                    <y>3.0</y>
+                    <x>-411</x>
+                    <y>32.0</y>
                 </coordinates>
-                <creationDate>2020-02-27T19:53:19.914+03:00[Europe/Moscow]</creationDate>
-                <age>3</age>
-                <color>YELLOW</color>
-                <type>WATER</type>
-                <character>GOOD</character>
+                <creationDate>2020-03-05T01:37:10.023+03:00[Europe/Moscow]</creationDate>
+                <age>21</age>
+                <color>WHITE</color>
+                <type>AIR</type>
+                <character>EVIL</character>
                 <head>
-                    <eyesCount>3.0</eyesCount>
+                    <eyesCount>16.0</eyesCount>
                 </head>
             </value>
         </entry>
@@ -781,19 +800,19 @@
         <entry>
             <key>353</key>
             <value>
-                <id>2</id>
-                <name>Dragon2</name>
+                <id>54</id>
+                <name>badly_drako</name>
                 <coordinates>
-                    <x>2</x>
-                    <y>2.0</y>
+                    <x>-411</x>
+                    <y>32.0</y>
                 </coordinates>
-                <creationDate>2020-02-27T19:53:19.914+03:00[Europe/Moscow]</creationDate>
-                <age>1</age>
-                <color>YELLOW</color>
-                <type>FIRE</type>
-                <character>CUNNING</character>
+                <creationDate>2020-03-05T01:32:12.748+03:00[Europe/Moscow]</creationDate>
+                <age>21</age>
+                <color>WHITE</color>
+                <type>AIR</type>
+                <character>EVIL</character>
                 <head>
-                    <eyesCount>2.0</eyesCount>
+                    <eyesCount>16.0</eyesCount>
                 </head>
             </value>
         </entry>

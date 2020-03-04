@@ -40,6 +40,8 @@ public class ExecuteScriptCommand implements ICommand {
         for (int i = 0; i < commands.length; i++) {
             userInputHandler.setInputsAfterInsert(Arrays.copyOfRange(commands, i + 1, commands.length));
             this.commandManager.executeCommand(commands[i], userInputHandler);
+            if (userInputHandler.getResultCode() == 0)
+                i+=8;
         }
     }
 

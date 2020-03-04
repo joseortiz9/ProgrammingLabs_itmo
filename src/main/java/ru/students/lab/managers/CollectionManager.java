@@ -114,8 +114,8 @@ public class CollectionManager {
                 .filter(dragonEntry -> dragonEntry.getValue().getId().equals(id))
                 .findFirst();
 
-        newDragon.setId(nextIDToAdd);
-        nextIDToAdd += 1;
+        if (oldDragonKey.isPresent())
+            newDragon.setId(id);
 
         return oldDragonKey.map(integerDragonEntry ->
                 this.getCollection().replace(integerDragonEntry.getKey(), newDragon)).orElse(null);

@@ -13,6 +13,7 @@ public class UserInputHandler implements IHandlerInput {
     private Scanner commandReader;
     private boolean interactive;
     private String[] inputsAfterInsert;
+    private int resultCode;
 
      /** 
      * Конструктор - создает объект класса UserInputHandler для работы со входными данными, создает сканер для считывания данных
@@ -42,7 +43,8 @@ public class UserInputHandler implements IHandlerInput {
 
     @Override
     public void printLn(int code, String s) {
-        String codeResult = (code == 0) ? "SUCCESSFUL: " : "ERROR: ";
+        this.resultCode = code;
+        String codeResult = (this.resultCode == 0) ? "SUCCESSFUL: " : "ERROR: ";
         System.out.println(codeResult + s);
     }
 
@@ -60,6 +62,12 @@ public class UserInputHandler implements IHandlerInput {
     public String[] getInputsAfterInsert() {
         return inputsAfterInsert;
     }
+
+    @Override
+    public int getResultCode() {
+        return resultCode;
+    }
+
     @Override
     public void setInputsAfterInsert(String[] inputsAfterInsert) {
         this.inputsAfterInsert = inputsAfterInsert;

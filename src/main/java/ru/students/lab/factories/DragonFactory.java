@@ -26,6 +26,14 @@ public class DragonFactory {
     //execute_script script_test.txt
     //execute_script insc.txt
 
+    /**
+     *
+     * Read what the inputs from the file and create the instance if
+     * everything is successfully validated and formatted
+     *
+     * @param inputHandler manages all related with the IO
+     * @return instance of a Dragon with the input entered or null if error
+     */
     public Dragon generateFromScript(IHandlerInput inputHandler) {
         String[] inputs = inputHandler.getInputsAfterInsert();
         try {
@@ -43,7 +51,7 @@ public class DragonFactory {
             Double numEyes =(Double) getValueOf(Double.class, inputs[7]);
             DragonHead dHead = new DragonHead(numEyes);
 
-            if (x > -328 || age > 0 || numEyes > 0)
+            if (x > -328 && age > 0 && numEyes > 0)
                 return new Dragon(name, coordinates, age, dColor, dType, dCharacter, dHead);
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException ex) {
             inputHandler.printLn(1, "An input was not in the correct format. Run 'man insert' to know the rules for entering correct values");

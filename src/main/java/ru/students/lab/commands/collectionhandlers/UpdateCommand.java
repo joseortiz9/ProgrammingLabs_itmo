@@ -28,6 +28,9 @@ public class UpdateCommand implements ICommand {
 
     @Override
     public void execute(IHandlerInput userInputHandler, String[] args) throws NumberFormatException {
+        if (args.length == 0)
+            throw new ArrayIndexOutOfBoundsException();
+
         Dragon newDragon = (userInputHandler.isInteractive()) ?
                 dragonFactory.generateDragonByInput(userInputHandler) :
                 dragonFactory.generateFromScript(userInputHandler);

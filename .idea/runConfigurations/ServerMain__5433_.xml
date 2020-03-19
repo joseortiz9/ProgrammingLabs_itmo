@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ServerMain (5433)" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="ru.students.lab.ServerMain" />
+    <module name="Lab6" />
+    <option name="PROGRAM_PARAMETERS" value="5433" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

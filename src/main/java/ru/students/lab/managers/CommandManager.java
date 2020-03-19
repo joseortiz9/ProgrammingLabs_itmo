@@ -30,6 +30,10 @@ public class CommandManager {
         this.userInputHandler = userInputHandler;
         this.collectionManager =  collectionManager;
         this.commands = new HashMap<>();
+        initCommands();
+    }
+
+    public void initCommands() {
         commands.put("help", new HelpCommand(this.getKeysCommands()));
         commands.put("man", new ManDescriptorCommand(this.getCommands()));
         commands.put("info", new InfoCommand(this.getCollectionManager()));
@@ -49,18 +53,7 @@ public class CommandManager {
         commands.put("print_descending", new PrintDescendingCommand(this.getCollectionManager()));
     }
 
-    /**
-     * Функция получения команды с консоли catch ( e) {
-            e.printStackTrace();
-        }
-     */
-    public void startInteraction() {
-        while(true) {
-            String commandStr;
-            commandStr = userInputHandler.readWithMessage("Write Command: ");
-            executeCommand(commandStr, this.userInputHandler);
-        }
-    }
+
     /**
      * Функция выполнения команды
      * @param commandStr - строка, содержащая ключ команды

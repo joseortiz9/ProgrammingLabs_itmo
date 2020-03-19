@@ -1,6 +1,5 @@
 package ru.students.lab.client;
 
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 /** 
  * Класс, реализующий функции интерфейса для получения входных данных и взаимодействия с пользователем 
@@ -66,6 +65,11 @@ public class UserInputHandler implements IHandlerInput {
     @Override
     public int getResultCode() {
         return resultCode;
+    }
+
+    @Override
+    public Scanner getCommandReader() {
+        return commandReader;
     }
 
     @Override

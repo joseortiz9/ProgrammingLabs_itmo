@@ -2,11 +2,16 @@ package ru.students.lab;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.students.lab.client.IHandlerInput;
+import ru.students.lab.client.UserInputHandler;
 import ru.students.lab.udp.ClientUdpSocket;
 import ru.students.lab.udp.ConsoleReader;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.*;
+import java.util.Scanner;
 
 public class ClientMain extends Thread {
 
@@ -31,7 +36,7 @@ public class ClientMain extends Thread {
             System.err.println("The provided port is out of the available range: " + args[0]);
             LOG.error("The provided port is out of the available range: " + args[0], ex);
             System.exit(-1);
-        } 
+        }
 
         try {
             final ClientUdpSocket oldSocket = socket;
@@ -59,8 +64,9 @@ public class ClientMain extends Thread {
         LOG.info("Successfully connected to the server");
 
         try {
-            ConsoleReader sender = new ConsoleReader(socket);
-            sender.setName("DataSenderTread");
+            IHandlerInput userInputHandler = new UserInputHandler(true);
+            ConsoleReader sender = new ConsoleReader(socket, userInputHandler);
+            sender.setName("ConsoleReaderTread");
             sender.start();
         } finally {
             socket.disconnect();

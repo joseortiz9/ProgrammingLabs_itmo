@@ -28,7 +28,7 @@ public class Main {
                 CollectionManager collectionManager = new CollectionManager(fileManager.getCollectionFromFile());
 
                 CommandManager manager = new CommandManager(userInputHandler, fileManager, collectionManager);
-                manager.startInteraction();
+                //manager.startInteraction();
 
             } catch (InvalidPathException ex) {
                 userInputHandler.printLn(1, "Invalid file's path or/and security problem trying to access it");

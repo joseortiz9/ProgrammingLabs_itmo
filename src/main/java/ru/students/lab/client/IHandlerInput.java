@@ -1,6 +1,7 @@
 package ru.students.lab.client;
 
 import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 /**
  * Интерфейс, содержащий функции для получения входных данных и взаимодействия с пользователем 
@@ -47,4 +48,5 @@ public interface IHandlerInput {
     String[] getInputsAfterInsert();
     void setInputsAfterInsert(String[] numLineFile);
     int getResultCode();
+    Scanner getCommandReader();
 }

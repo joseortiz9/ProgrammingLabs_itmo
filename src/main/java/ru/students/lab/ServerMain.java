@@ -3,6 +3,7 @@ package ru.students.lab;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.udp.AbsUdpSocket;
+import ru.students.lab.udp.ClientUdpSocket;
 import ru.students.lab.udp.ServerUdpSocket;
 
 import javax.xml.crypto.Data;
@@ -41,28 +42,5 @@ public class ServerMain {
 
         if (socket.getSocket().isBound())
             LOG.info("Socket Successfully opened on " + socket.getSocket().getLocalSocketAddress());
-
-        while (true) {
-            try {
-                final ByteBuffer buf = ByteBuffer.allocate(AbsUdpSocket.DATA_SIZE);
-                SocketAddress addressFromClient = socket.receiveDatagram(buf);
-                buf.flip();
-                byte[] bytes = new byte[buf.remaining()];
-                buf.get(bytes);
-                String gottenStr = new String(bytes, StandardCharsets.UTF_8);
-
-                System.out.println(gottenStr);
-
-                if (gottenStr.equals("connect")) {
-                    SocketAddress existClient = socket.checkClient(addressFromClient);
-                    socket.sendDatagram(buf, existClient);
-                } else {
-                    socket.sendDatagram(buf, addressFromClient);
-                }
-            } catch (SocketTimeoutException ignored) {
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

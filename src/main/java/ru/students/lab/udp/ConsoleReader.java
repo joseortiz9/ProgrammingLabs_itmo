@@ -29,19 +29,6 @@ public class ConsoleReader extends Thread {
                 e.printStackTrace();
             }
         }
-        /*while (true) {
-            //BufferedReader in = new BufferedReader(new StringReader(userInput.getCommandReader().nextLine()))
-            try {
-                while (!in.ready()) {
-                    Thread.sleep(100);
-                }
-                String line = in.readLine();
-                ByteBuffer buff = ByteBuffer.wrap(line.getBytes(StandardCharsets.UTF_8));
-                socket.sendDatagram(buff);
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-        }*/
     }
 
     /**

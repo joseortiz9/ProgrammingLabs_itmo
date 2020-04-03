@@ -34,10 +34,8 @@ public class ClientUdpSocket extends AbsUdpSocket {
             byte[] bytes = new byte[buf.remaining()];
             buf.get(bytes);
             String gottenStr = new String(bytes, StandardCharsets.UTF_8);
-            System.out.println("result from server: " + gottenStr);
-            System.out.println("Connect Var: " + connected);
 
-            if (gottenStr == null || gottenStr.equals(""))
+            if (gottenStr.equals(""))
                 return;
 
             if (!connected && gottenStr.equals("connect")) {
@@ -119,6 +117,17 @@ public class ClientUdpSocket extends AbsUdpSocket {
         return packet.getSocketAddress();
     }
 
+    public void sendRequest() {
+
+    }
+
+    public void sendObj() {
+
+    }
+
+    public void receiveObj() {
+
+    }
 
     public void disconnect() {
         socket.disconnect();

@@ -44,6 +44,7 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
                 SocketAddress existClient = checkClient(addressFromClient);
                 sendDatagram(petitionBuf, existClient);
             } else {
+                //sendDatagram(petitionBuf, addressFromClient);
                 processObject(petitionBuf);
             }
         }

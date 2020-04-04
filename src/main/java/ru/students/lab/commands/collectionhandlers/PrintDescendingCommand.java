@@ -46,7 +46,7 @@ public class PrintDescendingCommand extends AbsCommand {
                  context.result().append("This option is not available. Correct= -{k/i/n/d}");
          }
          if (sortedDragons != null) {
-             sortedDragons.forEach(e -> context.result().append("key:").append(e.getKey()).append(" -> ").append(e.getValue().toString()));
+             sortedDragons.forEach(e -> context.result().append("key:").append(e.getKey()).append(" -> ").append(e.getValue().toString()).append("\n"));
              context.result().append("Elements found: ").append(sortedDragons.size());
          }
          return context.result().toString();

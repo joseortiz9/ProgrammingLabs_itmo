@@ -27,7 +27,7 @@ public class FilterColByNearNameCommand extends AbsCommand {
          if (filteredCol.isEmpty())
              context.result().append("No elements found.");
          else {
-             filteredCol.forEach(e -> context.result().append("key:").append(e.getKey()).append(" -> ").append(e.getValue().toString()));
+             filteredCol.forEach(e -> context.result().append("key:").append(e.getKey()).append(" -> ").append(e.getValue().toString()).append("\n"));
              context.result().append("Elements found: ").append(filteredCol.size());
          }
          return context.result().toString();

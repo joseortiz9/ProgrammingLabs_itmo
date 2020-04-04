@@ -72,5 +72,6 @@ public class CommandReader extends Thread {
     public void finishClient() {
         channel.disconnect();
         this.interrupt();
+        System.exit(0);
     }
 }

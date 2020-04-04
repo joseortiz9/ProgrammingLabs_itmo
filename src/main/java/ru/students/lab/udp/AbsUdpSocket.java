@@ -11,7 +11,7 @@ public abstract class AbsUdpSocket {
 
     protected static final Logger LOG = LogManager.getLogger(AbsUdpSocket.class);
 
-    public static final int DATA_SIZE = 2048;
+    public static final int DATA_SIZE = 4000;
     public static final int SOCKET_TIMEOUT = 3000;
 
     /*protected DatagramSocket socket = null;

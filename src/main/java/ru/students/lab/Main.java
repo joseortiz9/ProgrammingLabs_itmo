@@ -19,7 +19,7 @@ public class Main {
 
     public static void main(@NotNull String[] args) {
 
-        IHandlerInput userInputHandler = new UserInputHandler(true);
+        /*IHandlerInput userInputHandler = new UserInputHandler(true);
         if (args.length > 0) {
             try {
                 String pathToFile = Paths.get(args[0]).toAbsolutePath().toString();
@@ -47,5 +47,7 @@ public class Main {
 
         //fill the xml file with random data
         //new TesterFiller().collectionToXML(pathToFile);
+        */
+
     }
 }

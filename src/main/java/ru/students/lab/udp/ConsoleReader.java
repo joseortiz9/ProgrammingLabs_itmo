@@ -12,11 +12,11 @@ public class ConsoleReader extends Thread {
 
     private static final Logger LOG = LogManager.getLogger(ConsoleReader.class);
 
-    private AbsUdpSocket socket;
+    private ClientUdpChannel channel;
     private IHandlerInput userInput;
 
-    public ConsoleReader(AbsUdpSocket socket, IHandlerInput userInput) {
-        this.socket = socket;
+    public ConsoleReader(ClientUdpChannel socket, IHandlerInput userInput) {
+        this.channel = socket;
         this.userInput = userInput;
     }
 
@@ -40,7 +40,7 @@ public class ConsoleReader extends Thread {
         String commandStr;
         commandStr = userInput.readWithMessage("Write Command: ");
         ByteBuffer buff = ByteBuffer.wrap(commandStr.getBytes(StandardCharsets.UTF_8));
-        socket.sendDatagram(buff);
+        channel.sendObj(buff);
         //executeCommand(commandStr, this.userInput);
     }
 }

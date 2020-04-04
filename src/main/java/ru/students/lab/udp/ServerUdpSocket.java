@@ -40,17 +40,19 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
             System.out.println(addressFromClient);
 
             ByteBuffer petitionBuf = ByteBuffer.wrap(gottenStr.getBytes(StandardCharsets.UTF_8));
-            if (gottenStr.equals("connect")) {
-                SocketAddress existClient = checkClient(addressFromClient);
-                sendDatagram(petitionBuf, existClient);
-            } else {
-                //sendDatagram(petitionBuf, addressFromClient);
-                processObject(petitionBuf);
-            }
+            SocketAddress existClient = checkClient(addressFromClient);
+            //if (gottenStr.equals("connect")) {
+                //sendDatagram(petitionBuf, existClient);
+            //} else {
+            //sendDatagram(petitionBuf, existClient);
+            processObject(petitionBuf, existClient);
+            //}
         }
 
-        public void processObject(ByteBuffer petition) throws IOException {
-            //this.receivedObj = petition;
+        public void processObject(ByteBuffer petition, SocketAddress client) throws IOException {
+            //SocketAddress existClient = checkClient(addressFromClient);
+            sendDatagram(petition, client);
+            //sendDatagram();
         }
     }
 
@@ -102,10 +104,12 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
                 .findFirst()
                 .orElse(null);
 
-        if (client == null)
+        if (client == null) {
             clientList.add(a);
+            return clientList.get(clientList.size() - 1);
+        }
 
-        return clientList.get(clientList.size() - 1);
+        return client;
     }
 
     public void disconnect() {

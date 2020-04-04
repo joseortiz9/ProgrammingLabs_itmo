@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.client.UserInputHandler;
-import ru.students.lab.udp.ClientUdpSocket;
+import ru.students.lab.udp.ClientUdpChannel;
 import ru.students.lab.udp.ConsoleReader;
 
 import java.io.BufferedReader;
@@ -17,7 +17,7 @@ public class ClientMain extends Thread {
 
     private static final Logger LOG = LogManager.getLogger(ClientMain.class);
 
-    private static ClientUdpSocket socket = null;
+        private static ClientUdpChannel channel = null;
 
     public static void main(String[] args) {
         InetSocketAddress address = null;
@@ -39,20 +39,12 @@ public class ClientMain extends Thread {
         }
 
         try {
-            final ClientUdpSocket oldSocket = socket;
-            if (oldSocket != null) {
-                oldSocket.disconnect();
+            final ClientUdpChannel oldChannel = channel;
+            if (oldChannel != null) {
+                channel.disconnect();
             }
-            socket = new ClientUdpSocket();
-            do {
-                try {
-                    socket.tryToConnect(address);
-                } catch (SocketTimeoutException ex) {
-                    LOG.info("Server is down, Retrying....");
-                } catch (InterruptedException | IOException ex) {
-                    LOG.error("Strange Error", ex);
-                }
-            } while (!socket.isConnected());
+            channel = new ClientUdpChannel();
+            channel.tryToConnect(address);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception ex) {
@@ -65,11 +57,11 @@ public class ClientMain extends Thread {
 
         try {
             IHandlerInput userInputHandler = new UserInputHandler(true);
-            ConsoleReader sender = new ConsoleReader(socket, userInputHandler);
+            ConsoleReader sender = new ConsoleReader(channel, userInputHandler);
             sender.setName("ConsoleReaderTread");
             sender.start();
         } finally {
-            socket.disconnect();
+            //channel.disconnect();
         }
     }
 }

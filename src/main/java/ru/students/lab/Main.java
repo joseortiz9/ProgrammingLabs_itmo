@@ -27,7 +27,7 @@ public class Main {
 
                 CollectionManager collectionManager = new CollectionManager(fileManager.getCollectionFromFile());
 
-                CommandManager manager = new CommandManager(userInputHandler, fileManager, collectionManager);
+                //CommandManager manager = new CommandManager(userInputHandler, fileManager, collectionManager);
                 //manager.startInteraction();
 
             } catch (InvalidPathException ex) {

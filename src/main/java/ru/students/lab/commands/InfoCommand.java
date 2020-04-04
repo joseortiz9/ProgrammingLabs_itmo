@@ -7,25 +7,17 @@ import ru.students.lab.managers.CollectionManager;
  * @autor Хосе Ортис
  * @version 1.0
 */
-public class InfoCommand implements ICommand {
+public class InfoCommand extends AbsCommand {
 
-    public static final String DESCRIPTION = "вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)";
-    private CollectionManager collectionManager;
-    /** 
-     * Конструктор - создает объект класса InfoCommand и экземпляр класса collectionManager для последующей работы с коллекцией
-     * @see InfoCommand#InfoCommand(CollectionManager)
-     */
-    public InfoCommand(CollectionManager collectionManager) {
-        this.collectionManager = collectionManager;
-    }
+    public final String description = "вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)";
 
     @Override
-    public void execute(IHandlerInput userInputHandler, String[] args) {
-        userInputHandler.printLn(this.collectionManager.toString());
+    public Object execute(ExecutionContext context) {
+        return context.collectionManager().toString();
     }
 
-    @Override
-    public String getDescription() {
-        return DESCRIPTION;
-    }
-}
+     @Override
+     public String getDescription() {
+         return description;
+     }
+ }

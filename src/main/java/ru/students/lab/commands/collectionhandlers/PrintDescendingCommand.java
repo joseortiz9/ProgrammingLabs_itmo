@@ -1,10 +1,13 @@
 package ru.students.lab.commands.collectionhandlers;
 
 import ru.students.lab.client.IHandlerInput;
+import ru.students.lab.commands.AbsCommand;
+import ru.students.lab.commands.ExecutionContext;
 import ru.students.lab.commands.ICommand;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.models.Dragon;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
  /** 
@@ -12,18 +15,15 @@ import java.util.Map;
  * @autor Хосе Ортис
  * @version 1.0
 */
-public class PrintDescendingCommand implements ICommand {
+public class PrintDescendingCommand extends AbsCommand {
 
     public static final String DESCRIPTION = "вывести элементы коллекции в порядке убывания.\nSyntax: print_descending -{k/i/n/d} где: -k=key / -i=id / -n=name / -d=creation_date";
-    private CollectionManager collectionManager;
-    /** 
-     * Конструктор - создает объект класса PrintDescendingCommand и экземпляр класса collectionManager для последущей работе с коллекцией
-     * @see PrintDescendingCommand#PrintDescendingCommand(CollectionManager)
-     */
-    public PrintDescendingCommand(CollectionManager collectionManager) {
-        this.collectionManager = collectionManager;
-    }
 
+     @Override
+     public Object execute(ExecutionContext context) throws IOException {
+         return null;
+     }
+    /*
     @Override
     public void execute(IHandlerInput userInputHandler, String[] args) {
         List<Map.Entry<Integer, Dragon>> sortedDragons = null;
@@ -53,10 +53,6 @@ public class PrintDescendingCommand implements ICommand {
             sortedDragons.forEach(e -> userInputHandler.printElemOfList("key:" + e.getKey() + " -> " + e.getValue().toString()));
             userInputHandler.printLn(0, "Elements found: " + sortedDragons.size());
         }
-    }
+    }*/
 
-    @Override
-    public String getDescription() {
-        return DESCRIPTION;
-    }
 }

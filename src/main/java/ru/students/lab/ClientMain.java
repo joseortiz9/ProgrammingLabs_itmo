@@ -4,14 +4,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.client.UserInputHandler;
+import ru.students.lab.managers.CommandManager;
 import ru.students.lab.udp.ClientUdpChannel;
-import ru.students.lab.udp.ConsoleReader;
+import ru.students.lab.udp.CommandReader;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.StringReader;
 import java.net.*;
-import java.util.Scanner;
 
 public class ClientMain extends Thread {
 
@@ -45,9 +43,7 @@ public class ClientMain extends Thread {
             }
             channel = new ClientUdpChannel();
             channel.tryToConnect(address);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             System.err.println("Unable to connect to the server, check logs for detailed information");
             LOG.error("Unable to connect to the server", ex);
             System.exit(-1);
@@ -57,7 +53,8 @@ public class ClientMain extends Thread {
 
         try {
             IHandlerInput userInputHandler = new UserInputHandler(true);
-            ConsoleReader sender = new ConsoleReader(channel, userInputHandler);
+            CommandManager manager = new CommandManager(userInputHandler);
+            CommandReader sender = new CommandReader(channel, manager, userInputHandler);
             sender.setName("ConsoleReaderTread");
             sender.start();
         } finally {

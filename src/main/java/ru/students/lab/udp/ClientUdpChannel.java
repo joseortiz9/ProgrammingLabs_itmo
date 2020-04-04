@@ -2,8 +2,11 @@ package ru.students.lab.udp;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.students.lab.commands.AbsCommand;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.AlreadyBoundException;
@@ -38,21 +41,19 @@ public class ClientUdpChannel extends AbsUdpSocket {
 
             if (gottenStr.equals(""))
                 return;
-            else
-                sentPacket = false;
 
+            sentPacket = false;
             processReceivedObject(gottenStr);
         }
 
         public void processReceivedObject(Object receivedObj) {
-            System.out.println("received: "+receivedObj+" from "+addressServer);
+            System.out.println("From: " +addressServer+" Response:\n"+receivedObj);
         }
     }
 
 
 
     protected static final Logger LOG = LogManager.getLogger(ClientUdpChannel.class);
-    protected static final int PACKET_SIZE = 1024;
 
     protected DatagramChannel channel;
     protected volatile SocketAddress addressServer;
@@ -73,17 +74,16 @@ public class ClientUdpChannel extends AbsUdpSocket {
     }
 
 
-    public void tryToConnect(InetSocketAddress addressServer) throws IOException, InterruptedException {
+    public void tryToConnect(InetSocketAddress addressServer) {
             do {
                 try {
                     synchronized (this) {
                         this.addressServer = addressServer;
-                        ByteBuffer connect = ByteBuffer.wrap("connect".getBytes(StandardCharsets.UTF_8));
-                        sendDatagram(connect);
+                        sendCommand("connect");
                     }
                     Thread.sleep(SOCKET_TIMEOUT-200);
-                } catch (AlreadyBoundException | UnsupportedAddressTypeException | IOException ex) {
-                    LOG.error("Strange Error", ex);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
 
                 final long start = System.currentTimeMillis();
@@ -91,7 +91,6 @@ public class ClientUdpChannel extends AbsUdpSocket {
                     connected = true;
                 else
                     LOG.info("Server is down, Retrying....");
-
             } while (!isConnected());
     }
 
@@ -109,26 +108,28 @@ public class ClientUdpChannel extends AbsUdpSocket {
         return ret;
     }
 
-    public void sendObj(ByteBuffer content) {
-        try {
-            sendDatagram(content);
-        } catch (ClosedChannelException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
+    public void sendCommand(Object command) {
+        try(ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectStream = new ObjectOutputStream(byteArrayStream)) {
+
+            objectStream.writeObject(command);
+            LOG.info("send object " + command);
+
+            final ByteBuffer objectBuffer = ByteBuffer.wrap(byteArrayStream.toByteArray());
+            sendDatagram(objectBuffer);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public void receiveObj() {
-
-    }
 
     public void disconnect() {
         try {
             channel.close();
             receiverThread.interrupt();
         } catch (IOException e) {
-            LOG.error("Error trying to disconnect, doing a force out", e);
+            LOG.error("Error trying to disconnect, doing a forced out", e);
             System.exit(-1);
         }
     }

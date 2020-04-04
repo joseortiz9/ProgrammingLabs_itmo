@@ -1,26 +1,28 @@
 package ru.students.lab.commands.collectionhandlers;
 
 import ru.students.lab.client.IHandlerInput;
+import ru.students.lab.commands.AbsCommand;
+import ru.students.lab.commands.ExecutionContext;
 import ru.students.lab.commands.ICommand;
 import ru.students.lab.managers.CollectionManager;
- /** 
+
+import java.io.IOException;
+
+/**
  * Класс для выполнения и получения информации о функции удаления из коллекции элементов, ключ которых меньше чем заданный
  * @autor Хосе Ортис
  * @version 1.0
 */
-public class RemoveLowerKeyCommand implements ICommand {
+public class RemoveLowerKeyCommand extends AbsCommand {
 
     public static final String DESCRIPTION = "удалить из коллекции все элементы, ключ которых меньше, чем заданный.\nSyntax: remove_lower_key key";
-    private CollectionManager collectionManager;
-     /** 
-     * Конструктор - создает объект класса RemoveLowerKeyCommand и экземпляр класса collectionManager для последущей работе с коллекцией
-     * @see RemoveLowerKeyCommand#RemoveLowerKeyCommand(CollectionManager)
-     */
 
-    public RemoveLowerKeyCommand(CollectionManager collectionManager) {
-        this.collectionManager = collectionManager;
+    @Override
+    public Object execute(ExecutionContext context) throws IOException {
+        return null;
     }
 
+    /*
     @Override
     public void execute(IHandlerInput userInputHandler, String[] args) throws NumberFormatException {
 
@@ -32,10 +34,6 @@ public class RemoveLowerKeyCommand implements ICommand {
             userInputHandler.printLn(0,"No Dragons removed");
         else
             userInputHandler.printLn(0,"A total of " + (initialSize - finalSize) + " were removed");
-    }
+    }*/
 
-    @Override
-    public String getDescription() {
-        return DESCRIPTION;
-    }
 }

@@ -12,68 +12,17 @@ import java.util.List;
 
 public class ServerUdpSocket /*extends AbsUdpSocket*/ {
 
-    private class DataReceiver implements Runnable {
-
-        protected String receivedObj = null;
-
-        @Override
-        public void run() {
-            while (true) {
-                try {
-                    receiveData();
-                } catch (SocketTimeoutException ignored) {
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        public void receiveData() throws IOException {
-            final ByteBuffer buf = ByteBuffer.allocate(AbsUdpSocket.DATA_SIZE);
-            SocketAddress addressFromClient = receiveDatagram(buf);
-            buf.flip();
-            byte[] bytes = new byte[buf.remaining()];
-            buf.get(bytes);
-            String gottenStr = new String(bytes, StandardCharsets.UTF_8);
-
-            System.out.println(gottenStr);
-            System.out.println(addressFromClient);
-
-            ByteBuffer petitionBuf = ByteBuffer.wrap(gottenStr.getBytes(StandardCharsets.UTF_8));
-            SocketAddress existClient = checkClient(addressFromClient);
-            //if (gottenStr.equals("connect")) {
-                //sendDatagram(petitionBuf, existClient);
-            //} else {
-            //sendDatagram(petitionBuf, existClient);
-            processObject(petitionBuf, existClient);
-            //}
-        }
-
-        public void processObject(ByteBuffer petition, SocketAddress client) throws IOException {
-            //SocketAddress existClient = checkClient(addressFromClient);
-            sendDatagram(petition, client);
-            //sendDatagram();
-        }
-    }
-
     protected static final Logger LOG = LogManager.getLogger(ServerUdpSocket.class);
 
     public static final int SOCKET_TIMEOUT = 3000;
 
-    protected DatagramSocket socket = null;
+    protected DatagramSocket socket;
     protected List<SocketAddress> clientList;
-
-    protected Thread receiverThread = null;
 
     public ServerUdpSocket(InetSocketAddress a) throws SocketException {
         socket = new DatagramSocket(a);
         socket.setSoTimeout(SOCKET_TIMEOUT);
         clientList = new ArrayList<>();
-
-        LOG.info("starting receiver");
-        receiverThread = new Thread(new DataReceiver());
-        receiverThread.setName("ServerReceiverThread");
-        receiverThread.start();
     }
 
     //@Override
@@ -98,6 +47,15 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
         return packet.getSocketAddress();
     }
 
+    public void sendObjResponse(Object obj) {
+        try {
+            ByteBuffer buff = ByteBuffer.wrap(obj.toString().getBytes(StandardCharsets.UTF_8));
+            sendDatagram(buff, clientList.get(clientList.size()-1));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public SocketAddress checkClient(SocketAddress a) {
         SocketAddress client = clientList.stream()
                 .filter((c) -> c.equals(a))
@@ -108,12 +66,7 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
             clientList.add(a);
             return clientList.get(clientList.size() - 1);
         }
-
         return client;
-    }
-
-    public void disconnect() {
-        socket.disconnect();
     }
 
     public DatagramSocket getSocket() {

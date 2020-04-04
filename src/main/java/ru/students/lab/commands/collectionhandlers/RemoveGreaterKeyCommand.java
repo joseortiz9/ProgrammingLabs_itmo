@@ -1,26 +1,29 @@
 package ru.students.lab.commands.collectionhandlers;
 
 import ru.students.lab.client.IHandlerInput;
+import ru.students.lab.commands.AbsCommand;
+import ru.students.lab.commands.ExecutionContext;
 import ru.students.lab.commands.ICommand;
 import ru.students.lab.managers.CollectionManager;
- /** 
+
+import java.io.IOException;
+
+/**
  * Класс для выполнения и получения информации о функции удаления из коллекции элементов, ключ которых превышает заданный
  * @autor Хосе Ортис
  * @version 1.0
 */
 
-public class RemoveGreaterKeyCommand implements ICommand {
+public class RemoveGreaterKeyCommand extends AbsCommand {
 
     public static final String DESCRIPTION = "удалить из коллекции все элементы, ключ которых превышает заданный\nSyntax: remove_greater_key key";
-    private CollectionManager collectionManager;
-    /** 
-     * Конструктор - создает объект класса RemoveGreaterKeyCommand и экземпляр класса collectionManager для последущей работе с коллекцией
-     * @see RemoveGreaterKeyCommand#RemoveGreaterKeyCommand(CollectionManager)
-     */
-    public RemoveGreaterKeyCommand(CollectionManager collectionManager) {
-        this.collectionManager = collectionManager;
+
+    @Override
+    public Object execute(ExecutionContext context) throws IOException {
+        return null;
     }
 
+    /*
     @Override
     public void execute(IHandlerInput userInputHandler, String[] args) throws NumberFormatException {
 
@@ -32,10 +35,6 @@ public class RemoveGreaterKeyCommand implements ICommand {
             userInputHandler.printLn(0,"No Dragons removed");
         else
             userInputHandler.printLn(0,"A total of " + (initialSize - finalSize) + " were removed");
-    }
+    }*/
 
-    @Override
-    public String getDescription() {
-        return DESCRIPTION;
-    }
 }

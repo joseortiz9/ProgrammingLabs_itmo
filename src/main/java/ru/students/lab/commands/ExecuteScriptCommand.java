@@ -14,18 +14,16 @@ import java.util.Map;
  * @autor Хосе Ортис
  * @version 1.0
 */
-public class ExecuteScriptCommand implements ICommand {
+public class ExecuteScriptCommand extends AbsCommand {
 
     public static final String DESCRIPTION = "считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.\nSyntax: execute_script file_name";
-    private CommandManager commandManager;
-    /** 
-     * Конструктор - создает объект класса ExecuteScriptCommand и экземпляр класса commandManager для последущего выполнения команд
-     * @param commandManager in order to execute every command of the file
-     */
-    public ExecuteScriptCommand(CommandManager commandManager) {
-        this.commandManager = commandManager;
-    }
 
+
+    @Override
+    public Object execute(ExecutionContext context) throws IOException {
+        return null;
+    }
+    /*
     @Override
     public void execute(IHandlerInput userInputHandler, String[] args) throws IOException {
         if (args.length < 1)
@@ -43,10 +41,6 @@ public class ExecuteScriptCommand implements ICommand {
             if (userInputHandler.getResultCode() == 0)
                 i+=8;
         }
-    }
+    }*/
 
-    @Override
-    public String getDescription() {
-        return DESCRIPTION;
-    }
 }

@@ -1,9 +1,12 @@
 package ru.students.lab.managers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.commands.*;
 import ru.students.lab.commands.collectionhandlers.*;
 import ru.students.lab.exceptions.NoSuchCommandException;
+import ru.students.lab.udp.CommandReader;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -15,65 +18,61 @@ import java.util.*;
  * @version 1.0
 */
 public class CommandManager {
-    private Map<String, ICommand> commands;
-    private CollectionManager collectionManager;
-    private FileManager fileManager;
+    private static final Logger LOG = LogManager.getLogger(CommandManager.class);
+    private Map<String, AbsCommand> commands;
     private IHandlerInput userInputHandler;
     /** 
      * Конструктор - создает объект класса CommandManager
-     * @param fileManager - экземпляр класса для работы с файлами
      * @param userInputHandler - экземпляр класса для работы с вводимыми в консоль данными
-     * @param collectionManager - экземпляр класса для работы с коллекцией
      */
-    public CommandManager(IHandlerInput userInputHandler, FileManager fileManager, CollectionManager collectionManager) {
-        this.fileManager = fileManager;
+    public CommandManager(IHandlerInput userInputHandler) {
         this.userInputHandler = userInputHandler;
-        this.collectionManager =  collectionManager;
         this.commands = new HashMap<>();
         initCommands();
     }
 
     public void initCommands() {
-        commands.put("help", new HelpCommand(this.getKeysCommands()));
-        commands.put("man", new ManDescriptorCommand(this.getCommands()));
-        commands.put("info", new InfoCommand(this.getCollectionManager()));
-        commands.put("show", new ShowCommand(this.getCollectionManager()));
-        commands.put("insert", new InsertCommand(this.getCollectionManager()));
-        commands.put("update", new UpdateCommand(this.getCollectionManager()));
-        commands.put("remove_key", new RemoveKeyCommand(this.getCollectionManager()));
-        commands.put("clear", new ClearCommand(this.getCollectionManager()));
-        commands.put("save", new SaveColCommand(this.getCollectionManager(), this.getFileManager()));
-        commands.put("execute_script", new ExecuteScriptCommand(this));
-        commands.put("exit", new ExitCommand());
-        commands.put("replace_if_lower", new ReplaceIfLowerCommand(this.getCollectionManager()));
-        commands.put("remove_greater_key", new RemoveGreaterKeyCommand(this.getCollectionManager()));
-        commands.put("remove_lower_key", new RemoveLowerKeyCommand(this.getCollectionManager()));
-        commands.put("filter_contains_name", new FilterColByNameCommand(this.getCollectionManager()));
-        commands.put("filter_starts_with_name", new FilterColByNearNameCommand(this.getCollectionManager()));
-        commands.put("print_descending", new PrintDescendingCommand(this.getCollectionManager()));
+        //commands.put("help", new HelpCommand(this.getKeysCommands()));
+        //commands.put("man", new ManDescriptorCommand(this.getCommands()));
+        commands.put("info", new InfoCommand());
+        commands.put("show", new ShowCommand());
+        /*commands.put("insert", new InsertCommand());
+        commands.put("update", new UpdateCommand());
+        commands.put("remove_key", new RemoveKeyCommand());
+        commands.put("clear", new ClearCommand());
+        commands.put("execute_script", new ExecuteScriptCommand());
+        //commands.put("save", new SaveColCommand(this.getCollectionManager(), this.getFileManager()));
+        //commands.put("exit", new ExitCommand());
+        commands.put("replace_if_lower", new ReplaceIfLowerCommand());
+        commands.put("remove_greater_key", new RemoveGreaterKeyCommand());
+        commands.put("remove_lower_key", new RemoveLowerKeyCommand());
+        commands.put("filter_contains_name", new FilterColByNameCommand());
+        commands.put("filter_starts_with_name", new FilterColByNearNameCommand());
+        commands.put("print_descending", new PrintDescendingCommand());*/
     }
-
 
     /**
      * Функция выполнения команды
      * @param commandStr - строка, содержащая ключ команды
-     * @param userInputHandler - an instance of the input handler
      */
-    public void executeCommand(String commandStr, IHandlerInput userInputHandler) {
+    public AbsCommand getCommand(String commandStr) {
         try {
             String[] cmd = getCommandFromStr(commandStr);
-            ICommand command = this.getCommand(cmd[0]);
-            if (!userInputHandler.isInteractive())
-                userInputHandler.printLn("\nRUNNING COMMAND: " + commandStr);
-            command.execute(userInputHandler, this.getCommandArgs(cmd));
-        } catch (NoSuchCommandException | IOException ex) {
+            AbsCommand command = this.getCommandFromMap(cmd[0]);
+            command.setArgs(this.getCommandArgs(cmd));
+            return command;
+        } catch (NoSuchCommandException ex) {
             userInputHandler.printLn(1, ex.getMessage());
+            return null;
         } catch (NumberFormatException ex) {
             userInputHandler.printLn(1,"Incorrect format of the entered value");
+            return null;
         } catch (ArrayIndexOutOfBoundsException ex) {
             userInputHandler.printLn(1,"There is a problem in the amount of args passed");
+            return null;
         } catch (SecurityException ex) {
             userInputHandler.printLn(1,"Security problems trying to access to the file (Can not be read or edited)");
+            return null;
         }
     }
     /**
@@ -96,7 +95,7 @@ public class CommandManager {
         return inputArgs;
     }
 
-    public ICommand getCommand(String key) throws NoSuchCommandException {
+    public AbsCommand getCommandFromMap(String key) throws NoSuchCommandException {
         if (!commands.containsKey(key)) {
             throw new NoSuchCommandException("What are u writing? type 'help' for the available commands. \nUnknown: '" + key + "'");
         }
@@ -107,13 +106,7 @@ public class CommandManager {
         return this.getCommands().keySet();
     }
 
-    public Map<String, ICommand> getCommands() {
+    public Map<String, AbsCommand> getCommands() {
         return this.commands;
-    }
-    public FileManager getFileManager() {
-        return fileManager;
-    }
-    public CollectionManager getCollectionManager() {
-        return collectionManager;
     }
 }

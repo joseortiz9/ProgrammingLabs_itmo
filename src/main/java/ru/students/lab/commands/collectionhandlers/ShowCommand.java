@@ -1,6 +1,8 @@
 package ru.students.lab.commands.collectionhandlers;
 
 import ru.students.lab.client.IHandlerInput;
+import ru.students.lab.commands.AbsCommand;
+import ru.students.lab.commands.ExecutionContext;
 import ru.students.lab.commands.ICommand;
 import ru.students.lab.managers.CollectionManager;
  /** 
@@ -9,27 +11,20 @@ import ru.students.lab.managers.CollectionManager;
  * @version 1.0
 */
 
-public class ShowCommand implements ICommand {
-    
+public class ShowCommand extends AbsCommand {
 
-    public static final String DESCRIPTION = "вывести в стандартный поток вывода все элементы коллекции в строковом представлении";
-    private CollectionManager collectionManager;
-    /** 
-     * Конструктор - создает объект класса ShowCommand и экземпляр класса collectionManager для последующей работы с коллекцией
-     * @see ShowCommand#ShowCommand(CollectionManager)
-     */
-    public ShowCommand(CollectionManager collectionManager) {
-        this.collectionManager = collectionManager;
-    }
+    public final String description = "вывести в стандартный поток вывода все элементы коллекции в строковом представлении";
 
     @Override
-    public void execute(IHandlerInput userInputHandler, String[] args) {
-        this.collectionManager.getCollection().forEach((key, value) -> userInputHandler.printElemOfList("key:" + key + " -> " + value));
-        userInputHandler.printLn(0, "Elements found: " + collectionManager.getCollection().size());
+    public Object execute(ExecutionContext context) {
+        StringBuilder s = new StringBuilder();
+        context.collectionManager().getCollection().forEach((key, value) -> s.append("key:").append(key).append(" -> ").append(value).append("\n"));
+        s.append("Elements found: ").append(context.collectionManager().getCollection().size());
+        return s.toString();
     }
 
     @Override
     public String getDescription() {
-        return DESCRIPTION;
+        return description;
     }
 }

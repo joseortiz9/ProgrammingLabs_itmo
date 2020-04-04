@@ -10,16 +10,8 @@ import java.io.IOException;
 */
 
 public interface ICommand {
-    String DESCRIPTION = "No Description";
      /**
      * Функция для выполнения команды по работе с коллекцией
-     * @param userInputHandler - экземпляр интерфейса для вывода информации в консоль
-     * @param args - массив, с входными данными для передачи выполняемой команде
      */
-    void execute(IHandlerInput userInputHandler, String[] args) throws IOException;
-     /**
-     * Функция для получения описания выполняемой команды
-     * @return возвращает описание команды
-     */
-    String getDescription();
+    Object execute(ExecutionContext context) throws IOException;
 }

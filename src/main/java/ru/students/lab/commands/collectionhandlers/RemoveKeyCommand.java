@@ -15,21 +15,20 @@ import java.io.IOException;
 */
 public class RemoveKeyCommand extends AbsCommand {
 
-    public static final String DESCRIPTION = "удалить элемент из коллекции по его ключу.\nSyntax: remove_key key";
+    public final String description = "удалить элемент из коллекции по его ключу.\nSyntax: remove_key key";
 
     @Override
     public Object execute(ExecutionContext context) throws IOException {
-        return null;
+        context.result().setLength(0);
+        if (context.collectionManager().removeKey(Integer.valueOf(args[0])) != null)
+            context.result().append("k:").append(args[0]).append(" Successfully removed!");
+        else
+            context.result().append("The key '").append(args[0]).append("' doesn't exist");
+        return context.result().toString();
     }
 
-    /*
     @Override
-    public void execute(IHandlerInput userInputHandler, String[] args) throws NumberFormatException {
-
-        if (this.collectionManager.removeKey(Integer.valueOf(args[0])) != null)
-            userInputHandler.printLn(0,"k:" + args[0] + " Successfully removed!");
-        else
-            userInputHandler.printLn(1,"The key '" + args[0] + "' doesn't exist");
-    }*/
-
+    public String getDescription() {
+        return description;
+    }
 }

@@ -4,6 +4,7 @@ import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ExecutionContext;
 import ru.students.lab.commands.ICommand;
+import ru.students.lab.exceptions.DragonFormatException;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.models.Dragon;
 import ru.students.lab.factories.DragonFactory;
@@ -18,32 +19,36 @@ import java.io.IOException;
 
 public class ReplaceIfLowerCommand extends AbsCommand {
 
-    public static final String DESCRIPTION = "заменить значение по ключу, если новое значение меньше старого.\nSyntax: replace_if_lower key {element}";
+    public final String description = "заменить значение по ключу, если новое значение меньше старого.\nSyntax: replace_if_lower key {element}";
+    protected boolean requireInputs = true;
+    protected Dragon dragon = null;
 
-    private DragonFactory dragonFactory;
-    /** 
-     * Конструктор - создает объект класса ReplaceIfLowerCommand и экземпляр класса collectionManager для последущей работе с коллекцией; создает экземпляр класса DragonFactory для создания экземпляра класса Dragon
-     */
-    public ReplaceIfLowerCommand() {
-        this.dragonFactory = new DragonFactory();
+    @Override
+    public void addDragonInput(Dragon dragon) {
+        this.dragon = dragon;
     }
 
     @Override
     public Object execute(ExecutionContext context) throws IOException {
-        return null;
-    }
-
-    /*
-    @Override
-    public void execute(IHandlerInput userInputHandler, String[] args) throws NumberFormatException {
-
-        Dragon newDragon = dragonFactory.generateDragonByInput(userInputHandler);
+        context.result().setLength(0);
+        if (dragon == null)
+            throw new DragonFormatException();
 
         // If it successfully replace it, returns the value of the old mapped object
-        if (this.collectionManager.replaceIfLower(Integer.valueOf(args[0]), newDragon) != null)
-            userInputHandler.printLn(0,newDragon.toString() + " replaced the young poor dragon!");
+        if (context.collectionManager().replaceIfLower(Integer.valueOf(args[0]), dragon) != null)
+            context.result().append(dragon.toString()).append(" replaced the young poor dragon!");
         else
-            userInputHandler.printLn(1,"The key '" + Integer.valueOf(args[0]) + "' doesn't exist or is not old enough!");
-    }*/
+            context.result().append("The key '").append(Integer.valueOf(args[0])).append("' doesn't exist or is not old enough!");
+        return context.result().toString();
+    }
 
+    @Override
+    public boolean requireDragonInput() {
+        return requireInputs;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
 }

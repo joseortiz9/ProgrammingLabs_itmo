@@ -17,10 +17,10 @@ public class ShowCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context) {
-        StringBuilder s = new StringBuilder();
-        context.collectionManager().getCollection().forEach((key, value) -> s.append("key:").append(key).append(" -> ").append(value).append("\n"));
-        s.append("Elements found: ").append(context.collectionManager().getCollection().size());
-        return s.toString();
+        context.result().setLength(0);
+        context.collectionManager().getCollection().forEach((key, value) -> context.result().append("key:").append(key).append(" -> ").append(value).append("\n"));
+        context.result().append("Elements found: ").append(context.collectionManager().getCollection().size());
+        return context.result().toString();
     }
 
     @Override

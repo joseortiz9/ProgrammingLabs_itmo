@@ -16,13 +16,6 @@ public class DragonFactory {
 
     private IHandlerInput inputHandler;
 
-    /**
-     * Конструктор - создает пустой экземпляр класса of a Dragon factory
-     * @see Dragon#Dragon()
-     */
-    public DragonFactory() {
-    }
-
     //execute_script script_test.txt
     //execute_script insc.txt
 
@@ -145,40 +138,41 @@ public class DragonFactory {
     }
 
     /**
-     *
-     * check if the number comply the validation rule
-     *
-     * @param num Long representing the number to validate
-     * @param min int validation rule
-     * @return is bigger than the validation rule
-     */
-    public boolean checkValidNumber(Long num, int min) {
-        return num > min;
-    }
-    /**
-     *
-     * check if the number comply the validation rule
-     *
-     * @param num DOuble representing the number to validate
-     * @param min int validation rule
-     * @return is bigger than the validation rule
-     */
-    public boolean checkValidNumber(Double num, int min) {
+    *
+    * check if the number comply the validation rule
+    *
+    * @param num Long representing the number to validate
+    * @param min int validation rule
+    * @return is bigger than the validation rule
+    */
+    private boolean checkValidNumber(Long num, int min) {
         return num > min;
     }
 
     /**
-     *
-     * gets the Object resulted from the valueOf method inside the passed class
-     *
-     * @param toClass class from which we want to get the method
-     * @param s parameter of the method
-     * @return the Object got after running the valueOf()
-     * @throws InvocationTargetException happens when the invoke method has a error
-     * @throws IllegalAccessException when the method invoked has no access to the specified class
-     * @throws NoSuchMethodException when the method is not found in the passed class
-     */
-    public static Object getValueOf(Class<?> toClass, String s) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+    *
+    * check if the number comply the validation rule
+    *
+    * @param num DOuble representing the number to validate
+    * @param min int validation rule
+    * @return is bigger than the validation rule
+    */
+    private boolean checkValidNumber(Double num, int min) {
+        return num > min;
+    }
+
+    /**
+    *
+    * gets the Object resulted from the valueOf method inside the passed class
+    *
+    * @param toClass class from which we want to get the method
+    * @param s parameter of the method
+    * @return the Object got after running the valueOf()
+    * @throws InvocationTargetException happens when the invoke method has a error
+    * @throws IllegalAccessException when the method invoked has no access to the specified class
+    * @throws NoSuchMethodException when the method is not found in the passed class
+    */
+    private static Object getValueOf(Class<?> toClass, String s) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         if (toClass.equals(String.class) || s.equals("")) return s;
         Method method = toClass.getMethod("valueOf", String.class);
         return method.invoke(null, s);

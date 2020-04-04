@@ -16,25 +16,24 @@ import java.io.IOException;
 
 public class RemoveGreaterKeyCommand extends AbsCommand {
 
-    public static final String DESCRIPTION = "удалить из коллекции все элементы, ключ которых превышает заданный\nSyntax: remove_greater_key key";
+    public final String description = "удалить из коллекции все элементы, ключ которых превышает заданный\nSyntax: remove_greater_key key";
 
     @Override
     public Object execute(ExecutionContext context) throws IOException {
-        return null;
-    }
-
-    /*
-    @Override
-    public void execute(IHandlerInput userInputHandler, String[] args) throws NumberFormatException {
-
-        int initialSize = this.collectionManager.getCollection().size();
-        this.collectionManager.removeGreaterKey(Integer.valueOf(args[0]));
-        int finalSize = this.collectionManager.getCollection().size();
+        context.result().setLength(0);
+        int initialSize = context.collectionManager().getCollection().size();
+        context.collectionManager().removeGreaterKey(Integer.valueOf(args[0]));
+        int finalSize = context.collectionManager().getCollection().size();
 
         if (initialSize == finalSize)
-            userInputHandler.printLn(0,"No Dragons removed");
+            context.result().append("No Dragons removed");
         else
-            userInputHandler.printLn(0,"A total of " + (initialSize - finalSize) + " were removed");
-    }*/
+            context.result().append("A total of ").append(initialSize - finalSize).append(" were removed");
+        return context.result().toString();
+    }
 
+    @Override
+    public String getDescription() {
+        return description;
+    }
 }

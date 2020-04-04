@@ -40,6 +40,7 @@ public class ServerMain {
 
             FileManager fileManager = new FileManager(Paths.get("data.xml").toAbsolutePath().toString());
             CollectionManager collectionManager = new CollectionManager(fileManager.getCollectionFromFile());
+            StringBuilder stringBuilder = new StringBuilder();
             ExecutionContext executionContext = new ExecutionContext() {
                 @Override
                 public CollectionManager collectionManager() {
@@ -48,6 +49,10 @@ public class ServerMain {
                 @Override
                 public FileManager fileManager() {
                     return fileManager;
+                }
+                @Override
+                public StringBuilder result() {
+                    return stringBuilder;
                 }
             };
 

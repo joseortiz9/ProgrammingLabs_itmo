@@ -1,11 +1,17 @@
 package ru.students.lab.models;
- /** 
+
+import java.io.Serializable;
+
+/**
  * Класс модели головы дракона
  * @autor Хосе Ортис
  * @version 1.0
 */
 
-public class DragonHead {
+public class DragonHead implements Serializable {
+
+    private static final long serialVersionUID = 4259939532361840335L;
+
     private Double eyesCount; //Поле может быть null
     /** 
      * Конструктор - создает пустой объект класса DragonHead

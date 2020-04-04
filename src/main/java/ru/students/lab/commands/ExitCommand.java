@@ -12,16 +12,11 @@ import java.io.IOException;
 
 public class ExitCommand extends AbsCommand {
 
-    public static final String DESCRIPTION = "завершить программу (без сохранения в файл))";
+    public final String description = "завершить программу (без сохранения в файл))";
 
     @Override
     public Object execute(ExecutionContext context) throws IOException {
         return null;
     }
-    /*
-    @Override
-    public void execute(IHandlerInput userInputHandler, String[] args) {
-        System.exit(0);
-    }*/
 
 }

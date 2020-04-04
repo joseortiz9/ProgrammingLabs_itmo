@@ -1,10 +1,16 @@
 package ru.students.lab.models;
- /** 
+
+import java.io.Serializable;
+
+/**
  * Класс модели координат
  * @autor Хосе Ортис
  * @version 1.0
 */
-public class Coordinates {
+public class Coordinates implements Serializable {
+
+    private static final long serialVersionUID = 5612033257773982277L;
+
     private Long x; //Значение поля должно быть больше -328, Поле не может быть null
     private Float y; //Поле не может быть null
     /** 

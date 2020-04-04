@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -16,7 +17,10 @@ import java.time.format.DateTimeFormatter;
 */
 @XmlRootElement(name = "dragon")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Dragon implements Comparable<Dragon> {
+public class Dragon implements Comparable<Dragon>, Serializable {
+
+    private static final long serialVersionUID = -4227836017018935821L;
+
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null

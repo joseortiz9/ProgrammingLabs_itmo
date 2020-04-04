@@ -11,16 +11,26 @@ import java.util.Set;
 */
 public class HelpCommand extends AbsCommand {
 
-    public static final String DESCRIPTION = "вывести справку по доступным командам";
+    public final String description = "";
+    private Set<String> keysCommands;
 
-     @Override
-     public Object execute(ExecutionContext context) throws IOException {
-         return null;
-     }
-     /*
+    /**
+    * Конструктор - создает объект класса HelpCommand и keysCommands для вывода доступных команд
+    * @param keysCommands - keys for showing commands available
+    */
+    public HelpCommand(Set<String> keysCommands) {
+        this.keysCommands = keysCommands;
+    }
+
     @Override
-    public void execute(IHandlerInput userInputHandler, String[] args) {
-        userInputHandler.printLn("Some Commands for you! \n" + this.keysCommands.toString() + "\n Write man {key} to have some details");
-    }*/
+    public Object execute(ExecutionContext context) throws IOException {
+        StringBuilder s = new StringBuilder();
+        s.append("Some Commands for you! \n").append(this.keysCommands.toString()).append("\nWrite man {key} to have some details");
+        return s.toString();
+    }
 
+    @Override
+    public String getDescription() {
+        return description;
+    }
 }

@@ -6,4 +6,5 @@ import ru.students.lab.managers.FileManager;
 public interface ExecutionContext {
     CollectionManager collectionManager();
     FileManager fileManager();
+    StringBuilder result();
 }

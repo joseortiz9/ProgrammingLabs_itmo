@@ -4,6 +4,7 @@ import ru.students.lab.client.IHandlerInput;
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ExecutionContext;
 import ru.students.lab.commands.ICommand;
+import ru.students.lab.exceptions.DragonFormatException;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.models.Dragon;
 import ru.students.lab.factories.DragonFactory;
@@ -18,40 +19,41 @@ import java.io.IOException;
 public class UpdateCommand extends AbsCommand {
 
     public static final String DESCRIPTION = "обновить значение элемента коллекции, id которого равен заданному.\nSyntax: update id {element}";
-    private DragonFactory dragonFactory;
+    protected boolean requireInputs = true;
+    protected Dragon dragon = null;
 
-    /**
-     * Конструктор - создает объект класса UpdateCommand и экземпляр класса collectionManager для последующей работы с коллекцией; создает экземпляр класса DragonFactory для создания экземпляра класса Dragon
-     */
-    public UpdateCommand() {
-        this.dragonFactory = new DragonFactory();
+    @Override
+    public void addDragonInput(Dragon dragon) {
+        this.dragon = dragon;
     }
 
     @Override
     public Object execute(ExecutionContext context) throws IOException {
-        return null;
-    }
-
-    /*
-    @Override
-    public void execute(IHandlerInput userInputHandler, String[] args) throws NumberFormatException {
-        if (args.length == 0)
-            throw new ArrayIndexOutOfBoundsException();
-
-        Dragon newDragon = (userInputHandler.isInteractive()) ?
+        context.result().setLength(0);
+        /*Dragon newDragon = (userInputHandler.isInteractive()) ?
                 dragonFactory.generateDragonByInput(userInputHandler) :
-                dragonFactory.generateFromScript(userInputHandler);
+                dragonFactory.generateFromScript(userInputHandler);*/
 
-        if (newDragon == null) {
-            userInputHandler.printLn(1,"That Dragon has format problems!");
-            return;
-        }
+        if (dragon == null)
+            throw new DragonFormatException();
 
         // If it successfully replace it, returns the value of the old mapped object
-        if (this.collectionManager.update(Integer.valueOf(args[0]), newDragon) != null)
-            userInputHandler.printLn(0,newDragon.toString() + " Updated!");
+        if (context.collectionManager().update(Integer.valueOf(args[0]), dragon) != null)
+            context.result().append(dragon.toString()).append(" Updated!");
         else
-            userInputHandler.printLn(1,"The ID '" + Integer.valueOf(args[0]) + "' doesn't exist");
-    }*/
+            context.result().append("The ID '").append(Integer.valueOf(args[0])).append("' doesn't exist");
+
+        return context.result().toString();
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public boolean requireDragonInput() {
+        return requireInputs;
+    }
 
 }

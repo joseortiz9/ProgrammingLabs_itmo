@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class SaveColCommand extends AbsCommand {
 
-    public static final String DESCRIPTION = "сохранить коллекцию в файл";
+    public final String description = "сохранить коллекцию в файл";
     private CollectionManager collectionManager;
     private FileManager fileManager;
 

@@ -17,42 +17,43 @@ import java.util.Map;
 */
 public class PrintDescendingCommand extends AbsCommand {
 
-    public static final String DESCRIPTION = "вывести элементы коллекции в порядке убывания.\nSyntax: print_descending -{k/i/n/d} где: -k=key / -i=id / -n=name / -d=creation_date";
+    public final String description = "вывести элементы коллекции в порядке убывания.\nSyntax: print_descending -{k/i/n/d} где: -k=key / -i=id / -n=name / -d=creation_date";
 
      @Override
      public Object execute(ExecutionContext context) throws IOException {
-         return null;
+         context.result().setLength(0);
+         List<Map.Entry<Integer, Dragon>> sortedDragons = null;
+
+         switch (args[0]) {
+             case "":
+             case "-k":
+                 System.out.println("Sorting by key...");
+                 sortedDragons = context.collectionManager().sortByKey();
+                 break;
+             case "-i":
+                 System.out.println("Sorting by ID...");
+                 sortedDragons = context.collectionManager().sortById();
+                 break;
+             case "-n":
+                 System.out.println("Sorting by Name...");
+                 sortedDragons = context.collectionManager().sortByName();
+                 break;
+             case "-d":
+                 System.out.println("Sorting by Creation Date...");
+                 sortedDragons = context.collectionManager().sortByCreationDate();
+                 break;
+             default:
+                 context.result().append("This option is not available. Correct= -{k/i/n/d}");
+         }
+         if (sortedDragons != null) {
+             sortedDragons.forEach(e -> context.result().append("key:").append(e.getKey()).append(" -> ").append(e.getValue().toString()));
+             context.result().append("Elements found: ").append(sortedDragons.size());
+         }
+         return context.result().toString();
      }
-    /*
-    @Override
-    public void execute(IHandlerInput userInputHandler, String[] args) {
-        List<Map.Entry<Integer, Dragon>> sortedDragons = null;
 
-        switch (args[0]) {
-            case "":
-            case "-k":
-                System.out.println("Sorting by key...");
-                sortedDragons = this.collectionManager.sortByKey();
-                break;
-            case "-i":
-                System.out.println("Sorting by ID...");
-                sortedDragons = this.collectionManager.sortById();
-                break;
-            case "-n":
-                System.out.println("Sorting by Name...");
-                sortedDragons = this.collectionManager.sortByName();
-                break;
-            case "-d":
-                System.out.println("Sorting by Creation Date...");
-                sortedDragons = this.collectionManager.sortByCreationDate();
-                break;
-            default:
-                userInputHandler.printLn(1,"This option is not available. Correct= -{k/i/n/d}");
-        }
-        if (sortedDragons != null) {
-            sortedDragons.forEach(e -> userInputHandler.printElemOfList("key:" + e.getKey() + " -> " + e.getValue().toString()));
-            userInputHandler.printLn(0, "Elements found: " + sortedDragons.size());
-        }
-    }*/
-
-}
+     @Override
+     public String getDescription() {
+         return description;
+     }
+ }

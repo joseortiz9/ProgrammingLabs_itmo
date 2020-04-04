@@ -119,6 +119,7 @@ public class ClientUdpChannel extends AbsUdpSocket {
             sendDatagram(objectBuffer);
 
         } catch (IOException e) {
+            System.err.println(e.getMessage());
             e.printStackTrace();
         }
     }

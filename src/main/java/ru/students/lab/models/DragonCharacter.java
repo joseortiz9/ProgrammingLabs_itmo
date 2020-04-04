@@ -1,5 +1,6 @@
 package ru.students.lab.models;
 
+import java.io.Serializable;
 import java.util.Random;
  /** 
  * Класс для хранения доступных значений поля DragonCharacter класса Dragon и работы с ним

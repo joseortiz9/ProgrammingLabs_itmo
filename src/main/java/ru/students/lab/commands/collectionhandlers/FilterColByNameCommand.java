@@ -18,21 +18,23 @@ import java.util.Map;
 
 public class FilterColByNameCommand extends AbsCommand {
 
-    public static final String DESCRIPTION = "вывести элементы, значение поля name которых содержит заданную.\nSyntax: filter_contains_name name";
+    public final String description = "вывести элементы, значение поля name которых содержит заданную.\nSyntax: filter_contains_name name";
 
      @Override
      public Object execute(ExecutionContext context) throws IOException {
-         return null;
+         context.result().setLength(0);
+         List<Map.Entry<Integer, Dragon>> filteredCol = context.collectionManager().filterContainsName(args[0]);
+         if (filteredCol.isEmpty())
+             context.result().append("No elements found.");
+         else {
+             filteredCol.forEach(e -> context.result().append("key:").append(e.getKey()).append(" -> ").append(e.getValue().toString()));
+             context.result().append("Elements found: ").append(filteredCol.size());
+         }
+         return context.result().toString();
      }
-     /*
-    @Override
-    public void execute(IHandlerInput userInputHandler, String[] args) {
-        List<Map.Entry<Integer, Dragon>> filteredCol = this.collectionManager.filterContainsName(args[0]);
-        if (filteredCol.isEmpty())
-            userInputHandler.printLn(0,"No elements found.");
-        else {
-            filteredCol.forEach(e -> userInputHandler.printElemOfList("key:" + e.getKey() + " -> " + e.getValue().toString()));
-            userInputHandler.printLn(0, "Elements found: " + filteredCol.size());
-        }
-    }*/
-}
+
+     @Override
+     public String getDescription() {
+         return description;
+     }
+ }

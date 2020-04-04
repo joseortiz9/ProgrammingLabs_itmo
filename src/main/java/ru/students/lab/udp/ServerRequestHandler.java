@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ExecutionContext;
+import ru.students.lab.exceptions.DragonFormatException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -59,7 +60,21 @@ public class ServerRequestHandler {
                     responseExecution = obj;
                 else {
                     AbsCommand command = (AbsCommand) obj;
-                    responseExecution = command.execute(executionContext);
+                    try {
+                        responseExecution = command.execute(executionContext);
+                    }catch (DragonFormatException ex) {
+                        responseExecution = ex.getMessage();
+                        LOG.error(ex.getMessage(), ex);
+                    } catch (NumberFormatException ex) {
+                        responseExecution = "Incorrect format of the entered value";
+                        LOG.error("Incorrect format of the entered value", ex);
+                    } catch (ArrayIndexOutOfBoundsException ex) {
+                        responseExecution = "There is a problem in the amount of args passed";
+                        LOG.error("There is a problem in the amount of args passed", ex);
+                    } catch (SecurityException ex) {
+                        responseExecution = "Security problems trying to access to the file (Can not be read or edited)";
+                        LOG.error("Security problems trying to access to the file (Can not be read or edited)", ex);
+                    }
                 }
                 socket.sendObjResponse(responseExecution);
             }

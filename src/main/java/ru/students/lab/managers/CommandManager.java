@@ -18,7 +18,6 @@ import java.util.*;
  * @version 1.0
 */
 public class CommandManager {
-    private static final Logger LOG = LogManager.getLogger(CommandManager.class);
     private Map<String, AbsCommand> commands;
     private IHandlerInput userInputHandler;
     /** 

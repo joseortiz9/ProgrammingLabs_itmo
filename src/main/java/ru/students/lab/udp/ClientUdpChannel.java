@@ -138,13 +138,18 @@ public class ClientUdpChannel extends AbsUdpSocket {
 
             objectStream.writeObject(command);
             LOG.info("send object " + command);
-
             final ByteBuffer objectBuffer = ByteBuffer.wrap(byteArrayStream.toByteArray());
-            sendDatagram(objectBuffer);
 
-        } catch (IOException e) {
+            final long start = System.currentTimeMillis();
+            sendDatagram(objectBuffer);
+            Thread.sleep(500);
+            if (sentPacket && connected && System.currentTimeMillis() - start > 500) {
+                connected = false;
+                tryToConnect((InetSocketAddress)addressServer);
+            }
+        } catch (IOException | InterruptedException e) {
             System.err.println(e.getMessage());
-            e.printStackTrace();
+            LOG.error("", e);
         }
     }
 

@@ -38,7 +38,6 @@ public class CommandManager {
         commands.put("show", new ShowCommand());
         commands.put("insert", new InsertCommand());
         commands.put("update", new UpdateCommand());
-
         commands.put("remove_key", new RemoveKeyCommand());
         commands.put("clear", new ClearCommand());
         commands.put("replace_if_lower", new ReplaceIfLowerCommand());
@@ -48,7 +47,7 @@ public class CommandManager {
         commands.put("filter_starts_with_name", new FilterColByNearNameCommand());
         commands.put("print_descending", new PrintDescendingCommand());
         commands.put("exit", new ExitCommand());
-        //commands.put("execute_script", new ExecuteScriptCommand());
+        commands.put("execute_script", new ExecuteScriptCommand());
         //commands.put("save", new SaveColCommand(this.getCollectionManager(), this.getFileManager()));
     }
 

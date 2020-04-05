@@ -49,35 +49,35 @@ public class ServerRequestHandler {
             try (ObjectInputStream stream = new ObjectInputStream(new ByteArrayInputStream(petitionBytes))) {
                 final Object obj = stream.readObject();
                 LOG.info("received object: " + obj);
+                if (obj == null)
+                    throw new ClassNotFoundException();
                 executeObj(obj);
             }
         }
 
         private void executeObj(Object obj) throws IOException {
-            if (obj != null) {
-                Object responseExecution;
-                if (obj instanceof String)
-                    responseExecution = obj;
-                else {
-                    AbsCommand command = (AbsCommand) obj;
-                    try {
-                        responseExecution = command.execute(executionContext);
-                    }catch (DragonFormatException ex) {
-                        responseExecution = ex.getMessage();
-                        LOG.error(ex.getMessage(), ex);
-                    } catch (NumberFormatException ex) {
-                        responseExecution = "Incorrect format of the entered value";
-                        LOG.error("Incorrect format of the entered value", ex);
-                    } catch (ArrayIndexOutOfBoundsException ex) {
-                        responseExecution = "There is a problem in the amount of args passed";
-                        LOG.error("There is a problem in the amount of args passed", ex);
-                    } catch (SecurityException ex) {
-                        responseExecution = "Security problems trying to access to the file (Can not be read or edited)";
-                        LOG.error("Security problems trying to access to the file (Can not be read or edited)", ex);
-                    }
+            Object responseExecution;
+            if (obj instanceof String)
+                responseExecution = obj;
+            else {
+                AbsCommand command = (AbsCommand) obj;
+                try {
+                    responseExecution = command.execute(executionContext);
+                }catch (DragonFormatException ex) {
+                    responseExecution = ex.getMessage();
+                    LOG.error(ex.getMessage(), ex);
+                } catch (NumberFormatException ex) {
+                    responseExecution = "Incorrect format of the entered value";
+                    LOG.error("Incorrect format of the entered value", ex);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                    responseExecution = "There is a problem in the amount of args passed";
+                    LOG.error("There is a problem in the amount of args passed", ex);
+                } catch (SecurityException ex) {
+                    responseExecution = "Security problems trying to access to the file (Can not be read or edited)";
+                    LOG.error("Security problems trying to access to the file (Can not be read or edited)", ex);
                 }
-                socket.sendObjResponse(responseExecution);
             }
+            socket.sendResponse(responseExecution);
         }
     }
 

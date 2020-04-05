@@ -33,9 +33,10 @@ public class CommandReader extends Thread {
     public void run() {
         while(true) {
             try {
+                Thread.sleep(200);
                 startInteraction();
             }catch (NullPointerException ignored) {
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         }

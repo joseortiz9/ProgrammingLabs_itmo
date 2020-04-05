@@ -5,7 +5,14 @@ import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ExecutionContext;
 import ru.students.lab.commands.ICommand;
 import ru.students.lab.managers.CollectionManager;
- /** 
+import ru.students.lab.models.Dragon;
+import ru.students.lab.util.ListEntrySerializable;
+
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+/**
  * Класс для выполнения и получения информации о функции вывода всех элементов коллекции в строковом представлении
  * @autor Хосе Ортис
  * @version 1.0
@@ -17,10 +24,7 @@ public class ShowCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context) {
-        context.result().setLength(0);
-        context.collectionManager().getCollection().forEach((key, value) -> context.result().append("key:").append(key).append(" -> ").append(value).append("\n"));
-        context.result().append("Elements found: ").append(context.collectionManager().getCollection().size());
-        return context.result().toString();
+        return context.collectionManager().getSerializableList();
     }
 
     @Override

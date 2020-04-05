@@ -3,7 +3,9 @@ package ru.students.lab.udp;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -47,12 +49,19 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
         return packet.getSocketAddress();
     }
 
-    public void sendObjResponse(Object obj) {
-        try {
-            ByteBuffer buff = ByteBuffer.wrap(obj.toString().getBytes(StandardCharsets.UTF_8));
-            sendDatagram(buff, clientList.get(clientList.size()-1));
-        } catch (IOException ex) {
-            ex.printStackTrace();
+    public void sendResponse(Object response) {
+        try(ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectStream = new ObjectOutputStream(byteArrayStream)) {
+
+            objectStream.writeObject(response);
+            LOG.info("send object " + response.toString());
+
+            final ByteBuffer objectBuffer = ByteBuffer.wrap(byteArrayStream.toByteArray());
+            sendDatagram(objectBuffer, clientList.get(clientList.size()-1));
+
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 

@@ -6,6 +6,7 @@ import ru.students.lab.commands.ExecutionContext;
 import ru.students.lab.commands.ICommand;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.models.Dragon;
+import ru.students.lab.util.ListEntrySerializable;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,33 +23,31 @@ public class PrintDescendingCommand extends AbsCommand {
      @Override
      public Object execute(ExecutionContext context) throws IOException {
          context.result().setLength(0);
-         List<Map.Entry<Integer, Dragon>> sortedDragons = null;
+         List<ListEntrySerializable> sortedDragons = null;
 
          switch (args[0]) {
              case "":
              case "-k":
-                 System.out.println("Sorting by key...");
+                 //System.out.println("Sorting by key...");
                  sortedDragons = context.collectionManager().sortByKey();
                  break;
              case "-i":
-                 System.out.println("Sorting by ID...");
+                 //System.out.println("Sorting by ID...");
                  sortedDragons = context.collectionManager().sortById();
                  break;
              case "-n":
-                 System.out.println("Sorting by Name...");
+                 //System.out.println("Sorting by Name...");
                  sortedDragons = context.collectionManager().sortByName();
                  break;
              case "-d":
-                 System.out.println("Sorting by Creation Date...");
+                 //System.out.println("Sorting by Creation Date...");
                  sortedDragons = context.collectionManager().sortByCreationDate();
                  break;
              default:
                  context.result().append("This option is not available. Correct= -{k/i/n/d}");
          }
-         if (sortedDragons != null) {
-             sortedDragons.forEach(e -> context.result().append("key:").append(e.getKey()).append(" -> ").append(e.getValue().toString()).append("\n"));
-             context.result().append("Elements found: ").append(sortedDragons.size());
-         }
+         if (sortedDragons != null)
+             return sortedDragons;
          return context.result().toString();
      }
 

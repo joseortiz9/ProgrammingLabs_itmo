@@ -3,10 +3,10 @@ package ru.students.lab.udp;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.commands.AbsCommand;
+import ru.students.lab.models.Dragon;
+import ru.students.lab.util.ListEntrySerializable;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.AlreadyBoundException;
@@ -14,6 +14,9 @@ import java.nio.channels.ClosedChannelException;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.UnsupportedAddressTypeException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ClientUdpChannel extends AbsUdpSocket {
 
@@ -24,30 +27,51 @@ public class ClientUdpChannel extends AbsUdpSocket {
                 try {
                     receiveData();
                 } catch (ClosedChannelException ignored) {
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (EOFException ex) {
+                    System.err.println("Reached limit of data to receive");
+                    LOG.error("Reached Limit", ex);
+                } catch (IOException | ClassNotFoundException e) {
+                    LOG.error("I/O Problems", e);
                 }
             }
         }
 
-        public void receiveData() throws IOException {
+        public void receiveData() throws IOException, ClassNotFoundException {
             final ByteBuffer buf = ByteBuffer.allocate(AbsUdpSocket.DATA_SIZE);
             final SocketAddress addressFromServer = receiveDatagram(buf);
             buf.flip();
 
             byte[] bytes = new byte[buf.remaining()];
             buf.get(bytes);
-            String gottenStr = new String(bytes, StandardCharsets.UTF_8);
 
-            if (gottenStr.equals(""))
+            if (bytes.length < 1)
                 return;
 
             sentPacket = false;
-            processReceivedObject(gottenStr);
+            if (bytes.length < AbsUdpSocket.DATA_SIZE)
+                processResponse(bytes);
+            else
+                throw new EOFException();
         }
 
-        public void processReceivedObject(Object receivedObj) {
-            System.out.println("From: " +addressServer+" Response:\n"+receivedObj);
+        private void processResponse(byte[] petitionBytes) throws IOException, ClassNotFoundException {
+            try (ObjectInputStream stream = new ObjectInputStream(new ByteArrayInputStream(petitionBytes))) {
+                final Object obj = stream.readObject();
+                LOG.info("received object: " + obj);
+                if (obj == null)
+                    throw new ClassNotFoundException();
+                printObj(obj);
+            }
+        }
+
+        private void printObj(Object obj) throws ClassNotFoundException {
+            if (obj instanceof String)
+                System.out.println(obj);
+            else if (obj instanceof List) {
+                ((List<ListEntrySerializable>) obj).stream().forEach(e -> System.out.println("key:" + e.getKey() + " -> " + e.getDragon().toString()));
+                System.out.println("Elements found: "+ ((List) obj).size());
+            } else
+                throw new ClassNotFoundException();
         }
     }
 

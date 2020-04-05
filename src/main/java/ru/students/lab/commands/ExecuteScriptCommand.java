@@ -16,8 +16,7 @@ import java.util.Map;
 */
 public class ExecuteScriptCommand extends AbsCommand {
 
-    public static final String DESCRIPTION = "считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.\nSyntax: execute_script file_name";
-
+    public final String description = "считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.\nSyntax: execute_script file_name";
 
     @Override
     public Object execute(ExecutionContext context) throws IOException {
@@ -43,4 +42,8 @@ public class ExecuteScriptCommand extends AbsCommand {
         }
     }*/
 
+    @Override
+    public String getDescription() {
+        return description;
+    }
 }

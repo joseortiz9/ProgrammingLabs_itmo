@@ -1,6 +1,7 @@
 package ru.students.lab.managers;
 
 import ru.students.lab.models.Dragon;
+import ru.students.lab.util.ListEntrySerializable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,16 +38,18 @@ public class CollectionManager {
     public void clear() {
         this.getCollection().clear();
     }
+
     /**
      * Функция сортировки коллекции по ключу
      * @return возвращает коллекцию
      */
-    public List<Map.Entry<Integer, Dragon>> sortByKey()
+    public List<ListEntrySerializable> sortByKey()
     {
         return this.getCollection()
                 .entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByKey())
+                .map(e -> new ListEntrySerializable(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
 
@@ -54,39 +57,43 @@ public class CollectionManager {
      * Функция сортировки коллекции
      * @return возвращает отсортированную по ID {@link Dragon#id} коллекцию
      */
-    public List<Map.Entry<Integer, Dragon>> sortById()
+    public List<ListEntrySerializable> sortById()
     {
 
         return this.getCollection()
                 .entrySet()
                 .stream()
                 .sorted(Comparator.comparing(x -> x.getValue().getId()))
+                .map(e -> new ListEntrySerializable(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
     /**
      * Функция сортировки коллекции
      * @return возвращает отсортированную по имени {@link Dragon#name} коллекцию
      */
-    public List<Map.Entry<Integer, Dragon>> sortByName() {
+    public List<ListEntrySerializable> sortByName() {
 
         return this.getCollection()
                 .entrySet()
                 .stream()
                 .sorted((x, y) -> x.getValue().getName().compareTo(y.getValue().getName()))
+                .map(e -> new ListEntrySerializable(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
     /**
      * Функция сортировки коллекции
      * @return возвращает отсортированную по дате создания элемента коллекцию
      */
-    public List<Map.Entry<Integer, Dragon>> sortByCreationDate() {
+    public List<ListEntrySerializable> sortByCreationDate() {
 
         return this.getCollection()
                 .entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue())
+                .map(e -> new ListEntrySerializable(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
+
     /**
      * Функция изменения коллекции 
      * @param key - ключ, представляющий экземпляр класса Dragon внутри коллекции
@@ -99,6 +106,7 @@ public class CollectionManager {
 
         return this.getCollection().putIfAbsent(key, newDragon);
     }
+
     /**
      * Функция изменения коллекции 
      * @param id - номер обновляемого экземпляра класса Dragon
@@ -120,12 +128,12 @@ public class CollectionManager {
         return oldDragonKey.map(integerDragonEntry ->
                 this.getCollection().replace(integerDragonEntry.getKey(), newDragon)).orElse(null);
     }
+
     /**
      * Функция изменения коллекции - удаление элемента по ключу
      * @param key - ключ, представляющий экземпляр класса Dragon внутри коллекции
      * @return возвращает измененную коллекцию 
      */
-
     public Object removeKey(Integer key)
     {
         return this.getCollection().remove(key);
@@ -161,6 +169,7 @@ public class CollectionManager {
                 .entrySet()
                 .removeIf(dragonEntry -> dragonEntry.getKey() > key);
     }
+
     /**
      * Функция изменения коллекции - удаление элементов коллекции , ключ которых меньше заданного 
      * @param key - ключ, представляющий экземпляр класса Dragon внутри коллекции
@@ -172,33 +181,43 @@ public class CollectionManager {
                 .entrySet()
                 .removeIf(dragonEntry -> key > dragonEntry.getKey());
     }
-    /**
-     * Функция фильтрации коллекции -  поиск элементов, с именем {@link Dragon#name}, содержащим данную подстроку
-     * @param name - строка для поиска экземпляров класса Dragon по имени
-     * @return возвращает измененную коллекцию 
-     */
 
-    public List<Map.Entry<Integer, Dragon>> filterContainsName(String name)
+    /**
+    * Функция фильтрации коллекции -  поиск элементов, с именем {@link Dragon#name}, содержащим данную подстроку
+    * @param name - строка для поиска экземпляров класса Dragon по имени
+    * @return возвращает измененную коллекцию
+    */
+    public List<ListEntrySerializable> filterContainsName(String name)
     {
         return this.getCollection()
                 .entrySet()
                 .stream()
                 .filter(dragon -> dragon.getValue().getName().contains(name))
+                .map(e -> new ListEntrySerializable(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
+
     /**
      * Функция фильтрации коллекции - поиск элементов, с именем {@link Dragon#name}, начинающимся с данной подстроки
      * @param name - строка для поиска экземпляров класса Dragon по имени
      * @return возвращает измененную коллекцию 
      */
-
-    public List<Map.Entry<Integer, Dragon>> filterStartsWithName(String name)
+    public List<ListEntrySerializable> filterStartsWithName(String name)
     {
         String regex = "^("+name+").*$";
         return this.getCollection()
                 .entrySet()
                 .stream()
                 .filter(dragon -> dragon.getValue().getName().matches(regex))
+                .map(e -> new ListEntrySerializable(e.getKey(), e.getValue()))
+                .collect(Collectors.toList());
+    }
+
+    public List<ListEntrySerializable> getSerializableList() {
+        return this.getCollection()
+                .entrySet()
+                .stream()
+                .map(e -> new ListEntrySerializable(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
 

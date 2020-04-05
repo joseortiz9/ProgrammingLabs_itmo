@@ -6,6 +6,7 @@ import ru.students.lab.commands.ExecutionContext;
 import ru.students.lab.commands.ICommand;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.models.Dragon;
+import ru.students.lab.util.ListEntrySerializable;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,15 +23,11 @@ public class FilterColByNearNameCommand extends AbsCommand {
 
      @Override
      public Object execute(ExecutionContext context) throws IOException {
-         context.result().setLength(0);
-         List<Map.Entry<Integer, Dragon>> filteredCol = context.collectionManager().filterStartsWithName(args[0]);
+         List<ListEntrySerializable> filteredCol = context.collectionManager().filterStartsWithName(args[0]);
          if (filteredCol.isEmpty())
-             context.result().append("No elements found.");
-         else {
-             filteredCol.forEach(e -> context.result().append("key:").append(e.getKey()).append(" -> ").append(e.getValue().toString()).append("\n"));
-             context.result().append("Elements found: ").append(filteredCol.size());
-         }
-         return context.result().toString();
+             return "No elements found.";
+         else
+             return filteredCol;
      }
 
      @Override

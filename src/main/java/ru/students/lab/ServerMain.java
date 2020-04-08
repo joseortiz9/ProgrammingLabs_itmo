@@ -38,10 +38,10 @@ public class ServerMain {
         try {
             final ServerUdpSocket socket = new ServerUdpSocket(address);
 
-            FileManager fileManager = new FileManager(Paths.get("data.xml").toAbsolutePath().toString());
-            CollectionManager collectionManager = new CollectionManager(fileManager.getCollectionFromFile());
+            final FileManager fileManager = new FileManager(Paths.get("data.xml").toAbsolutePath().toString());
+            final CollectionManager collectionManager = new CollectionManager(fileManager.getCollectionFromFile());
             StringBuilder stringBuilder = new StringBuilder();
-            ExecutionContext executionContext = new ExecutionContext() {
+            final ExecutionContext executionContext = new ExecutionContext() {
                 @Override
                 public CollectionManager collectionManager() {
                     return collectionManager;
@@ -56,27 +56,26 @@ public class ServerMain {
                 }
             };
 
-            ServerRequestHandler requestManager = new ServerRequestHandler(socket, executionContext);
+            final ServerRequestHandler requestManager = new ServerRequestHandler(socket, executionContext);
             requestManager.start();
 
             if (socket.getSocket().isBound())
                 socketSuccessfullyBounded = true;
 
+            // add shutdown hook
+            //Runtime.getRuntime().addShutdownHook(new ShutDownTask(executionContext));
+
             // create shutdown hook with anonymous implementation
-            Runtime.getRuntime().addShutdownHook(new Thread() {
-                @Override
-                public void run() {
-                    LOG.info("Closing server...");
-                    socket.disconnect();
-                    try {
-                        executionContext.fileManager().SaveCollectionInXML(executionContext.collectionManager().getCollection());
-                        LOG.info("All elements saved!");
-                    } catch (JAXBException | IOException e) {
-                        System.err.println("problem saving the collection in file, check logs");
-                        LOG.error("problem saving the collection in file", e);
-                    }
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                try {
+                    requestManager.disconnect();
+                    executionContext.fileManager().SaveCollectionInXML(executionContext.collectionManager().getCollection());
+                    LOG.info("All elements saved!");
+                } catch (JAXBException | IOException e) {
+                    System.err.println("problem saving the collection in file, check logs");
+                    LOG.error("problem saving the collection in file", e);
                 }
-            });
+            }));
         } catch (SocketException e) {
             e.printStackTrace();
             System.exit(-1);
@@ -97,4 +96,21 @@ public class ServerMain {
         if (socketSuccessfullyBounded)
             LOG.info("Socket Successfully opened on " + address);
     }
+
+
+    /**
+     * Class having shutdown steps
+     *
+     */
+    /*private static class ShutDownTask extends Thread {
+        ExecutionContext context;
+
+        ShutDownTask(ExecutionContext context) {
+            this.context = context;
+        }
+        @Override
+        public void run() {
+
+        }
+    }*/
 }

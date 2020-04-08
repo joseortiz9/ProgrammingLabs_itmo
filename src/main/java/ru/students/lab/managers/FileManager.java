@@ -20,10 +20,10 @@ import java.util.HashMap;
 */
 public class FileManager {
 
-    private JAXBContext xmlContext;
-    private Marshaller jaxbMarshaller;
-    private Unmarshaller jaxbUnmarshaller;
-    private File xmlDragons;
+    private final JAXBContext xmlContext;
+    private final Marshaller jaxbMarshaller;
+    private final Unmarshaller jaxbUnmarshaller;
+    private final File xmlDragons;
 
     /** 
      * Конструктор - создает объект класса FileManager
@@ -114,7 +114,7 @@ public class FileManager {
 
      @XmlRootElement(name="dragons_map")
      @XmlAccessorType(XmlAccessType.FIELD)
-     static class CollectionMapper {
+     private static class CollectionMapper {
          private HashMap<Integer, Dragon> dragons = new HashMap<>();
 
          public HashMap<Integer, Dragon> getCollection() {

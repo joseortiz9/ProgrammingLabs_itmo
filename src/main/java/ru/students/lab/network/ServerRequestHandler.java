@@ -102,7 +102,7 @@ public class ServerRequestHandler {
     }
 
     public void disconnect() {
-        LOG.info("Disconnecting the server");
+        LOG.info("Disconnecting the server...");
         socket.getSocket().disconnect();
         receiverThread.interrupt();
     }

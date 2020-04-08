@@ -1,8 +1,5 @@
 package ru.students.lab.commands;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import ru.students.lab.managers.CommandManager;
 import ru.students.lab.models.Dragon;
 
 import java.io.Serializable;

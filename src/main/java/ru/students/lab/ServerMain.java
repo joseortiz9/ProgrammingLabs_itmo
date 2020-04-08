@@ -21,7 +21,7 @@ public class ServerMain {
 
     public static void main(String[] args) {
         InetSocketAddress address = null;
-        boolean socketSuccessfullyBounded = false;
+        ServerUdpSocket socket = null;
         try {
             final int port = Integer.parseInt(args[0]);
             address = new InetSocketAddress(port);
@@ -36,7 +36,7 @@ public class ServerMain {
         }
 
         try {
-            final ServerUdpSocket socket = new ServerUdpSocket(address);
+            socket = new ServerUdpSocket(address);
 
             final FileManager fileManager = new FileManager(Paths.get("data.xml").toAbsolutePath().toString());
             final CollectionManager collectionManager = new CollectionManager(fileManager.getCollectionFromFile());
@@ -60,17 +60,19 @@ public class ServerMain {
             requestManager.start();
 
             if (socket.getSocket().isBound())
-                socketSuccessfullyBounded = true;
-
-            // add shutdown hook
-            //Runtime.getRuntime().addShutdownHook(new ShutDownTask(executionContext));
+                LOG.info("Socket Successfully opened on " + address);
+            else {
+                LOG.error("Strange behaviour trying to bind the server");
+                System.exit(-1);
+            }
 
             // create shutdown hook with anonymous implementation
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {
                     requestManager.disconnect();
-                    executionContext.fileManager().SaveCollectionInXML(executionContext.collectionManager().getCollection());
-                    LOG.info("All elements saved!");
+                    executionContext.fileManager().SaveCollectionInXML(
+                            executionContext.collectionManager().getCollection());
+                    System.out.println("All elements of collection saved into the file!");
                 } catch (JAXBException | IOException e) {
                     System.err.println("problem saving the collection in file, check logs");
                     LOG.error("problem saving the collection in file", e);
@@ -92,25 +94,5 @@ public class ServerMain {
             System.err.println("You wrote something strange");
             LOG.error("You wrote something strange",ex);
         }
-
-        if (socketSuccessfullyBounded)
-            LOG.info("Socket Successfully opened on " + address);
     }
-
-
-    /**
-     * Class having shutdown steps
-     *
-     */
-    /*private static class ShutDownTask extends Thread {
-        ExecutionContext context;
-
-        ShutDownTask(ExecutionContext context) {
-            this.context = context;
-        }
-        @Override
-        public void run() {
-
-        }
-    }*/
 }

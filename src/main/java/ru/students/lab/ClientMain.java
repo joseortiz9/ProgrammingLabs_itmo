@@ -15,10 +15,9 @@ public class ClientMain extends Thread {
 
     private static final Logger LOG = LogManager.getLogger(ClientMain.class);
 
-        private static ClientUdpChannel channel = null;
-
     public static void main(String[] args) {
         InetSocketAddress address = null;
+        ClientUdpChannel channel = null;
         try {
             final int port = Integer.parseInt(args[0]);
             if (args.length > 1) {
@@ -37,10 +36,6 @@ public class ClientMain extends Thread {
         }
 
         try {
-            final ClientUdpChannel oldChannel = channel;
-            if (oldChannel != null) {
-                channel.disconnect();
-            }
             channel = new ClientUdpChannel();
             channel.tryToConnect(address);
         } catch (IOException ex) {
@@ -51,14 +46,10 @@ public class ClientMain extends Thread {
 
         LOG.info("Successfully connected to the server");
 
-        try {
-            IHandlerInput userInputHandler = new UserInputHandler(true);
-            CommandManager manager = new CommandManager(userInputHandler);
-            CommandReader sender = new CommandReader(channel, manager, userInputHandler);
-            sender.setName("ConsoleReaderTread");
-            sender.start();
-        } finally {
-            //channel.disconnect();
-        }
+        IHandlerInput userInputHandler = new UserInputHandler(true);
+        CommandManager manager = new CommandManager();
+        CommandReader sender = new CommandReader(channel, manager, userInputHandler);
+        sender.setName("ConsoleReaderTread");
+        sender.start();
     }
 }

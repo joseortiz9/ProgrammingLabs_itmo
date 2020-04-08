@@ -1,10 +1,10 @@
 package ru.students.lab.managers;
 
-import ru.students.lab.util.IHandlerInput;
 import ru.students.lab.commands.*;
 import ru.students.lab.commands.collectionhandlers.*;
 import ru.students.lab.exceptions.NoSuchCommandException;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -13,14 +13,11 @@ import java.util.*;
  * @version 1.0
 */
 public class CommandManager {
-    private Map<String, AbsCommand> commands;
-    private IHandlerInput userInputHandler;
+    private final Map<String, AbsCommand> commands;
     /** 
      * Конструктор - создает объект класса CommandManager
-     * @param userInputHandler - экземпляр класса для работы с вводимыми в консоль данными
      */
-    public CommandManager(IHandlerInput userInputHandler) {
-        this.userInputHandler = userInputHandler;
+    public CommandManager() {
         this.commands = new HashMap<>();
         initCommands();
     }
@@ -49,16 +46,11 @@ public class CommandManager {
      * Функция выполнения команды
      * @param commandStr - строка, содержащая ключ команды
      */
-    public AbsCommand getCommand(String commandStr) {
-        try {
-            String[] cmd = getCommandFromStr(commandStr);
-            AbsCommand command = this.getCommandFromMap(cmd[0]);
-            command.setArgs(this.getCommandArgs(cmd));
-            return command;
-        } catch (NoSuchCommandException ex) {
-            userInputHandler.printLn(1, ex.getMessage());
-            return null;
-        }
+    public AbsCommand getCommand(String commandStr) throws NoSuchElementException {
+        String[] cmd = getCommandFromStr(commandStr);
+        AbsCommand command = this.getCommandFromMap(cmd[0]);
+        command.setArgs(this.getCommandArgs(cmd));
+        return command;
     }
 
     /**

@@ -64,6 +64,8 @@ public class ClientUdpChannel extends AbsUdpSocket {
             else if (obj instanceof List) {
                 ((List<ListEntrySerializable>) obj).stream().forEach(e -> System.out.println("key:" + e.getKey() + " -> " + e.getDragon().toString()));
                 System.out.println("Elements found: "+ ((List) obj).size());
+            } else if (obj instanceof String[]) {
+
             } else
                 throw new ClassNotFoundException();
         }

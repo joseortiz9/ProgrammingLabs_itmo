@@ -2,6 +2,7 @@ package ru.students.lab.network;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.students.lab.exceptions.NoSuchCommandException;
 import ru.students.lab.util.IHandlerInput;
 import ru.students.lab.commands.*;
 import ru.students.lab.factories.DragonFactory;
@@ -33,9 +34,10 @@ public class CommandReader extends Thread {
             try {
                 Thread.sleep(200);
                 startInteraction();
-            }catch (NullPointerException ignored) {
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
+            }catch (NoSuchCommandException ex) {
+                System.out.println(ex.getMessage());
+            } catch (IOException | InterruptedException ex) {
+                LOG.error("Intern problems, check Logs", ex);
             } catch (NoSuchElementException ex) {
                 finishClient();
             }
@@ -45,13 +47,10 @@ public class CommandReader extends Thread {
     /**
      *
      */
-    public void startInteraction() throws IOException, NullPointerException {
+    public void startInteraction() throws IOException, NoSuchCommandException {
         String commandStr;
         commandStr = userInputHandler.readWithMessage("Write Command: ");
         AbsCommand command = commandManager.getCommand(commandStr);
-
-        if (command == null)
-            throw new NullPointerException();
 
         if (command instanceof HelpCommand || command instanceof ManDescriptorCommand)
             userInputHandler.printLn((String) command.execute(null));

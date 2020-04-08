@@ -1,4 +1,4 @@
-package ru.students.lab.udp;
+package ru.students.lab.network;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -1,7 +1,5 @@
 package ru.students.lab.commands;
 
-import ru.students.lab.client.IHandlerInput;
-
 import java.io.IOException;
 /** 
  * Интерфейс, содержащий функции для работы с командами

@@ -1,4 +1,4 @@
-package ru.students.lab.udp;
+package ru.students.lab.network;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.*;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,5 +79,9 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
 
     public DatagramSocket getSocket() {
         return socket;
+    }
+
+    public void disconnect() {
+        socket.disconnect();
     }
 }

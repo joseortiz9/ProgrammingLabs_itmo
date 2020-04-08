@@ -5,8 +5,8 @@ import org.apache.logging.log4j.Logger;
 import ru.students.lab.commands.ExecutionContext;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.managers.FileManager;
-import ru.students.lab.udp.ServerRequestHandler;
-import ru.students.lab.udp.ServerUdpSocket;
+import ru.students.lab.network.ServerRequestHandler;
+import ru.students.lab.network.ServerUdpSocket;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class ServerMain {
 
     public static void main(String[] args) {
         InetSocketAddress address = null;
-        ServerUdpSocket socket = null;
+        boolean socketSuccessfullyBounded = false;
         try {
             final int port = Integer.parseInt(args[0]);
             address = new InetSocketAddress(port);
@@ -36,7 +36,7 @@ public class ServerMain {
         }
 
         try {
-            socket = new ServerUdpSocket(address);
+            final ServerUdpSocket socket = new ServerUdpSocket(address);
 
             FileManager fileManager = new FileManager(Paths.get("data.xml").toAbsolutePath().toString());
             CollectionManager collectionManager = new CollectionManager(fileManager.getCollectionFromFile());
@@ -59,6 +59,24 @@ public class ServerMain {
             ServerRequestHandler requestManager = new ServerRequestHandler(socket, executionContext);
             requestManager.start();
 
+            if (socket.getSocket().isBound())
+                socketSuccessfullyBounded = true;
+
+            // create shutdown hook with anonymous implementation
+            Runtime.getRuntime().addShutdownHook(new Thread() {
+                @Override
+                public void run() {
+                    LOG.info("Closing server...");
+                    socket.disconnect();
+                    try {
+                        executionContext.fileManager().SaveCollectionInXML(executionContext.collectionManager().getCollection());
+                        LOG.info("All elements saved!");
+                    } catch (JAXBException | IOException e) {
+                        System.err.println("problem saving the collection in file, check logs");
+                        LOG.error("problem saving the collection in file", e);
+                    }
+                }
+            });
         } catch (SocketException e) {
             e.printStackTrace();
             System.exit(-1);
@@ -76,7 +94,7 @@ public class ServerMain {
             LOG.error("You wrote something strange",ex);
         }
 
-        if (socket.getSocket().isBound())
-            LOG.info("Socket Successfully opened on " + socket.getSocket().getLocalSocketAddress());
+        if (socketSuccessfullyBounded)
+            LOG.info("Socket Successfully opened on " + address);
     }
 }

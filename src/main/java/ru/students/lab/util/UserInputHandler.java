@@ -1,4 +1,4 @@
-package ru.students.lab.client;
+package ru.students.lab.util;
 
 import java.util.Scanner;
 /** 
@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class UserInputHandler implements IHandlerInput {
 
-    private Scanner commandReader;
+    private final Scanner commandReader;
     private boolean interactive;
     private String[] inputsAfterInsert;
     private int resultCode;

@@ -1,6 +1,6 @@
 package ru.students.lab.factories;
 
-import ru.students.lab.client.IHandlerInput;
+import ru.students.lab.util.IHandlerInput;
 import ru.students.lab.models.*;
 
 import java.lang.reflect.InvocationTargetException;

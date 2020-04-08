@@ -1,4 +1,4 @@
-package ru.students.lab.client;
+package ru.students.lab.util;
 
 import java.util.NoSuchElementException;
 import java.util.Scanner;

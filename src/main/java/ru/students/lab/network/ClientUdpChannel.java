@@ -1,22 +1,15 @@
-package ru.students.lab.udp;
+package ru.students.lab.network;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.students.lab.commands.AbsCommand;
-import ru.students.lab.models.Dragon;
 import ru.students.lab.util.ListEntrySerializable;
 
 import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
-import java.nio.channels.AlreadyBoundException;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.DatagramChannel;
-import java.nio.channels.UnsupportedAddressTypeException;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ClientUdpChannel extends AbsUdpSocket {
 
@@ -31,6 +24,7 @@ public class ClientUdpChannel extends AbsUdpSocket {
                     System.err.println("Reached limit of data to receive");
                     LOG.error("Reached Limit", ex);
                 } catch (IOException | ClassNotFoundException e) {
+                    System.err.println("I/O Problems, check logs");
                     LOG.error("I/O Problems", e);
                 }
             }
@@ -113,8 +107,10 @@ public class ClientUdpChannel extends AbsUdpSocket {
                 final long start = System.currentTimeMillis();
                 if (!sentPacket && !connected && System.currentTimeMillis() - start < SOCKET_TIMEOUT)
                     connected = true;
-                else
+                else {
                     LOG.info("Server is down, Retrying....");
+                    System.out.println("Server is down, Retrying....");
+                }
             } while (!isConnected());
     }
 

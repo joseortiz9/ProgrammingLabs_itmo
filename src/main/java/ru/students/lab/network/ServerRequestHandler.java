@@ -1,4 +1,4 @@
-package ru.students.lab.udp;
+package ru.students.lab.network;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -84,9 +84,9 @@ public class ServerRequestHandler {
 
     protected static final Logger LOG = LogManager.getLogger(ServerRequestHandler.class);
 
-    private volatile ServerUdpSocket socket;
-    private DataReceiver receiverThread;
-    private volatile ExecutionContext executionContext;
+    private final ServerUdpSocket socket;
+    private final DataReceiver receiverThread;
+    private final ExecutionContext executionContext;
 
     public ServerRequestHandler(ServerUdpSocket socket, ExecutionContext context) {
         this.socket = socket;

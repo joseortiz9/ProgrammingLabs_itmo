@@ -1,19 +1,6 @@
 package ru.students.lab;
 
 import org.jetbrains.annotations.NotNull;
-import ru.students.lab.client.IHandlerInput;
-import ru.students.lab.client.UserInputHandler;
-import ru.students.lab.factories.DragonFactory;
-import ru.students.lab.managers.CollectionManager;
-import ru.students.lab.managers.CommandManager;
-import ru.students.lab.managers.FileManager;
-import ru.students.lab.testers.TesterFiller;
-
-import javax.xml.bind.JAXBException;
-import java.io.IOException;
-import java.nio.file.InvalidPathException;
-import java.nio.file.Paths;
-import java.util.NoSuchElementException;
 
 public class Main {
 

@@ -1,8 +1,6 @@
 package ru.students.lab.commands;
 
-import ru.students.lab.client.IHandlerInput;
-import ru.students.lab.managers.CollectionManager;
- /** 
+/**
  * Класс для выполнения и получения информации о функции вывода информации о коллекции
  * @autor Хосе Ортис
  * @version 1.0

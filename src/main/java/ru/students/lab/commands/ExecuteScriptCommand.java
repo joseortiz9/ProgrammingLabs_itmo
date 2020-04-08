@@ -1,13 +1,7 @@
 package ru.students.lab.commands;
 
-import ru.students.lab.client.IHandlerInput;
-import ru.students.lab.client.UserInputHandler;
-import ru.students.lab.managers.CommandManager;
-
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Map;
 
 /**
  * Класс для выполнения и получения информации о функции считывания скрипта из указанного файла
@@ -20,18 +14,13 @@ public class ExecuteScriptCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context) throws IOException {
-        return null;
-    }
-    /*
-    @Override
-    public void execute(IHandlerInput userInputHandler, String[] args) throws IOException {
         if (args.length < 1)
             throw new ArrayIndexOutOfBoundsException();
 
         String pathToFile = Paths.get(args[0]).toAbsolutePath().toString();
-        String commandsStr = commandManager.getFileManager().getStrFromFile(pathToFile);
+        String commandsStr = context.fileManager().getStrFromFile(pathToFile);
 
-        userInputHandler = new UserInputHandler(false);
+        /*userInputHandler = new UserInputHandler(false);
 
         String[] commands = commandsStr.trim().split("\n");
         for (int i = 0; i < commands.length; i++) {
@@ -39,8 +28,9 @@ public class ExecuteScriptCommand extends AbsCommand {
             this.commandManager.executeCommand(commands[i], userInputHandler);
             if (userInputHandler.getResultCode() == 0)
                 i+=8;
-        }
-    }*/
+        }*/
+        return null;
+    }
 
     @Override
     public String getDescription() {

@@ -45,14 +45,14 @@ public class FileManager {
     /**
      * Функция сохранения коллекции в формате xml в файл
      * @param collection - Хэшмэп, содержащий коллекцию экземпляров класса Dragon
+     * @throws IOException
+     * @throws JAXBException
      */
-    public void SaveCollectionInXML(HashMap<Integer, Dragon> collection) throws IOException {
+    public void SaveCollectionInXML(HashMap<Integer, Dragon> collection) throws IOException, JAXBException {
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.getXmlDragons())))) {
             CollectionMapper dragonsMap = new CollectionMapper();
             dragonsMap.setCollection(collection);
             jaxbMarshaller.marshal(dragonsMap, writer);
-        } catch (JAXBException ex) {
-            System.out.println(ex.toString());
         }
     }
 

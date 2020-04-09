@@ -61,10 +61,13 @@ public class ServerMain {
             };
             final ServerRequestHandler requestManager = new ServerRequestHandler(socket, executionContext);
 
-            if (socket.getSocket().isBound())
+            if (socket.getSocket().isBound()) {
                 LOG.info("Socket Successfully opened on " + address);
+                System.out.println("Socket Successfully opened on " + address);
+            }
             else {
                 LOG.error("Strange behaviour trying to bind the server");
+                System.err.println("Strange behaviour trying to bind the server");
                 System.exit(-1);
             }
 
@@ -82,13 +85,7 @@ public class ServerMain {
             }));
 
             while (socket.getSocket().isBound()) {
-                try {
-                    requestManager.receiveData();
-                } catch (SocketTimeoutException ignored) {
-                } catch (IOException | ClassNotFoundException e) {
-                    System.err.println("Weird errors, check log");
-                    LOG.error("Weird errors processing the received data", e);
-                }
+                requestManager.receiveFromWherever();
             }
 
         } catch (SocketException e) {

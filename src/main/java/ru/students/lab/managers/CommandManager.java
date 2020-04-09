@@ -5,6 +5,7 @@ import ru.students.lab.commands.collectionhandlers.*;
 import ru.students.lab.exceptions.NoSuchCommandException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Класс для управления командами
@@ -37,7 +38,7 @@ public class CommandManager {
         commands.put("filter_starts_with_name", new FilterColByNearNameCommand());
         commands.put("print_descending", new PrintDescendingCommand());
         commands.put("exit", new ExitCommand());
-        commands.put("execute_script", new ExecuteScriptCommand(commands.values()));
+        commands.put("execute_script", new ExecuteScriptCommand(getCommandsValues()));
         //commands.put("save", new SaveColCommand(this.getCollectionManager(), this.getFileManager()));
     }
 
@@ -81,6 +82,15 @@ public class CommandManager {
             throw new NoSuchCommandException("What are u writing? type 'help' for the available commands. \nUnknown: '" + key + "'");
         }
         return commands.getOrDefault(key, null);
+    }
+
+    private List<AbsCommand> getCommandsValues(){
+        List<AbsCommand> l = new ArrayList<>();
+        commands.values().stream().forEach(e -> {
+            if(!(e.getCommandKey().equals("help")) && !(e.getCommandKey().equals("man")))
+                l.add(e);
+        });
+        return l;
     }
 
     public Set<String> getKeysCommands() {

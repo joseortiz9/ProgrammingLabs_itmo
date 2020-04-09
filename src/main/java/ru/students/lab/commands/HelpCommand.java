@@ -17,6 +17,7 @@ public class HelpCommand extends AbsCommand {
     * @param keysCommands - keys for showing commands available
     */
     public HelpCommand(Set<String> keysCommands) {
+        commandKey = "help";
         this.keysCommands = keysCommands;
     }
 

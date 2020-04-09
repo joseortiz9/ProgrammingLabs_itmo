@@ -1,14 +1,11 @@
 help
 info
-man show
-man what
 holaaaa
 insert vfeavs
 
 insert
-show
-insert 2122
-nice_drako
+insert 2411
+drako_super
 23
 32
 21
@@ -26,7 +23,7 @@ as;lkdfjsal;d;jf
 filter_contains_name melo
 
 filter_starts_with_name Dragon1
+show
 insert
 print_descending -k
-save
 exit

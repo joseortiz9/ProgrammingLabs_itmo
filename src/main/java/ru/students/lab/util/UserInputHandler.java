@@ -1,5 +1,6 @@
 package ru.students.lab.util;
 
+import java.io.Serializable;
 import java.util.Scanner;
 /** 
  * Класс, реализующий функции интерфейса для получения входных данных и взаимодействия с пользователем 
@@ -7,7 +8,9 @@ import java.util.Scanner;
  * @version 1.0
 */
 
-public class UserInputHandler implements IHandlerInput {
+public class UserInputHandler implements IHandlerInput, Serializable {
+
+    private static final long serialVersionUID = -4344186384932255034L;
 
     private final Scanner commandReader;
     private boolean interactive;

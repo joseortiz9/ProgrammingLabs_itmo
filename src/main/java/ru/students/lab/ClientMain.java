@@ -70,6 +70,7 @@ public class ClientMain {
                         if (received.equals("connect")) {
                             channel.setConnected(true);
                             LOG.info("Successfully connected to the server");
+                            System.out.println("Successfully connected to the server");
                         }
                     }
 

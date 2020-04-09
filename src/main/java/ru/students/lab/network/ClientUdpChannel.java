@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
+import java.util.ArrayList;
 import java.util.List;
 /**
  * Класс для создания UPD канала для клиента
@@ -161,10 +162,19 @@ public class ClientUdpChannel extends AbsUdpSocket {
         if (obj instanceof String)
             System.out.println(obj);
         else if (obj instanceof List) {
-            ((List<ListEntrySerializable>) obj).stream().forEach(e -> System.out.println("key:" + e.getKey() + " -> " + e.getDragon().toString()));
-            System.out.println("Elements found: "+ ((List) obj).size());
-        } else if (obj instanceof String[]) {
-
+            if (((List) obj).get(0) instanceof ListEntrySerializable) {
+                ((List<ListEntrySerializable>) obj).stream().forEach(e -> System.out.println("key:" + e.getKey() + " -> " + e.getDragon().toString()));
+                System.out.println("Elements found: "+ ((List) obj).size());
+            }else {
+                for (Object objFromScript: (List)obj) {
+                    if (objFromScript instanceof String)
+                        System.out.println(objFromScript);
+                    else if (objFromScript instanceof List) {
+                        ((List<ListEntrySerializable>) objFromScript).stream().forEach(e -> System.out.println("key:" + e.getKey() + " -> " + e.getDragon().toString()));
+                        System.out.println("Elements found: "+ ((List) objFromScript).size());
+                    }
+                }
+            }
         } else
             throw new ClassNotFoundException();
     }

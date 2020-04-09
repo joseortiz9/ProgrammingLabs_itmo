@@ -10,6 +10,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.SocketAddress;
+import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 /**
  * Класс для обработки данных полученных сервером
@@ -26,6 +27,17 @@ public class ServerRequestHandler {
     public ServerRequestHandler(ServerUdpSocket socket, ExecutionContext context) {
         this.socket = socket;
         this.executionContext = context;
+    }
+
+    public void receiveFromWherever() {
+        try {
+            receiveData();
+        } catch (SocketTimeoutException ignored) {
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Weird errors, check log");
+            LOG.error("Weird errors processing the received data", e);
+            socket.sendResponse("Weird errors, check log. " + e.getMessage());
+        }
     }
 
     /**
@@ -88,6 +100,7 @@ public class ServerRequestHandler {
      */
     public void disconnect() {
         LOG.info("Disconnecting the server...");
+        System.out.println("Disconnecting the server...");
         socket.getSocket().disconnect();
     }
 }

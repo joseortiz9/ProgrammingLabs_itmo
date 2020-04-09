@@ -21,9 +21,9 @@ import java.util.List;
 public class ExecuteScriptCommand extends AbsCommand {
 
     private DragonFactory factory;
-    private Collection<AbsCommand> commands;
+    private List<AbsCommand> commands;
 
-    public ExecuteScriptCommand(Collection<AbsCommand> commands) {
+    public ExecuteScriptCommand(List<AbsCommand> commands) {
         this.commands = commands;
         factory = new DragonFactory();
         commandKey = "execute_script";
@@ -42,28 +42,32 @@ public class ExecuteScriptCommand extends AbsCommand {
 
         String[] commands = commandsStr.trim().split("\n");
         for (int i = 0; i < commands.length; i++) {
-            boolean dragonInputSuccess = false;
-            String[] ss = commands[i].trim().split(" ");
-            AbsCommand command = getCommand(ss[0]);
-            command.setArgs(getCommandArgs(ss));
-            if (command.requireDragonInput()) {
-                String[] inputsAfterInsert = Arrays.copyOfRange(commands, i + 1, commands.length);
-                command.addDragonInput(factory.generateFromScript(inputsAfterInsert));
-                if (command.getDragon() == null)
-                    result.add("An input was not in the correct format. Run 'man insert' to know the rules for entering correct values or The number of inputs is not correct for the amount of attrs");
-                else
-                    dragonInputSuccess = true;
-            }
-
             try {
-                //result.add(command.execute(executionContext));
+                result.add("\nCOMMAND #" + i);
+                boolean dragonInputSuccess = false;
+                String[] ss = commands[i].trim().split(" ");
+                AbsCommand command = getCommand(ss[0]);
+                if (command == null) {
+                    result.add("Not found command");
+                    break;
+                }
+                command.setArgs(getCommandArgs(ss));
+                if (command.requireDragonInput()) {
+                    String[] inputsAfterInsert = Arrays.copyOfRange(commands, i + 1, commands.length);
+                    command.addDragonInput(factory.generateFromScript(inputsAfterInsert));
+                    if (command.getDragon() == null)
+                        result.add("An input was not in the correct format or The number of inputs is different from the needed");
+                    else
+                        dragonInputSuccess = true;
+                }
+                result.add(command.execute(context));
                 if (dragonInputSuccess)
                     i+=8;
-            }catch (DragonFormatException ex) {
+            } catch (DragonFormatException ex) {
                 result.add(ex.getMessage());
             } catch (NumberFormatException ex) {
                 result.add("Incorrect format of the entered value");
-            } catch (ArrayIndexOutOfBoundsException ex) {
+            } catch (ArrayIndexOutOfBoundsException | NullPointerException ex) {
                 result.add("There is a problem in the amount of args passed");
             }
         }

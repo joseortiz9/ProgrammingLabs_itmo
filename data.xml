@@ -154,6 +154,25 @@
             </value>
         </entry>
         <entry>
+            <key>3214</key>
+            <value>
+                <id>59</id>
+                <name>mega_powered</name>
+                <coordinates>
+                    <x>23</x>
+                    <y>32.0</y>
+                </coordinates>
+                <creationDate>2020-04-09T05:41:21.561+03:00[Europe/Moscow]</creationDate>
+                <age>21</age>
+                <color>RED</color>
+                <type>AIR</type>
+                <character>EVIL</character>
+                <head>
+                    <eyesCount>1.0</eyesCount>
+                </head>
+            </value>
+        </entry>
+        <entry>
             <key>1167</key>
             <value>
                 <id>24</id>
@@ -458,6 +477,25 @@
             </value>
         </entry>
         <entry>
+            <key>3123</key>
+            <value>
+                <id>61</id>
+                <name>mega_powered</name>
+                <coordinates>
+                    <x>23</x>
+                    <y>32.0</y>
+                </coordinates>
+                <creationDate>2020-04-09T05:49:59.359+03:00[Europe/Moscow]</creationDate>
+                <age>21</age>
+                <color>RED</color>
+                <type>AIR</type>
+                <character>EVIL</character>
+                <head>
+                    <eyesCount>1.0</eyesCount>
+                </head>
+            </value>
+        </entry>
+        <entry>
             <key>1204</key>
             <value>
                 <id>25</id>
@@ -511,6 +549,25 @@
                 <character>EVIL</character>
                 <head>
                     <eyesCount>39.0</eyesCount>
+                </head>
+            </value>
+        </entry>
+        <entry>
+            <key>21435</key>
+            <value>
+                <id>60</id>
+                <name>mega_powered</name>
+                <coordinates>
+                    <x>23</x>
+                    <y>32.0</y>
+                </coordinates>
+                <creationDate>2020-04-09T05:43:59.785+03:00[Europe/Moscow]</creationDate>
+                <age>21</age>
+                <color>RED</color>
+                <type>AIR</type>
+                <character>EVIL</character>
+                <head>
+                    <eyesCount>1.0</eyesCount>
                 </head>
             </value>
         </entry>
@@ -946,6 +1003,25 @@
                 <character>CHAOTIC</character>
                 <head>
                     <eyesCount>23.0</eyesCount>
+                </head>
+            </value>
+        </entry>
+        <entry>
+            <key>2411</key>
+            <value>
+                <id>58</id>
+                <name>nice_drako</name>
+                <coordinates>
+                    <x>23</x>
+                    <y>32.0</y>
+                </coordinates>
+                <creationDate>2020-04-09T05:31:38.595+03:00[Europe/Moscow]</creationDate>
+                <age>21</age>
+                <color>ORANGE</color>
+                <type>AIR</type>
+                <character>EVIL</character>
+                <head>
+                    <eyesCount>1.0</eyesCount>
                 </head>
             </value>
         </entry>

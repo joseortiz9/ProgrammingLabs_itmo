@@ -71,7 +71,11 @@ public class CommandManager {
         inputArgs = Arrays.copyOfRange(fullStr, 1, fullStr.length);
         return inputArgs;
     }
-
+    /**
+     * Функция получения команды из коллекции команд по ключу
+     * @param key - строка входных данных - ключ команды
+     * @return возвращает объект класса AbsCommand
+     */
     public AbsCommand getCommandFromMap(String key) throws NoSuchCommandException {
         if (!commands.containsKey(key)) {
             throw new NoSuchCommandException("What are u writing? type 'help' for the available commands. \nUnknown: '" + key + "'");

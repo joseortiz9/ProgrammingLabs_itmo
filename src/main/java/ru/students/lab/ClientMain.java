@@ -14,7 +14,11 @@ import java.io.IOException;
 import java.net.*;
 import java.nio.channels.ClosedChannelException;
 import java.util.NoSuchElementException;
-
+/**
+ * Класс для запуска работы клиента
+ * @autor Хосе Ортис
+ * @version 1.0
+ */
 public class ClientMain {
 
     private static final Logger LOG = LogManager.getLogger(ClientMain.class);

@@ -11,7 +11,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
-
+/**
+ * Класс для обработки данных полученных сервером
+ * @autor Хосе Ортис
+ * @version 1.0
+ */
 public class ServerRequestHandler {
 
     protected static final Logger LOG = LogManager.getLogger(ServerRequestHandler.class);
@@ -24,7 +28,9 @@ public class ServerRequestHandler {
         this.executionContext = context;
     }
 
-
+    /**
+     * Функция для получения данных
+     */
     public void receiveData() throws IOException, ClassNotFoundException {
         final ByteBuffer buf = ByteBuffer.allocate(AbsUdpSocket.DATA_SIZE);
         SocketAddress addressFromClient = socket.receiveDatagram(buf);
@@ -36,7 +42,10 @@ public class ServerRequestHandler {
         if (petitionBytes.length > 0)
             processRequest(petitionBytes);
     }
-
+    /**
+     * Функция для десериализации данных
+     * @param petitionBytes - полученные данные
+     */
     private void processRequest(byte[] petitionBytes) throws IOException, ClassNotFoundException {
         try (ObjectInputStream stream = new ObjectInputStream(new ByteArrayInputStream(petitionBytes))) {
             final Object obj = stream.readObject();
@@ -46,7 +55,10 @@ public class ServerRequestHandler {
             executeObj(obj);
         }
     }
-
+    /**
+     * Функция для работы с командами клиента
+     * @param obj - полученная от клиента команда
+     */
     private void executeObj(Object obj) throws IOException {
         Object responseExecution;
         if (obj instanceof String)
@@ -71,7 +83,9 @@ public class ServerRequestHandler {
         }
         socket.sendResponse(responseExecution);
     }
-
+    /**
+     * Функция для отключения сервера
+     */
     public void disconnect() {
         LOG.info("Disconnecting the server...");
         socket.getSocket().disconnect();

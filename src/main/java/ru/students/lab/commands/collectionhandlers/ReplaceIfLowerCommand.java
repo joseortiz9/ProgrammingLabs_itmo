@@ -46,4 +46,8 @@ public class ReplaceIfLowerCommand extends AbsCommand {
     public boolean requireDragonInput() {
         return requireInputs;
     }
+    @Override
+    public Dragon getDragon() {
+        return dragon;
+    }
 }

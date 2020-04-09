@@ -1,14 +1,17 @@
 package ru.students.lab.commands;
 
 import ru.students.lab.exceptions.DragonFormatException;
+import ru.students.lab.factories.DragonFactory;
 import ru.students.lab.managers.CommandManager;
 import ru.students.lab.util.IHandlerInput;
 import ru.students.lab.util.UserInputHandler;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Класс для выполнения и получения информации о функции считывания скрипта из указанного файла
@@ -17,10 +20,12 @@ import java.util.Collection;
 */
 public class ExecuteScriptCommand extends AbsCommand {
 
+    private DragonFactory factory;
     private Collection<AbsCommand> commands;
 
     public ExecuteScriptCommand(Collection<AbsCommand> commands) {
         this.commands = commands;
+        factory = new DragonFactory();
         commandKey = "execute_script";
         description = "считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.\nSyntax: execute_script file_name";
     }
@@ -30,55 +35,48 @@ public class ExecuteScriptCommand extends AbsCommand {
         if (args.length < 1)
             throw new ArrayIndexOutOfBoundsException();
 
+        ArrayList<Object> result = new ArrayList<Object>();
+
         String pathToFile = Paths.get(args[0]).toAbsolutePath().toString();
         String commandsStr = context.fileManager().getStrFromFile(pathToFile);
 
         String[] commands = commandsStr.trim().split("\n");
         for (int i = 0; i < commands.length; i++) {
-            String[] inputsAfterInsert = Arrays.copyOfRange(commands, i + 1, commands.length);
-            //getCommand()
-            /*if (userInputHandler.getResultCode() == 0)
-                i+=8;*/
-            /*try {
-                AbsCommand command = this.commandManager.getCommand(commands[i]);
-                responseExecution = command.execute(executionContext);
+            boolean dragonInputSuccess = false;
+            String[] ss = commands[i].trim().split(" ");
+            AbsCommand command = getCommand(ss[0]);
+            command.setArgs(getCommandArgs(ss));
+            if (command.requireDragonInput()) {
+                String[] inputsAfterInsert = Arrays.copyOfRange(commands, i + 1, commands.length);
+                command.addDragonInput(factory.generateFromScript(inputsAfterInsert));
+                if (command.getDragon() == null)
+                    result.add("An input was not in the correct format. Run 'man insert' to know the rules for entering correct values or The number of inputs is not correct for the amount of attrs");
+                else
+                    dragonInputSuccess = true;
+            }
+
+            try {
+                //result.add(command.execute(executionContext));
+                if (dragonInputSuccess)
+                    i+=8;
             }catch (DragonFormatException ex) {
-                responseExecution = ex.getMessage();
-                LOG.error(ex.getMessage(), ex);
+                result.add(ex.getMessage());
             } catch (NumberFormatException ex) {
-                responseExecution = "Incorrect format of the entered value";
-                LOG.error("Incorrect format of the entered value", ex);
+                result.add("Incorrect format of the entered value");
             } catch (ArrayIndexOutOfBoundsException ex) {
-                responseExecution = "There is a problem in the amount of args passed";
-                LOG.error("There is a problem in the amount of args passed", ex);
-            }*/
+                result.add("There is a problem in the amount of args passed");
+            }
         }
-        return null;
+        return result;
     }
 
     private AbsCommand getCommand(String s) {
         return commands.stream().filter(e -> e.getCommandKey().equals(s)).findFirst().orElse(null);
     }
 
-    /*
-    @Override
-    public void execute(IHandlerInput userInputHandler, String[] args) throws IOException {
-        if (args.length < 1)
-            throw new ArrayIndexOutOfBoundsException();
-
-        String pathToFile = Paths.get(args[0]).toAbsolutePath().toString();
-        String commandsStr = commandManager.getFileManager().getStrFromFile(pathToFile);
-
-        userInputHandler = new UserInputHandler(false);
-
-        String[] commands = commandsStr.trim().split("\n");
-        for (int i = 0; i < commands.length; i++) {
-            userInputHandler.setInputsAfterInsert(Arrays.copyOfRange(commands, i + 1, commands.length));
-            this.commandManager.executeCommand(commands[i], userInputHandler);
-            if (userInputHandler.getResultCode() == 0)
-                i+=8;
-        }
-    }*/
-
-
+    public String[] getCommandArgs(String[] fullStr) {
+        String[] inputArgs = new String[2];
+        inputArgs = Arrays.copyOfRange(fullStr, 1, fullStr.length);
+        return inputArgs;
+    }
 }

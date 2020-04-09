@@ -3,6 +3,7 @@ package ru.students.lab.factories;
 import ru.students.lab.util.IHandlerInput;
 import ru.students.lab.models.*;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -12,7 +13,9 @@ import java.util.Arrays;
  * @autor Хосе Ортис
  * @version 1.0
  */
-public class DragonFactory {
+public class DragonFactory implements Serializable {
+
+    private static final long serialVersionUID = -8514622879534406859L;
 
     private IHandlerInput inputHandler;
 
@@ -24,11 +27,10 @@ public class DragonFactory {
      * Read what the inputs from the file and create the instance if
      * everything is successfully validated and formatted
      *
-     * @param inputHandler manages all related with the IO
+     * @param inputs fields from the file to fill the Dragon attrs
      * @return instance of a Dragon with the input entered or null if error
      */
-    public Dragon generateFromScript(IHandlerInput inputHandler) {
-        String[] inputs = inputHandler.getInputsAfterInsert();
+    public Dragon generateFromScript(String[] inputs) {
         try {
             String name = (String) getValueOf(String.class, inputs[0]);
 
@@ -46,10 +48,8 @@ public class DragonFactory {
 
             if (x > -328 && age > 0 && numEyes > 0)
                 return new Dragon(name, coordinates, age, dColor, dType, dCharacter, dHead);
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException ex) {
-            inputHandler.printLn(1, "An input was not in the correct format. Run 'man insert' to know the rules for entering correct values");
-        } catch (ArrayIndexOutOfBoundsException | NullPointerException ex) {
-            inputHandler.printLn(1,"The number of inputs is not correct for the amount of attrs");
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException | ArrayIndexOutOfBoundsException | NullPointerException ex) {
+            return null;
         }
         return null;
     }

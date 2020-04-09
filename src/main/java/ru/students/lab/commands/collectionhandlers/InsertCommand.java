@@ -40,10 +40,6 @@ public class InsertCommand extends AbsCommand {
             return context.result().toString();
         }
 
-        /*Dragon newDragon = (userInputHandler.isInteractive()) ?
-                dragonFactory.generateDragonByInput(userInputHandler) :
-                dragonFactory.generateFromScript(userInputHandler);*/
-
         if (dragon == null)
             throw new DragonFormatException();
 
@@ -56,5 +52,10 @@ public class InsertCommand extends AbsCommand {
     @Override
     public boolean requireDragonInput() {
         return requireInputs;
+    }
+
+    @Override
+    public Dragon getDragon() {
+        return dragon;
     }
 }

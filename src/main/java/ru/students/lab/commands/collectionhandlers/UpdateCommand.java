@@ -30,9 +30,6 @@ public class UpdateCommand extends AbsCommand {
     @Override
     public Object execute(ExecutionContext context) throws IOException {
         context.result().setLength(0);
-        /*Dragon newDragon = (userInputHandler.isInteractive()) ?
-                dragonFactory.generateDragonByInput(userInputHandler) :
-                dragonFactory.generateFromScript(userInputHandler);*/
 
         if (dragon == null)
             throw new DragonFormatException();
@@ -49,6 +46,10 @@ public class UpdateCommand extends AbsCommand {
     @Override
     public boolean requireDragonInput() {
         return requireInputs;
+    }
+    @Override
+    public Dragon getDragon() {
+        return dragon;
     }
 
 }

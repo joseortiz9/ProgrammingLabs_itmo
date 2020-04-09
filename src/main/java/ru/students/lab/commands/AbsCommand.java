@@ -36,6 +36,9 @@ public abstract class AbsCommand implements ICommand, Serializable {
     public boolean requireDragonInput() {
         return requireInputs;
     }
+    public Dragon getDragon() {
+        return null;
+    }
 
     @Override
     public String toString() {

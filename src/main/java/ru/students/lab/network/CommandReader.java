@@ -11,7 +11,11 @@ import ru.students.lab.models.Dragon;
 
 import java.io.*;
 import java.util.NoSuchElementException;
-
+/**
+ * Класс для чтения и подтверждения правильности команд серверу
+ * @autor Хосе Ортис
+ * @version 1.0
+ */
 public class CommandReader {
 
     private static final Logger LOG = LogManager.getLogger(CommandReader.class);
@@ -29,7 +33,7 @@ public class CommandReader {
     }
 
     /**
-     *
+     * Функция для чтения команд от пользователя
      */
     public void startInteraction() throws IOException, NoSuchCommandException {
         String commandStr;
@@ -45,14 +49,19 @@ public class CommandReader {
             channel.sendCommand(command);
         }
     }
-
+     /**
+     * Функция для проверки, нужны ли еще входные данные для отправки команды
+      * @param command - команда
+     */
     public void checkForInputs(AbsCommand command) {
         if (command.requireDragonInput()) {
             Dragon dragon = dragonFactory.generateDragonByInput(userInputHandler);
             command.addDragonInput(dragon);
         }
     }
-
+    /**
+     * Функция для отключения клиента
+     */
     public void finishClient() {
         LOG.info("Finishing client");
         channel.disconnect();

@@ -14,7 +14,11 @@ import java.net.*;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
 import java.util.NoSuchElementException;
-
+/**
+ * Класс для запуска работы сервера
+ * @autor Хосе Ортис
+ * @version 1.0
+ */
 public class ServerMain {
 
     private static final Logger LOG = LogManager.getLogger(ServerMain.class);

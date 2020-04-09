@@ -64,8 +64,9 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
     /**
      * Функция для сериализации данных, создания и отправки датаграммы
      * @param response - отправляемые данные
+     * @param client - client that requested from data
      */
-    public void sendResponse(Object response) {
+    public void sendResponse(Object response, SocketAddress client) {
         try(ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
             ObjectOutputStream objectStream = new ObjectOutputStream(byteArrayStream)) {
 
@@ -74,7 +75,7 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
             LOG.info("send object " + response.toString());
 
             final ByteBuffer objectBuffer = ByteBuffer.wrap(byteArrayStream.toByteArray());
-            sendDatagram(objectBuffer, clientList.get(clientList.size()-1));
+            sendDatagram(objectBuffer, client);
 
         } catch (IOException e) {
             System.err.println(e.getMessage());

@@ -23,10 +23,12 @@ public class ServerRequestHandler {
 
     private final ServerUdpSocket socket;
     private final ExecutionContext executionContext;
+    private SocketAddress addressFromClient;
 
     public ServerRequestHandler(ServerUdpSocket socket, ExecutionContext context) {
         this.socket = socket;
         this.executionContext = context;
+        this.addressFromClient = null;
     }
 
     public void receiveFromWherever() {
@@ -36,7 +38,7 @@ public class ServerRequestHandler {
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Weird errors, check log");
             LOG.error("Weird errors processing the received data", e);
-            socket.sendResponse("Weird errors, check log. " + e.getMessage());
+            socket.sendResponse("Weird errors, check log. " + e.getMessage(), addressFromClient);
         }
     }
 
@@ -50,6 +52,7 @@ public class ServerRequestHandler {
         final byte[] petitionBytes = new byte[buf.remaining()];
         buf.get(petitionBytes);
 
+        this.addressFromClient = addressFromClient;
         socket.checkClient(addressFromClient);
         if (petitionBytes.length > 0)
             processRequest(petitionBytes);
@@ -93,7 +96,7 @@ public class ServerRequestHandler {
                 LOG.error("Security problems trying to access to the file (Can not be read or edited)", ex);
             }
         }
-        socket.sendResponse(responseExecution);
+        socket.sendResponse(responseExecution, addressFromClient);
     }
     /**
      * Функция для отключения сервера

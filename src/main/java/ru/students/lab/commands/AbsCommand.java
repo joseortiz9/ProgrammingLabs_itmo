@@ -4,7 +4,11 @@ import ru.students.lab.models.Dragon;
 
 import java.io.Serializable;
 import java.util.Arrays;
-
+/**
+ * Класс для создания и наследования command
+ * @autor Хосе Ортис
+ * @version 1.0
+ */
 public abstract class AbsCommand implements ICommand, Serializable {
 
     private static final long serialVersionUID = 2901644046809010785L;
@@ -29,10 +33,23 @@ public abstract class AbsCommand implements ICommand, Serializable {
         this.args = args;
     }
 
+    /**
+     *
+     * Создает объект класса dragon для передачи его серверу
+     *
+     *
+     * @param dragon
+     */
     public void addDragonInput(Dragon dragon) {
         //
     }
-
+    /**
+     *
+     * Определяет, нужен ли данной команде дополнительный ввод объекта класса dragon
+     *
+     *
+     * @return true если ввод необходим, иначе false
+     */
     public boolean requireDragonInput() {
         return requireInputs;
     }

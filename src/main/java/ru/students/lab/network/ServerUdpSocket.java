@@ -10,7 +10,11 @@ import java.net.*;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Класс для работы с сервером
+ * @autor Хосе Ортис
+ * @version 1.0
+ */
 public class ServerUdpSocket /*extends AbsUdpSocket*/ {
 
     protected static final Logger LOG = LogManager.getLogger(ServerUdpSocket.class);
@@ -25,7 +29,11 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
         socket.setSoTimeout(SOCKET_TIMEOUT);
         clientList = new ArrayList<>();
     }
-
+    /**
+     * Функция для создания и отправки датаграммы
+     * @param content - отправляемые данные
+     * @param client - адрес сокета клиента
+     */
     //@Override
     public void sendDatagram(ByteBuffer content, SocketAddress client) throws IOException {
         byte[] buf = new byte[content.remaining()];
@@ -36,7 +44,11 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
         System.out.println("Sent datagram from SERVER to " + client);
         LOG.info("Sent datagram from SERVER to " + client);
     }
-
+    /**
+     * Функция для получения данных и создания датаграммы
+     * @param buffer - полученные данные
+     * @return  адрес клиента, отправившего пакет
+     */
    // @Override
     public SocketAddress receiveDatagram(ByteBuffer buffer) throws IOException {
         byte[] buf = new byte[buffer.remaining()];
@@ -49,7 +61,10 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
         buffer.put(buf, 0, packet.getLength());
         return packet.getSocketAddress();
     }
-
+    /**
+     * Функция для сериализации данных, создания и отправки датаграммы
+     * @param response - отправляемые данные
+     */
     public void sendResponse(Object response) {
         try(ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
             ObjectOutputStream objectStream = new ObjectOutputStream(byteArrayStream)) {
@@ -66,7 +81,10 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Функция проверки клиента
+     * @param a - адрес последнего клиента, отправившего команду серверу
+     */
     public SocketAddress checkClient(SocketAddress a) {
         SocketAddress client = clientList.stream()
                 .filter((c) -> c.equals(a))

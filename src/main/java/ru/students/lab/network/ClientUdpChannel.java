@@ -9,7 +9,11 @@ import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.List;
-
+/**
+ * Класс для создания UPD канала для клиента
+ * @autor Хосе Ортис
+ * @version 1.0
+ */
 public class ClientUdpChannel extends AbsUdpSocket {
 
     protected static final Logger LOG = LogManager.getLogger(ClientUdpChannel.class);
@@ -26,14 +30,20 @@ public class ClientUdpChannel extends AbsUdpSocket {
         addressServer = null;
     }
 
-
+    /**
+     * Функция для подключения к серверу по адресу
+     * @param addressServer - адрес сервера
+     */
     public void tryToConnect(InetSocketAddress addressServer) {
         this.addressServer = addressServer;
         sendCommand("connect");
         System.out.println("Trying to reach the server...");
         LOG.info("Trying to reach the server...");
     }
-
+    /**
+     * Функция для отправки байт-буфера
+     * @param content - байт-буфер
+     */
 
     public void sendDatagram(ByteBuffer content) throws IOException {
         channel.send(content, addressServer);
@@ -41,13 +51,20 @@ public class ClientUdpChannel extends AbsUdpSocket {
         LOG.info("sent datagram to " + addressServer);
     }
 
-
+    /**
+     * Функция для получения датаграммы и записи ее в буфер
+     * @param buffer - буфер, в который записывается датаграмма
+     * @return ret - адрес сервера
+     */
     public SocketAddress receiveDatagram(ByteBuffer buffer) throws IOException {
         SocketAddress ret;
         ret = channel.receive(buffer);
         return ret;
     }
-
+    /**
+     * Функция для сериализации и отправки команды
+     * @param command - отправляемая команда
+     */
     public void sendCommand(Object command) {
         try(ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
             ObjectOutputStream objectStream = new ObjectOutputStream(byteArrayStream)) {
@@ -64,7 +81,9 @@ public class ClientUdpChannel extends AbsUdpSocket {
         }
     }
 
-
+    /**
+     * Функция для отключения от сервера
+     */
     public void disconnect() {
         try {
             channel.close();
@@ -73,24 +92,36 @@ public class ClientUdpChannel extends AbsUdpSocket {
             System.exit(-1);
         }
     }
-
+    /**
+     * Функция для проверки подключения к серверу
+     */
     public boolean isConnected() {
         return addressServer != null && connected;
     }
-
+    /**
+     * Функция для задания подключения/отключения к серверу
+     */
     public void setConnected(boolean connected) {
         this.connected = connected;
     }
-
+    /**
+     * Функция для задания отключения от сервера
+     */
     public void setConnectionToFalse() {
         this.addressServer = null;
         this.connected = false;
     }
-
+    /**
+     * Функция получения информации о том, был ли отправлен ответ
+     * @return boolean requestSent
+     */
     public boolean requestWasSent() {
         return requestSent;
     }
-
+    /**
+     * Функция для получения данных
+     * @return processResponse полученные данные
+     */
     public Object receiveData() throws IOException, ClassNotFoundException {
         final ByteBuffer buf = ByteBuffer.allocate(AbsUdpSocket.DATA_SIZE);
         final SocketAddress addressFromServer = receiveDatagram(buf);
@@ -108,7 +139,11 @@ public class ClientUdpChannel extends AbsUdpSocket {
         else
             throw new EOFException();
     }
-
+    /**
+     * Функция для десериализации полученных данных
+     * @param petitionBytes - данные
+     * @return obj - объект десериализованных данных
+     */
     private Object processResponse(byte[] petitionBytes) throws IOException, ClassNotFoundException {
         try (ObjectInputStream stream = new ObjectInputStream(new ByteArrayInputStream(petitionBytes))) {
             final Object obj = stream.readObject();
@@ -118,7 +153,10 @@ public class ClientUdpChannel extends AbsUdpSocket {
             return obj;
         }
     }
-
+    /**
+     * Функция для вывода объектов коллекции
+     * @param obj- коллекция с объектами
+     */
     public void printObj(Object obj) throws ClassNotFoundException {
         if (obj instanceof String)
             System.out.println(obj);

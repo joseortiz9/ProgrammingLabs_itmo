@@ -35,7 +35,7 @@ public class CommandReader {
     /**
      * Функция для чтения команд от пользователя
      */
-    public void startInteraction() throws IOException, NoSuchCommandException {
+    public void startInteraction() throws IOException, ArrayIndexOutOfBoundsException, NoSuchCommandException {
         String commandStr;
         commandStr = userInputHandler.readWithMessage("Write Command: ");
         AbsCommand command = commandManager.getCommand(commandStr);

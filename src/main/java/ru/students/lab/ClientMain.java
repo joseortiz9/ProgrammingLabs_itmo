@@ -87,6 +87,8 @@ public class ClientMain {
             } catch (NoSuchElementException ex) {
                 reader.finishClient();
             } catch (ClosedChannelException ignored) {
+            }catch (ArrayIndexOutOfBoundsException ex) {
+                System.err.println("No argument passed");
             } catch (EOFException ex) {
                 System.err.println("Reached limit of data to receive");
                 LOG.error("Reached Limit", ex);

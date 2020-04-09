@@ -11,14 +11,15 @@
 
 First represents the mode of operating, second the port to the server we want to connect
 ```
-java -jar Progra_Lab6.jar -Dmode=client 5433
+java -jar -Dmode=client Progra_Lab6.jar 5433
+java -jar -Dmode=client Progra_Lab6.jar 5433 localhost
 ```
 
 First represents the mode of operating, second the port to the server we want to connect and the last is the name of the file from which we take the Dragons for the collection.
 
 **Server:** 
 ```
-java -jar Progra_Lab6.jar -Dmode=server 5433 data.xml
+java -jar -Dmode=server Progra_Lab6.jar 5433 data.xml
 ```
 
 #### Необходимо выполнить следующие требования:

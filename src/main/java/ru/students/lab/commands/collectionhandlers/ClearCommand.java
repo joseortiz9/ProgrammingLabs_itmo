@@ -12,16 +12,14 @@ import java.io.IOException;
  */
 public class ClearCommand extends AbsCommand {
 
-    public final String description = "очистить коллекцию";
+    public ClearCommand() {
+        commandKey = "clear";
+        description = "очистить коллекцию";
+    }
 
     @Override
     public Object execute(ExecutionContext context) throws IOException {
         context.collectionManager().clear();
         return "All elems deleted successfully!";
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
     }
 }

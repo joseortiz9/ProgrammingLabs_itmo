@@ -13,7 +13,10 @@ import java.io.IOException;
 
 public class RemoveGreaterKeyCommand extends AbsCommand {
 
-    public final String description = "удалить из коллекции все элементы, ключ которых превышает заданный\nSyntax: remove_greater_key key";
+    public RemoveGreaterKeyCommand() {
+        commandKey = "remove_greater_key";
+        description = "удалить из коллекции все элементы, ключ которых превышает заданный\nSyntax: remove_greater_key key";
+    }
 
     @Override
     public Object execute(ExecutionContext context) throws IOException {
@@ -27,10 +30,5 @@ public class RemoveGreaterKeyCommand extends AbsCommand {
         else
             context.result().append("A total of ").append(initialSize - finalSize).append(" were removed");
         return context.result().toString();
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
     }
 }

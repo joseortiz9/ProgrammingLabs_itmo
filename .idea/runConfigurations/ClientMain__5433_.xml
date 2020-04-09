@@ -1,8 +1,9 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="ClientMain (5433)" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="ru.students.lab.ClientMain" />
+    <option name="MAIN_CLASS_NAME" value="ru.students.lab.Main" />
     <module name="Lab6" />
     <option name="PROGRAM_PARAMETERS" value="5433" />
+    <option name="VM_PARAMETERS" value="-Dmode=client" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

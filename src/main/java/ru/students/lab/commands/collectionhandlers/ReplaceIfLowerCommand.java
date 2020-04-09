@@ -15,9 +15,13 @@ import java.io.IOException;
 
 public class ReplaceIfLowerCommand extends AbsCommand {
 
-    public final String description = "заменить значение по ключу, если новое значение меньше старого.\nSyntax: replace_if_lower key {element}";
     protected boolean requireInputs = true;
     protected Dragon dragon = null;
+
+    public ReplaceIfLowerCommand() {
+        commandKey = "replace_if_lower";
+        description = "заменить значение по ключу, если новое значение меньше старого.\nSyntax: replace_if_lower key {element}";
+    }
 
     @Override
     public void addDragonInput(Dragon dragon) {
@@ -41,10 +45,5 @@ public class ReplaceIfLowerCommand extends AbsCommand {
     @Override
     public boolean requireDragonInput() {
         return requireInputs;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
     }
 }

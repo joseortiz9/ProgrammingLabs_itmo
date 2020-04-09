@@ -2,16 +2,20 @@ package ru.students.lab;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.students.lab.exceptions.NoSuchCommandException;
 import ru.students.lab.util.IHandlerInput;
 import ru.students.lab.util.UserInputHandler;
 import ru.students.lab.managers.CommandManager;
 import ru.students.lab.network.ClientUdpChannel;
 import ru.students.lab.network.CommandReader;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.*;
+import java.nio.channels.ClosedChannelException;
+import java.util.NoSuchElementException;
 
-public class ClientMain extends Thread {
+public class ClientMain {
 
     private static final Logger LOG = LogManager.getLogger(ClientMain.class);
 
@@ -37,19 +41,54 @@ public class ClientMain extends Thread {
 
         try {
             channel = new ClientUdpChannel();
-            channel.tryToConnect(address);
         } catch (IOException ex) {
             System.err.println("Unable to connect to the server, check logs for detailed information");
             LOG.error("Unable to connect to the server", ex);
             System.exit(-1);
         }
 
-        LOG.info("Successfully connected to the server");
-
         IHandlerInput userInputHandler = new UserInputHandler(true);
         CommandManager manager = new CommandManager();
-        CommandReader sender = new CommandReader(channel, manager, userInputHandler);
-        sender.setName("ConsoleReaderTread");
-        sender.start();
+        CommandReader reader = new CommandReader(channel, manager, userInputHandler);
+
+        while(true) {
+            try {
+                if (channel.isConnected())
+                    reader.startInteraction();
+                else
+                    channel.tryToConnect(address);
+
+                final long start = System.currentTimeMillis();
+                while (channel.requestWasSent()) {
+                    Object received = channel.receiveData();
+
+                    if (received instanceof String) {
+                        if (received.equals("connect")) {
+                            channel.setConnected(true);
+                            LOG.info("Successfully connected to the server");
+                        }
+                    }
+
+                    if (received != null)
+                        channel.printObj(received);
+
+                    if (channel.requestWasSent() && System.currentTimeMillis() - start > 1000) {
+                        channel.setConnectionToFalse();
+                        break;
+                    }
+                }
+            } catch (NoSuchCommandException ex) {
+                System.out.println(ex.getMessage());
+            } catch (NoSuchElementException ex) {
+                reader.finishClient();
+            } catch (ClosedChannelException ignored) {
+            } catch (EOFException ex) {
+                System.err.println("Reached limit of data to receive");
+                LOG.error("Reached Limit", ex);
+            } catch (IOException | ClassNotFoundException e) {
+                System.err.println("I/O Problems, check logs");
+                LOG.error("I/O Problems", e);
+            }
+        }
     }
 }

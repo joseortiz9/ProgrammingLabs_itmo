@@ -12,7 +12,7 @@ import ru.students.lab.models.Dragon;
 import java.io.*;
 import java.util.NoSuchElementException;
 
-public class CommandReader extends Thread {
+public class CommandReader {
 
     private static final Logger LOG = LogManager.getLogger(CommandReader.class);
 
@@ -26,22 +26,6 @@ public class CommandReader extends Thread {
         this.userInputHandler = userInput;
         this.commandManager = commandManager;
         this.dragonFactory = new DragonFactory();
-    }
-
-    @Override
-    public void run() {
-        while(true) {
-            try {
-                Thread.sleep(200);
-                startInteraction();
-            }catch (NoSuchCommandException ex) {
-                System.out.println(ex.getMessage());
-            } catch (IOException | InterruptedException ex) {
-                LOG.error("Intern problems, check Logs", ex);
-            } catch (NoSuchElementException ex) {
-                finishClient();
-            }
-        }
     }
 
     /**
@@ -72,7 +56,6 @@ public class CommandReader extends Thread {
     public void finishClient() {
         LOG.info("Finishing client");
         channel.disconnect();
-        this.interrupt();
         System.exit(0);
     }
 }

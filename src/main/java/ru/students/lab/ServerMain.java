@@ -38,7 +38,7 @@ public class ServerMain {
         try {
             socket = new ServerUdpSocket(address);
 
-            final FileManager fileManager = new FileManager(Paths.get("data.xml").toAbsolutePath().toString());
+            final FileManager fileManager = new FileManager(Paths.get(args[1]).toAbsolutePath().toString());
             final CollectionManager collectionManager = new CollectionManager(fileManager.getCollectionFromFile());
             StringBuilder stringBuilder = new StringBuilder();
             final ExecutionContext executionContext = new ExecutionContext() {
@@ -55,9 +55,7 @@ public class ServerMain {
                     return stringBuilder;
                 }
             };
-
             final ServerRequestHandler requestManager = new ServerRequestHandler(socket, executionContext);
-            requestManager.start();
 
             if (socket.getSocket().isBound())
                 LOG.info("Socket Successfully opened on " + address);
@@ -78,10 +76,21 @@ public class ServerMain {
                     LOG.error("problem saving the collection in file", e);
                 }
             }));
+
+            while (socket.getSocket().isBound()) {
+                try {
+                    requestManager.receiveData();
+                } catch (SocketTimeoutException ignored) {
+                } catch (IOException | ClassNotFoundException e) {
+                    System.err.println("Weird errors, check log");
+                    LOG.error("Weird errors processing the received data", e);
+                }
+            }
+
         } catch (SocketException e) {
             e.printStackTrace();
             System.exit(-1);
-        } catch (InvalidPathException | SecurityException ex) {
+        } catch (ArrayIndexOutOfBoundsException | InvalidPathException | SecurityException ex) {
             System.err.println("Invalid file's path or/and security problem trying to access it");
             LOG.error("Invalid file's path or/and security problem trying to access it",ex);
         } catch (JAXBException ex) {

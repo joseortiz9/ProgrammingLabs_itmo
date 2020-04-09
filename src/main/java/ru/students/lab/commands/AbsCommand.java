@@ -8,7 +8,7 @@ import java.util.Arrays;
 public abstract class AbsCommand implements ICommand, Serializable {
 
     private static final long serialVersionUID = 2901644046809010785L;
-
+    protected String commandKey;
     protected String description = "No Description";
     protected String[] args;
     protected boolean requireInputs = false;
@@ -18,6 +18,9 @@ public abstract class AbsCommand implements ICommand, Serializable {
         this.args = args;
     }
 
+    public String getCommandKey() {
+        return commandKey;
+    }
     public String getDescription() {
         return description;
     }

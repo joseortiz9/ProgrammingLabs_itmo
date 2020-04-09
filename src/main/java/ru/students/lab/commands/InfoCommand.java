@@ -7,15 +7,13 @@ package ru.students.lab.commands;
 */
 public class InfoCommand extends AbsCommand {
 
-    public final String description = "вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)";
+    public InfoCommand() {
+        commandKey = "info";
+        description = "вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)";
+    }
 
     @Override
     public Object execute(ExecutionContext context) {
         return context.collectionManager().toString();
     }
-
-     @Override
-     public String getDescription() {
-         return description;
-     }
  }

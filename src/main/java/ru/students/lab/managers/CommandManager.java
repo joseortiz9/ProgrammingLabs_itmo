@@ -4,7 +4,6 @@ import ru.students.lab.commands.*;
 import ru.students.lab.commands.collectionhandlers.*;
 import ru.students.lab.exceptions.NoSuchCommandException;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -38,7 +37,7 @@ public class CommandManager {
         commands.put("filter_starts_with_name", new FilterColByNearNameCommand());
         commands.put("print_descending", new PrintDescendingCommand());
         commands.put("exit", new ExitCommand());
-        commands.put("execute_script", new ExecuteScriptCommand());
+        commands.put("execute_script", new ExecuteScriptCommand(commands.values()));
         //commands.put("save", new SaveColCommand(this.getCollectionManager(), this.getFileManager()));
     }
 

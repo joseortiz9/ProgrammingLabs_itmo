@@ -11,15 +11,13 @@ import ru.students.lab.commands.ExecutionContext;
 
 public class ShowCommand extends AbsCommand {
 
-    public final String description = "вывести в стандартный поток вывода все элементы коллекции в строковом представлении";
+    public ShowCommand() {
+        commandKey = "show";
+        description = "вывести в стандартный поток вывода все элементы коллекции в строковом представлении";
+    }
 
     @Override
     public Object execute(ExecutionContext context) {
         return context.collectionManager().getSerializableList();
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
     }
 }

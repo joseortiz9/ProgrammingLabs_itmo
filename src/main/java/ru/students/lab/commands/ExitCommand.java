@@ -1,6 +1,7 @@
 package ru.students.lab.commands;
 
 import java.io.IOException;
+import java.util.Collection;
 
 /**
  * Класс для выполнения и получения информации о функции сохранения коллекции в файл
@@ -10,7 +11,10 @@ import java.io.IOException;
 
 public class ExitCommand extends AbsCommand {
 
-    public final String description = "завершить программу (без сохранения в файл))";
+    public ExitCommand() {
+        commandKey = "exit";
+        description = "завершить программу (без сохранения в файл))";
+    }
 
     @Override
     public Object execute(ExecutionContext context) throws IOException {

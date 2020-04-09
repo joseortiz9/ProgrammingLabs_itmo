@@ -12,7 +12,10 @@ import java.io.IOException;
 */
 public class RemoveKeyCommand extends AbsCommand {
 
-    public final String description = "удалить элемент из коллекции по его ключу.\nSyntax: remove_key key";
+    public RemoveKeyCommand() {
+        commandKey = "remove_key";
+        description = "удалить элемент из коллекции по его ключу.\nSyntax: remove_key key";
+    }
 
     @Override
     public Object execute(ExecutionContext context) throws IOException {
@@ -22,10 +25,5 @@ public class RemoveKeyCommand extends AbsCommand {
         else
             context.result().append("The key '").append(args[0]).append("' doesn't exist");
         return context.result().toString();
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
     }
 }

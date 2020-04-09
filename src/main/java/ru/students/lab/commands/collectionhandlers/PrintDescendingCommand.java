@@ -14,7 +14,10 @@ import java.util.List;
 */
 public class PrintDescendingCommand extends AbsCommand {
 
-    public final String description = "вывести элементы коллекции в порядке убывания.\nSyntax: print_descending -{k/i/n/d} где: -k=key / -i=id / -n=name / -d=creation_date";
+    public PrintDescendingCommand() {
+        commandKey = "print_descending";
+        description = "вывести элементы коллекции в порядке убывания.\nSyntax: print_descending -{k/i/n/d} где: -k=key / -i=id / -n=name / -d=creation_date";
+    }
 
      @Override
      public Object execute(ExecutionContext context) throws IOException {

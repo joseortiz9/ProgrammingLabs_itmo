@@ -14,13 +14,17 @@ import java.io.IOException;
 */
 public class InsertCommand extends AbsCommand {
 
-    public final String description = "добавить новый элемент с заданным ключом.\nSyntax: insert key {element}\n"
-            +"Rules:\n"
-            +"coord{X}    [should be more than -328]\n"
-            +"age         [should be more than 0]\n"
-            +"head{#Eyes} [empty or more than 0]";
     protected boolean requireInputs = true;
     protected Dragon dragon = null;
+
+    public InsertCommand() {
+        commandKey = "insert";
+        description = "добавить новый элемент с заданным ключом.\nSyntax: insert key {element}\n"
+                +"Rules:\n"
+                +"coord{X}    [should be more than -328]\n"
+                +"age         [should be more than 0]\n"
+                +"head{#Eyes} [empty or more than 0]";
+    }
 
     @Override
     public void addDragonInput(Dragon dragon) {
@@ -47,11 +51,6 @@ public class InsertCommand extends AbsCommand {
         if (context.collectionManager().insert(Integer.valueOf(args[0]), dragon) == null)
             context.result().append(dragon.toString()).append(" saved!");
         return context.result().toString();
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
     }
 
     @Override

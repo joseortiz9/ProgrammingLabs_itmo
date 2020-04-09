@@ -14,9 +14,13 @@ import java.io.IOException;
  */
 public class UpdateCommand extends AbsCommand {
 
-    public static final String DESCRIPTION = "обновить значение элемента коллекции, id которого равен заданному.\nSyntax: update id {element}";
     protected boolean requireInputs = true;
     protected Dragon dragon = null;
+
+    public UpdateCommand() {
+        commandKey = "update";
+        description = "обновить значение элемента коллекции, id которого равен заданному.\nSyntax: update id {element}";
+    }
 
     @Override
     public void addDragonInput(Dragon dragon) {
@@ -40,11 +44,6 @@ public class UpdateCommand extends AbsCommand {
             context.result().append("The ID '").append(Integer.valueOf(args[0])).append("' doesn't exist");
 
         return context.result().toString();
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
     }
 
     @Override

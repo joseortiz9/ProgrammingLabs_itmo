@@ -15,7 +15,10 @@ import java.util.List;
 
 public class FilterColByNameCommand extends AbsCommand {
 
-    public final String description = "вывести элементы, значение поля name которых содержит заданную.\nSyntax: filter_contains_name name";
+    public FilterColByNameCommand() {
+        commandKey = "filter_contains_name";
+        description = "вывести элементы, значение поля name которых содержит заданную.\nSyntax: filter_contains_name name";
+    }
 
      @Override
      public Object execute(ExecutionContext context) throws IOException {
@@ -24,10 +27,5 @@ public class FilterColByNameCommand extends AbsCommand {
              return "No elements found.";
          else
              return filteredCol;
-     }
-
-     @Override
-     public String getDescription() {
-         return description;
      }
  }

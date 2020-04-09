@@ -12,7 +12,10 @@ import java.io.IOException;
 */
 public class RemoveLowerKeyCommand extends AbsCommand {
 
-    public final String description = "удалить из коллекции все элементы, ключ которых меньше, чем заданный.\nSyntax: remove_lower_key key";
+    public RemoveLowerKeyCommand() {
+        commandKey = "remove_lower_key";
+        description = "удалить из коллекции все элементы, ключ которых меньше, чем заданный.\nSyntax: remove_lower_key key";
+    }
 
     @Override
     public Object execute(ExecutionContext context) throws IOException {
@@ -26,10 +29,5 @@ public class RemoveLowerKeyCommand extends AbsCommand {
         else
             context.result().append("A total of ").append(initialSize - finalSize).append(" were removed");
         return context.result().toString();
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
     }
 }

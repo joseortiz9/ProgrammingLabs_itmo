@@ -8,6 +8,7 @@ import ru.students.lab.util.UserInputHandler;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Класс для выполнения и получения информации о функции считывания скрипта из указанного файла
@@ -16,9 +17,13 @@ import java.util.Arrays;
 */
 public class ExecuteScriptCommand extends AbsCommand {
 
-    public final String description = "считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.\nSyntax: execute_script file_name";
+    private Collection<AbsCommand> commands;
 
-    public ExecuteScriptCommand(){}
+    public ExecuteScriptCommand(Collection<AbsCommand> commands) {
+        this.commands = commands;
+        commandKey = "execute_script";
+        description = "считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.\nSyntax: execute_script file_name";
+    }
 
     @Override
     public Object execute(ExecutionContext context) throws IOException {
@@ -28,14 +33,12 @@ public class ExecuteScriptCommand extends AbsCommand {
         String pathToFile = Paths.get(args[0]).toAbsolutePath().toString();
         String commandsStr = context.fileManager().getStrFromFile(pathToFile);
 
-        IHandlerInput userInputHandler = new UserInputHandler(false);
-
         String[] commands = commandsStr.trim().split("\n");
         for (int i = 0; i < commands.length; i++) {
-            userInputHandler.setInputsAfterInsert(Arrays.copyOfRange(commands, i + 1, commands.length));
-
-            if (userInputHandler.getResultCode() == 0)
-                i+=8;
+            String[] inputsAfterInsert = Arrays.copyOfRange(commands, i + 1, commands.length);
+            //getCommand()
+            /*if (userInputHandler.getResultCode() == 0)
+                i+=8;*/
             /*try {
                 AbsCommand command = this.commandManager.getCommand(commands[i]);
                 responseExecution = command.execute(executionContext);
@@ -51,6 +54,10 @@ public class ExecuteScriptCommand extends AbsCommand {
             }*/
         }
         return null;
+    }
+
+    private AbsCommand getCommand(String s) {
+        return commands.stream().filter(e -> e.getCommandKey().equals(s)).findFirst().orElse(null);
     }
 
     /*
@@ -73,8 +80,5 @@ public class ExecuteScriptCommand extends AbsCommand {
         }
     }*/
 
-    @Override
-    public String getDescription() {
-        return description;
-    }
+
 }

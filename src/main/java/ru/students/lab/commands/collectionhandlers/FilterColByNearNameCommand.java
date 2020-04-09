@@ -15,7 +15,10 @@ import java.util.List;
 
 public class FilterColByNearNameCommand extends AbsCommand {
 
-    public final String description = "вывести элементы, значение поля name которых начинается с заданной подстроки.\nSyntax: filter_starts_with_name name";
+    public FilterColByNearNameCommand() {
+        commandKey = "filter_starts_with_name";
+        description = "вывести элементы, значение поля name которых начинается с заданной подстроки.\nSyntax: filter_starts_with_name name";
+    }
 
      @Override
      public Object execute(ExecutionContext context) throws IOException {
@@ -24,10 +27,5 @@ public class FilterColByNearNameCommand extends AbsCommand {
              return "No elements found.";
          else
              return filteredCol;
-     }
-
-     @Override
-     public String getDescription() {
-         return description;
      }
  }

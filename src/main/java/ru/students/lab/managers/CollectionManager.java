@@ -5,6 +5,7 @@ import ru.students.lab.util.ListEntrySerializable;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
 /** 
  * Класс, редактирующий и сортирующий коллекцию с переменной <b>nextIDToAdd</b>
  * @autor Хосе Ортис
@@ -13,7 +14,8 @@ import java.util.stream.Collectors;
 public class CollectionManager {
     private Integer nextIDToAdd = 1;
     private HashMap<Integer, Dragon> collection;
-    private Date collectionCreationDate;
+    private final Date collectionCreationDate;
+
     /** 
      * Конструктор - создает объект класса CollectionManager для работы с коллекцией, создает пустую коллекцию с его датой создания
      * @see CollectionManager#CollectionManager(HashMap<Integer, Dragon>, Date)
@@ -22,6 +24,7 @@ public class CollectionManager {
         this.collection = new HashMap<>();
         this.collectionCreationDate = new Date();
     }
+
     /** 
      * Конструктор - создает объект класса CollectionManager для работы с коллекцией, создает непустую коллекцию с его датой создания и следующим свободным номером
      * @param collection - Хэшмэп, представляющая коллекцию экземпляров класса Dragon
@@ -32,6 +35,7 @@ public class CollectionManager {
         this.collectionCreationDate = new Date();
         this.nextIDToAdd = collection.size() + 1;
     }
+
     /**
      * Функция удаления всех элементов коллекции 
      */
@@ -67,6 +71,7 @@ public class CollectionManager {
                 .map(e -> new ListEntrySerializable(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
+
     /**
      * Функция сортировки коллекции
      * @return возвращает отсортированную по имени {@link Dragon#name} коллекцию
@@ -80,6 +85,7 @@ public class CollectionManager {
                 .map(e -> new ListEntrySerializable(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
+
     /**
      * Функция сортировки коллекции
      * @return возвращает отсортированную по дате создания элемента коллекцию
@@ -158,6 +164,7 @@ public class CollectionManager {
         }
         return null;
     }
+
     /**
      * Функция изменения коллекции - удаление элементов коллекции, ключ которых больше заданного 
      * @param key - ключ, представляющий экземпляр класса Dragon внутри коллекции
@@ -221,6 +228,10 @@ public class CollectionManager {
                 .collect(Collectors.toList());
     }
 
+    public void setCollection(HashMap<Integer, Dragon> collection) {
+        this.collection = collection;
+    }
+
     /**
      * Функция получения коллекции
      * @return возвращает коллекцию
@@ -228,6 +239,7 @@ public class CollectionManager {
     public HashMap<Integer, Dragon> getCollection() {
         return this.collection;
     }
+
     /**
      * Функция получения значения поля 
      * @return возвращает дату инициализации коллекции
@@ -235,6 +247,7 @@ public class CollectionManager {
     public Date getColCreationDate() {
         return collectionCreationDate;
     }
+
     /**
      * Функция получения значения хэшкода экземпляров класса 
      * @return возвращает хэшкод 
@@ -247,6 +260,7 @@ public class CollectionManager {
         result += (this.getCollection().hashCode());
         return result;
     }
+
     /**
      * Функция сравнения экземпляров класса 
      * @return возвращает ЛОЖЬ, если экземпляры не равны, и ПРАВДА, если экземпляры равны
@@ -259,6 +273,7 @@ public class CollectionManager {
         return this.getCollection().equals(objCManager.getCollection()) &&
                 this.getColCreationDate().equals(objCManager.getColCreationDate());
     }
+
     /**
      * Функция получения информации о коллекции
      * @return возвращает строку с информацией о коллекции

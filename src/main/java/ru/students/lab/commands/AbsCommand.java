@@ -37,7 +37,6 @@ public abstract class AbsCommand implements ICommand, Serializable {
      *
      * Создает объект класса dragon для передачи его серверу
      *
-     *
      * @param dragon
      */
     public void addDragonInput(Dragon dragon) {

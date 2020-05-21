@@ -56,7 +56,7 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
         socket.receive(packet);
 
-        System.out.println("Received datagram in SERVER from " + packet.getSocketAddress());
+        System.out.println("\nReceived datagram in SERVER from " + packet.getSocketAddress());
         LOG.info("Received datagram in SERVER from " + packet.getSocketAddress());
         buffer.put(buf, 0, packet.getLength());
         return packet.getSocketAddress();

@@ -3,6 +3,7 @@ package ru.students.lab;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.exceptions.NoSuchCommandException;
+import ru.students.lab.network.ClientResponseHandler;
 import ru.students.lab.util.IHandlerInput;
 import ru.students.lab.util.UserInputHandler;
 import ru.students.lab.managers.CommandManager;
@@ -54,6 +55,7 @@ public class ClientMain {
         IHandlerInput userInputHandler = new UserInputHandler(true);
         CommandManager manager = new CommandManager();
         CommandReader reader = new CommandReader(channel, manager, userInputHandler);
+        ClientResponseHandler responseHandler = new ClientResponseHandler(channel);
 
         while(true) {
             try {
@@ -62,36 +64,16 @@ public class ClientMain {
                 else
                     channel.tryToConnect(address);
 
-                final long start = System.currentTimeMillis();
-                while (channel.requestWasSent()) {
-                    Object received = channel.receiveData();
+                responseHandler.checkForResponse();
 
-                    if (received instanceof String) {
-                        if (received.equals("connect")) {
-                            channel.setConnected(true);
-                            LOG.info("Successfully connected to the server");
-                            System.out.println("Successfully connected to the server");
-                        }
-                    }
-
-                    if (received != null)
-                        channel.printObj(received);
-
-                    if (channel.requestWasSent() && System.currentTimeMillis() - start > 1000) {
-                        channel.setConnectionToFalse();
-                        break;
-                    }
-                }
             } catch (NoSuchCommandException ex) {
                 System.out.println(ex.getMessage());
             } catch (NoSuchElementException ex) {
                 reader.finishClient();
+                responseHandler.finishReceiver();
             } catch (ClosedChannelException ignored) {
             }catch (ArrayIndexOutOfBoundsException ex) {
                 System.err.println("No argument passed");
-            } catch (EOFException ex) {
-                System.err.println("Reached limit of data to receive");
-                LOG.error("Reached Limit", ex);
             } catch (IOException | ClassNotFoundException e) {
                 System.err.println("I/O Problems, check logs");
                 LOG.error("I/O Problems", e);

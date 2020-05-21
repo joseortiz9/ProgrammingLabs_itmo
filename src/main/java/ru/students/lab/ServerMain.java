@@ -42,8 +42,8 @@ public class ServerMain {
         try {
             socket = new ServerUdpSocket(address);
 
-            final FileManager fileManager = new FileManager(Paths.get(args[1]).toAbsolutePath().toString());
-            final CollectionManager collectionManager = new CollectionManager(fileManager.getCollectionFromFile());
+            final FileManager fileManager = new FileManager();
+            final CollectionManager collectionManager = new CollectionManager();
             StringBuilder stringBuilder = new StringBuilder();
             final ExecutionContext executionContext = new ExecutionContext() {
                 @Override
@@ -71,38 +71,22 @@ public class ServerMain {
                 System.exit(-1);
             }
 
-            // create shutdown hook with anonymous implementation
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                try {
-                    requestManager.disconnect();
-                    executionContext.fileManager().SaveCollectionInXML(
-                            executionContext.collectionManager().getCollection());
-                    System.out.println("All elements of collection saved into the file!");
-                } catch (JAXBException | IOException e) {
-                    System.err.println("problem saving the collection in file, check logs");
-                    LOG.error("problem saving the collection in file", e);
-                }
-            }));
+            //create shutdown hook with anonymous implementation
+            Runtime.getRuntime().addShutdownHook(new Thread(requestManager::disconnect));
+
+            requestManager.receiveFromWherever();
 
             while (socket.getSocket().isBound()) {
-                requestManager.receiveFromWherever();
             }
 
-        } catch (SocketException e) {
-            e.printStackTrace();
-            System.exit(-1);
-        } catch (ArrayIndexOutOfBoundsException | InvalidPathException | SecurityException ex) {
-            System.err.println("Invalid file's path or/and security problem trying to access it");
-            LOG.error("Invalid file's path or/and security problem trying to access it",ex);
-        } catch (JAXBException ex) {
-            System.err.println("Problem processing the data from/into the file: " + ex.getMessage());
-            LOG.error("Problem processing the data from/into the file",ex);
         } catch (IOException ex) {
             System.err.println("I/O problems: " + ex.getMessage());
             LOG.error("I/O problems",ex);
         } catch (NoSuchElementException ex) {
             System.err.println("You wrote something strange");
             LOG.error("You wrote something strange",ex);
+        } catch (JAXBException e) {
+            e.printStackTrace();
         }
     }
 }

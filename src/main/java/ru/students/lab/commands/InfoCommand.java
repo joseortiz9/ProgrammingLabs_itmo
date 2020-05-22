@@ -1,5 +1,7 @@
 package ru.students.lab.commands;
 
+import ru.students.lab.database.Credentials;
+
 /**
  * Класс для выполнения и получения информации о функции вывода информации о коллекции
  * @autor Хосе Ортис
@@ -13,7 +15,7 @@ public class InfoCommand extends AbsCommand {
     }
 
     @Override
-    public Object execute(ExecutionContext context) {
+    public Object execute(ExecutionContext context, Credentials credentials) {
         return context.collectionManager().toString();
     }
  }

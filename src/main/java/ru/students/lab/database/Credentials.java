@@ -1,0 +1,25 @@
+package ru.students.lab.database;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Credentials implements Serializable {
+
+    private static final long serialVersionUID = 171771050017957012L;
+
+    public final String username;
+    public final String password;
+
+    public Credentials(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "Credentials{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+}

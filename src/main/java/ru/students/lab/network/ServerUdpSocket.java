@@ -78,8 +78,8 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
             sendDatagram(objectBuffer, client);
 
         } catch (IOException e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
+            System.err.println("Problem sending the response: " + e.getMessage());
+            LOG.error("Problem sending the response", e);
         }
     }
     /**

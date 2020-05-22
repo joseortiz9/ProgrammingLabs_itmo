@@ -2,6 +2,7 @@ package ru.students.lab.commands.collectionhandlers;
 
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ExecutionContext;
+import ru.students.lab.database.Credentials;
 
 import java.io.IOException;
 
@@ -19,7 +20,7 @@ public class RemoveGreaterKeyCommand extends AbsCommand {
     }
 
     @Override
-    public Object execute(ExecutionContext context) throws IOException {
+    public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
         context.result().setLength(0);
         int initialSize = context.collectionManager().getCollection().size();
         context.collectionManager().removeGreaterKey(Integer.valueOf(args[0]));

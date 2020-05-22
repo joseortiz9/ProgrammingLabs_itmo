@@ -61,6 +61,7 @@ public abstract class AbsCommand implements ICommand, Serializable {
         return this.getClass().getSimpleName() +
                 "{" +
                 "args=" + Arrays.toString(args) +
+                "dragon=" + getDragon() +
                 '}';
     }
 }

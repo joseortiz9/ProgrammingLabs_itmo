@@ -1,16 +1,13 @@
 package ru.students.lab.commands;
 
+import ru.students.lab.database.Credentials;
 import ru.students.lab.exceptions.DragonFormatException;
 import ru.students.lab.factories.DragonFactory;
-import ru.students.lab.managers.CommandManager;
-import ru.students.lab.util.IHandlerInput;
-import ru.students.lab.util.UserInputHandler;
 
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -31,7 +28,7 @@ public class ExecuteScriptCommand extends AbsCommand {
     }
 
     @Override
-    public Object execute(ExecutionContext context) throws IOException {
+    public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
         if (args.length < 1)
             throw new ArrayIndexOutOfBoundsException();
 
@@ -60,7 +57,7 @@ public class ExecuteScriptCommand extends AbsCommand {
                     else
                         dragonInputSuccess = true;
                 }
-                result.add(command.execute(context));
+                result.add(command.execute(context, credentials));
                 if (dragonInputSuccess)
                     i+=8;
             } catch (DragonFormatException ex) {

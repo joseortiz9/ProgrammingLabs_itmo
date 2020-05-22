@@ -2,6 +2,8 @@ package ru.students.lab;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.students.lab.database.Credentials;
+import ru.students.lab.database.CurrentUser;
 import ru.students.lab.exceptions.NoSuchCommandException;
 import ru.students.lab.network.ClientResponseHandler;
 import ru.students.lab.util.IHandlerInput;
@@ -52,15 +54,16 @@ public class ClientMain {
             System.exit(-1);
         }
 
+        CurrentUser currentUser = new CurrentUser(new Credentials("default", ""));
         IHandlerInput userInputHandler = new UserInputHandler(true);
         CommandManager manager = new CommandManager();
         CommandReader reader = new CommandReader(channel, manager, userInputHandler);
-        ClientResponseHandler responseHandler = new ClientResponseHandler(channel);
+        ClientResponseHandler responseHandler = new ClientResponseHandler(channel, currentUser);
 
         while(true) {
             try {
                 if (channel.isConnected())
-                    reader.startInteraction();
+                    reader.startInteraction(currentUser.getCredentials());
                 else
                     channel.tryToConnect(address);
 

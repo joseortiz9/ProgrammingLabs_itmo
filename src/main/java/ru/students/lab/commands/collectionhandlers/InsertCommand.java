@@ -2,6 +2,7 @@ package ru.students.lab.commands.collectionhandlers;
 
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ExecutionContext;
+import ru.students.lab.database.Credentials;
 import ru.students.lab.exceptions.DragonFormatException;
 import ru.students.lab.models.Dragon;
 
@@ -32,7 +33,7 @@ public class InsertCommand extends AbsCommand {
     }
 
     @Override
-    public Object execute(ExecutionContext context) throws IOException {
+    public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
         context.result().setLength(0);
 
         if (context.collectionManager().getCollection().containsKey(Integer.valueOf(args[0]))) {

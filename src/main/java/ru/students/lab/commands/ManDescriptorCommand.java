@@ -1,5 +1,7 @@
 package ru.students.lab.commands;
 
+import ru.students.lab.database.Credentials;
+
 import java.io.IOException;
 import java.util.Map;
  /** 
@@ -21,7 +23,7 @@ public class ManDescriptorCommand extends AbsCommand {
      }
 
     @Override
-    public Object execute(ExecutionContext context) throws IOException {
+    public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
         StringBuilder s = new StringBuilder();
         if (this.commandsDictionary.containsKey(args[0]))
             s.append("Command: ").append(args[0]).append("\n").append(this.commandsDictionary.get(args[0]).getDescription());

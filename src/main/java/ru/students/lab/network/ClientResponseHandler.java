@@ -2,6 +2,8 @@ package ru.students.lab.network;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.students.lab.database.Credentials;
+import ru.students.lab.database.CurrentUser;
 import ru.students.lab.util.ListEntrySerializable;
 
 import java.io.ByteArrayInputStream;
@@ -81,11 +83,13 @@ public class ClientResponseHandler {
     protected static final Logger LOG = LogManager.getLogger(ClientResponseHandler.class);
     private final ResponseReceiver receiverThread;
     private final ClientUdpChannel channel;
+    private CurrentUser currentUser;
     private volatile long startRequestTime = 0L;
     //private volatile boolean assertedObj = false;
 
-    public ClientResponseHandler(ClientUdpChannel channel) {
+    public ClientResponseHandler(ClientUdpChannel channel, CurrentUser currentUser) {
         this.channel = channel;
+        this.currentUser = currentUser;
         LOG.info("starting receiver");
         receiverThread = new ResponseReceiver();
         receiverThread.setName("ClientReceiverThread");
@@ -121,26 +125,37 @@ public class ClientResponseHandler {
             System.out.println(obj);
         }
         else if (obj instanceof List) {
-            if (((List) obj).size() == 0) {
-                System.out.println("Elements found: 0");
-                return;
-            }
-            if (((List) obj).get(0) instanceof ListEntrySerializable) {
-                ((List<ListEntrySerializable>) obj).stream().forEach(e -> System.out.println("key:" + e.getKey() + " -> " + e.getDragon().toString()));
-                System.out.println("Elements found: "+ ((List) obj).size());
-            }else {
-                for (Object objFromScript: (List)obj) {
-                    if (objFromScript instanceof String)
-                        System.out.println(objFromScript);
-                    else if (objFromScript instanceof List) {
-                        ((List<ListEntrySerializable>) objFromScript).stream().forEach(e -> System.out.println("key:" + e.getKey() + " -> " + e.getDragon().toString()));
-                        System.out.println("Elements found: "+ ((List) objFromScript).size());
-                    }
-                }
-            }
-        } else
+            printList(obj);
+        }
+        else if (obj instanceof Credentials) {
+            currentUser.setCredentials((Credentials) obj);
+            System.out.println("Current User set to: " + ((Credentials) obj).username);
+        }
+        else
             throw new ClassNotFoundException();
     }
+
+
+    private void printList(Object obj) {
+        if (((List) obj).size() == 0) {
+            System.out.println("Elements found: 0");
+            return;
+        }
+        if (((List) obj).get(0) instanceof ListEntrySerializable) {
+            ((List<ListEntrySerializable>) obj).stream().forEach(e -> System.out.println("key:" + e.getKey() + " -> " + e.getDragon().toString()));
+            System.out.println("Elements found: "+ ((List) obj).size());
+        }else {
+            for (Object objFromScript: (List)obj) {
+                if (objFromScript instanceof String)
+                    System.out.println(objFromScript);
+                else if (objFromScript instanceof List) {
+                    ((List<ListEntrySerializable>) objFromScript).stream().forEach(e -> System.out.println("key:" + e.getKey() + " -> " + e.getDragon().toString()));
+                    System.out.println("Elements found: "+ ((List) objFromScript).size());
+                }
+            }
+        }
+    }
+
 
     public void finishReceiver() {
         receiverThread.interrupt();

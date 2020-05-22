@@ -2,6 +2,7 @@ package ru.students.lab.network;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.students.lab.database.Credentials;
 import ru.students.lab.exceptions.NoSuchCommandException;
 import ru.students.lab.util.IHandlerInput;
 import ru.students.lab.commands.*;
@@ -10,7 +11,7 @@ import ru.students.lab.managers.CommandManager;
 import ru.students.lab.models.Dragon;
 
 import java.io.*;
-import java.util.NoSuchElementException;
+
 /**
  * Класс для чтения и подтверждения правильности команд серверу
  * @autor Хосе Ортис
@@ -35,18 +36,18 @@ public class CommandReader {
     /**
      * Функция для чтения команд от пользователя
      */
-    public void startInteraction() throws IOException, ArrayIndexOutOfBoundsException, NoSuchCommandException {
+    public void startInteraction(Credentials credentials) throws IOException, ArrayIndexOutOfBoundsException, NoSuchCommandException {
         String commandStr;
         commandStr = userInputHandler.readWithMessage("Write Command: ");
         AbsCommand command = commandManager.getCommand(commandStr);
 
         if (command instanceof HelpCommand || command instanceof ManDescriptorCommand)
-            userInputHandler.printLn((String) command.execute(null));
+            userInputHandler.printLn((String) command.execute(null, credentials));
         else if (command instanceof ExitCommand)
             finishClient();
         else {
             checkForInputs(command);
-            channel.sendCommand(command);
+            channel.sendCommand(new CommandPacket(command, credentials));
         }
     }
      /**

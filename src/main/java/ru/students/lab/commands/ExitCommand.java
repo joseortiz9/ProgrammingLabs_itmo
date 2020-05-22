@@ -1,7 +1,8 @@
 package ru.students.lab.commands;
 
+import ru.students.lab.database.Credentials;
+
 import java.io.IOException;
-import java.util.Collection;
 
 /**
  * Класс для выполнения и получения информации о функции сохранения коллекции в файл
@@ -17,7 +18,7 @@ public class ExitCommand extends AbsCommand {
     }
 
     @Override
-    public Object execute(ExecutionContext context) throws IOException {
+    public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
         return null;
     }
 

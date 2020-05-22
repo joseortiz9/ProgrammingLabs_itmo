@@ -1,5 +1,7 @@
 package ru.students.lab.commands;
 
+import ru.students.lab.database.Credentials;
+
 import java.io.IOException;
 
 /** 
@@ -10,7 +12,8 @@ import java.io.IOException;
 public interface ICommand {
     /**
     * Функция для выполнения команды по работе с коллекцией
-    * @param context - the context usable by every command to comunicate with the collection and file manager
-    */
-    Object execute(ExecutionContext context) throws IOException;
+     * @param context - the context usable by every command to communicate with the collection and file manager
+     * @param credentials - credentials of the User that sent the request
+     */
+    Object execute(ExecutionContext context, Credentials credentials) throws IOException;
 }

@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ExecutionContext;
+import ru.students.lab.database.Credentials;
 import ru.students.lab.exceptions.DragonFormatException;
 
 import java.io.ByteArrayInputStream;
@@ -26,44 +27,44 @@ public class ServerRequestHandler {
         @Override
         public void run() {
             while (true) {
-                try {
-                    receiveData();
-                } catch (SocketTimeoutException ignored) {
-                } catch (IOException | ClassNotFoundException e) {
-                    System.err.println("Weird errors, check log");
-                    LOG.error("Weird errors processing the received data", e);
-                    socket.sendResponse("Weird errors, check log. " + e.getMessage(), addressFromClient);
-                }
+                receiveData();
             }
         }
 
         /**
          * Функция для получения данных
          */
-        public void receiveData() throws IOException, ClassNotFoundException {
-            final ByteBuffer buf = ByteBuffer.allocate(AbsUdpSocket.DATA_SIZE);
-            SocketAddress addressFromClient1 = socket.receiveDatagram(buf);
-            buf.flip();
-            final byte[] petitionBytes = new byte[buf.remaining()];
-            buf.get(petitionBytes);
+        public void receiveData() {
+            SocketAddress addressFromClient = null;
+            try {
+                final ByteBuffer buf = ByteBuffer.allocate(AbsUdpSocket.DATA_SIZE);
+                addressFromClient = socket.receiveDatagram(buf);
+                buf.flip();
+                final byte[] petitionBytes = new byte[buf.remaining()];
+                buf.get(petitionBytes);
 
-            addressFromClient = addressFromClient1;
-            socket.checkClient(addressFromClient);
-            if (petitionBytes.length > 0)
-                processRequest(petitionBytes);
+                if (petitionBytes.length > 0)
+                    processRequest(petitionBytes, addressFromClient);
+
+            } catch (SocketTimeoutException ignored) {
+            } catch (IOException | ClassNotFoundException e) {
+                System.err.println("Weird errors, check log");
+                LOG.error("Weird errors processing the received data", e);
+                executeObj("Weird errors, check log. " + e.getMessage(), addressFromClient);
+            }
         }
 
         /**
          * Функция для десериализации данных
          * @param petitionBytes - полученные данные
          */
-        private void processRequest(byte[] petitionBytes) throws IOException, ClassNotFoundException {
+        private void processRequest(byte[] petitionBytes, SocketAddress addressFromClient) throws IOException, ClassNotFoundException {
             try (ObjectInputStream stream = new ObjectInputStream(new ByteArrayInputStream(petitionBytes))) {
                 final Object obj = stream.readObject();
                 LOG.info("received object: " + obj);
                 if (obj == null)
                     throw new ClassNotFoundException();
-                executeObj(obj);
+                executeObj(obj, addressFromClient);
             }
         }
     }
@@ -72,14 +73,12 @@ public class ServerRequestHandler {
 
     private final ServerUdpSocket socket;
     private final ExecutionContext executionContext;
-    private SocketAddress addressFromClient;
     private final RequestReceiver requestReceiver;
     private final ExecutorService executor;
 
     public ServerRequestHandler(ServerUdpSocket socket, ExecutionContext context) {
         this.socket = socket;
         this.executionContext = context;
-        this.addressFromClient = null;
         requestReceiver = new RequestReceiver();
         requestReceiver.setName("ServerReceiverThread");
         executor = Executors.newCachedThreadPool();
@@ -92,16 +91,19 @@ public class ServerRequestHandler {
     /**
      * Функция для работы с командами клиента
      * @param obj - полученная от клиента команда
+     * @param addressFromClient - address to send back the response
      */
-    private void executeObj(Object obj) throws IOException {
+    private void executeObj(Object obj, SocketAddress addressFromClient) {
         Future<Object> resulted = executor.submit(() -> {
             Object responseExecution;
             if (obj instanceof String)
                 responseExecution = obj;
             else {
-                AbsCommand command = (AbsCommand) obj;
+                AbsCommand command = ((CommandPacket) obj).getCommand();
+                Credentials credentials = ((CommandPacket) obj).getCredentials();
+                System.out.println(command.toString() +"   "+ credentials.toString());
                 try {
-                    responseExecution = command.execute(executionContext);
+                    responseExecution = command.execute(executionContext, credentials);
                 }catch (DragonFormatException ex) {
                     responseExecution = ex.getMessage();
                     LOG.error(ex.getMessage(), ex);

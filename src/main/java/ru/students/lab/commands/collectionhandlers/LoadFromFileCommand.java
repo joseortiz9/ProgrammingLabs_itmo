@@ -2,7 +2,7 @@ package ru.students.lab.commands.collectionhandlers;
 
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ExecutionContext;
-import ru.students.lab.models.Dragon;
+import ru.students.lab.database.Credentials;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -16,7 +16,7 @@ public class LoadFromFileCommand extends AbsCommand {
     }
 
     @Override
-    public Object execute(ExecutionContext context) throws IOException {
+    public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
         context.result().setLength(0);
         try {
             context.collectionManager().setCollection(context.fileManager().getCollectionFromFile(args[0]));

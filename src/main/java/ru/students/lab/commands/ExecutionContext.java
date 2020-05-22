@@ -1,5 +1,6 @@
 package ru.students.lab.commands;
 
+import ru.students.lab.controllers.CollectionController;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.managers.FileManager;
 /**
@@ -9,6 +10,7 @@ import ru.students.lab.managers.FileManager;
  */
 public interface ExecutionContext {
     CollectionManager collectionManager();
+    CollectionController collectionController();
     FileManager fileManager();
     StringBuilder result();
 }

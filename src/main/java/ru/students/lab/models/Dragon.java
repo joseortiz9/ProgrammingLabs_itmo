@@ -83,15 +83,21 @@ public class Dragon implements Comparable<Dragon>, Serializable {
                   DragonType type,
                   DragonCharacter character,
                   DragonHead head) {
+        this(name, coordinates, age, color, type, character, head);
         this.id = id;
-        this.name = name;
-        this.coordinates = coordinates;
-        this.setCreationDate();
-        this.age = age;
-        this.color = color;
-        this.type = type;
-        this.character = character;
-        this.head = head;
+    }
+
+    public Dragon(Integer id,
+                  String name,
+                  Coordinates coordinates,
+                  Long age,
+                  ZonedDateTime creationDate,
+                  Color color,
+                  DragonType type,
+                  DragonCharacter character,
+                  DragonHead head) {
+        this(id, name, coordinates, age, color, type, character, head);
+        this.creationDate = creationDate;
     }
 
     public Integer getId() {
@@ -117,6 +123,12 @@ public class Dragon implements Comparable<Dragon>, Serializable {
     }
     public DragonHead getHead() {
         return head;
+    }
+    public DragonType getType() {
+        return type;
+    }
+    public DragonCharacter getCharacter() {
+        return character;
     }
 
     public void setId(Integer id) {

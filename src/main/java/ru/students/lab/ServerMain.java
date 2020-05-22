@@ -9,12 +9,15 @@ import ru.students.lab.database.DatabaseConfigurer;
 import ru.students.lab.database.UserModel;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.managers.FileManager;
+import ru.students.lab.models.Dragon;
 import ru.students.lab.network.ServerRequestHandler;
 import ru.students.lab.network.ServerUdpSocket;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.net.*;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 /**
@@ -63,7 +66,7 @@ public class ServerMain {
             final CollectionController controller = new CollectionController(collectionModel, userModel);
 
             final FileManager fileManager = new FileManager();
-            final CollectionManager collectionManager = new CollectionManager();
+            final CollectionManager collectionManager = new CollectionManager(controller.fetchCollectionFromDB());
             final StringBuilder result = new StringBuilder();
 
             final ExecutionContext executionContext = new ExecutionContext() {
@@ -107,9 +110,9 @@ public class ServerMain {
             while (socket.getSocket().isBound()) {
             }
 
-        } catch (IOException ex) {
-            System.err.println("I/O problems: " + ex.getMessage());
-            LOG.error("I/O problems",ex);
+        } catch (IOException | SQLException ex) {
+            System.err.println("Problems: " + ex.getMessage() + "\nCheck logs for details");
+            LOG.error("Severe Issue",ex);
         } catch (NoSuchElementException ex) {
             System.err.println("You wrote something strange");
             LOG.error("You wrote something strange",ex);

@@ -12,13 +12,11 @@ import java.util.stream.Collectors;
  * @version 1.0
 */
 public class CollectionManager {
-    private Integer nextIDToAdd = 1;
     private HashMap<Integer, Dragon> collection;
     private final Date collectionCreationDate;
 
     /** 
      * Конструктор - создает объект класса CollectionManager для работы с коллекцией, создает пустую коллекцию с его датой создания
-     * @see CollectionManager#CollectionManager(HashMap<Integer, Dragon>, Date)
      */
     public CollectionManager() {
         this.collection = new HashMap<>();
@@ -28,12 +26,10 @@ public class CollectionManager {
     /** 
      * Конструктор - создает объект класса CollectionManager для работы с коллекцией, создает непустую коллекцию с его датой создания и следующим свободным номером
      * @param collection - Хэшмэп, представляющая коллекцию экземпляров класса Dragon
-     * @see CollectionManager#CollectionManager(HashMap<Integer, Dragon>, Date)
      */
     public CollectionManager(HashMap<Integer, Dragon> collection) {
         this.collection = collection;
         this.collectionCreationDate = new Date();
-        this.nextIDToAdd = collection.size() + 1;
     }
 
     /**
@@ -59,7 +55,7 @@ public class CollectionManager {
 
     /**
      * Функция сортировки коллекции
-     * @return возвращает отсортированную по ID {@link Dragon#id} коллекцию
+     * @return возвращает отсортированную по ID коллекцию
      */
     public List<ListEntrySerializable> sortById()
     {
@@ -74,7 +70,7 @@ public class CollectionManager {
 
     /**
      * Функция сортировки коллекции
-     * @return возвращает отсортированную по имени {@link Dragon#name} коллекцию
+     * @return возвращает отсортированную по имени коллекцию
      */
     public List<ListEntrySerializable> sortByName() {
 
@@ -107,9 +103,6 @@ public class CollectionManager {
      * @return возвращает коллекцию с добавлением нового элемента
      */
     public Object insert(Integer key, Dragon newDragon) {
-        newDragon.setId(nextIDToAdd);
-        nextIDToAdd += 1;
-
         return this.getCollection().putIfAbsent(key, newDragon);
     }
 
@@ -158,8 +151,6 @@ public class CollectionManager {
 
         //is newer
         if (newDragon.compareTo(this.getCollection().get(key)) > 0) {
-            newDragon.setId(nextIDToAdd);
-            nextIDToAdd += 1;
             return this.getCollection().replace(key, newDragon);
         }
         return null;
@@ -168,7 +159,6 @@ public class CollectionManager {
     /**
      * Функция изменения коллекции - удаление элементов коллекции, ключ которых больше заданного 
      * @param key - ключ, представляющий экземпляр класса Dragon внутри коллекции
-     * @return возвращает измененную коллекцию 
      */
     public void removeGreaterKey(Integer key)
     {
@@ -180,7 +170,6 @@ public class CollectionManager {
     /**
      * Функция изменения коллекции - удаление элементов коллекции , ключ которых меньше заданного 
      * @param key - ключ, представляющий экземпляр класса Dragon внутри коллекции
-     * @return возвращает измененную коллекцию 
      */
     public void removeLowerKey(Integer key)
     {
@@ -190,7 +179,7 @@ public class CollectionManager {
     }
 
     /**
-    * Функция фильтрации коллекции -  поиск элементов, с именем {@link Dragon#name}, содержащим данную подстроку
+    * Функция фильтрации коллекции -  поиск элементов, с именем, содержащим данную подстроку
     * @param name - строка для поиска экземпляров класса Dragon по имени
     * @return возвращает измененную коллекцию
     */
@@ -205,7 +194,7 @@ public class CollectionManager {
     }
 
     /**
-     * Функция фильтрации коллекции - поиск элементов, с именем {@link Dragon#name}, начинающимся с данной подстроки
+     * Функция фильтрации коллекции - поиск элементов, с именем, начинающимся с данной подстроки
      * @param name - строка для поиска экземпляров класса Dragon по имени
      * @return возвращает измененную коллекцию 
      */
@@ -230,6 +219,7 @@ public class CollectionManager {
 
     public void setCollection(HashMap<Integer, Dragon> collection) {
         this.collection = collection;
+        //this.nextIDToAdd = collection.size() + 1;
     }
 
     /**

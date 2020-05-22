@@ -39,7 +39,7 @@ public class CommandManager {
         commands.put("print_descending", new PrintDescendingCommand());
         commands.put("exit", new ExitCommand());
         commands.put("execute_script", new ExecuteScriptCommand(getCommandsValues()));
-        commands.put("load", new LoadFromFileCommand());
+        //commands.put("load", new LoadFromFileCommand());
         commands.put("export", new ExportToFileCommand());
         commands.put("login", new LoginCommand());
         commands.put("register", new RegisterCommand());

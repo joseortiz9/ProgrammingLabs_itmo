@@ -49,10 +49,10 @@ public class ExecuteScriptCommand extends AbsCommand {
                     break;
                 }
                 command.setArgs(getCommandArgs(ss));
-                if (command.requireDragonInput()) {
+                if (command.requireInput() == ICommand.TYPE_INPUT_DRAGON) {
                     String[] inputsAfterInsert = Arrays.copyOfRange(commands, i + 1, commands.length);
-                    command.addDragonInput(factory.generateFromScript(inputsAfterInsert));
-                    if (command.getDragon() == null)
+                    command.addInput(factory.generateFromScript(inputsAfterInsert));
+                    if (command.getInput() == null)
                         result.add("An input was not in the correct format or The number of inputs is different from the needed");
                     else
                         dragonInputSuccess = true;

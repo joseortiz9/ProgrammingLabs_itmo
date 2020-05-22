@@ -13,6 +13,7 @@ import java.io.ObjectInputStream;
 import java.net.SocketAddress;
 import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
+import java.sql.SQLException;
 import java.util.concurrent.*;
 
 /**
@@ -101,7 +102,6 @@ public class ServerRequestHandler {
             else {
                 AbsCommand command = ((CommandPacket) obj).getCommand();
                 Credentials credentials = ((CommandPacket) obj).getCredentials();
-                System.out.println(command.toString() +"   "+ credentials.toString());
                 try {
                     responseExecution = command.execute(executionContext, credentials);
                 }catch (DragonFormatException ex) {

@@ -12,7 +12,6 @@ import ru.students.lab.managers.CommandManager;
 import ru.students.lab.network.ClientUdpChannel;
 import ru.students.lab.network.CommandReader;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.net.*;
 import java.nio.channels.ClosedChannelException;
@@ -55,6 +54,8 @@ public class ClientMain {
         }
 
         CurrentUser currentUser = new CurrentUser(new Credentials("default", ""));
+        System.out.println("Logged as the 'default' user, please use login command");
+
         IHandlerInput userInputHandler = new UserInputHandler(true);
         CommandManager manager = new CommandManager();
         CommandReader reader = new CommandReader(channel, manager, userInputHandler);

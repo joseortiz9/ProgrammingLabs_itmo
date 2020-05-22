@@ -40,7 +40,9 @@ public class CommandManager {
         commands.put("exit", new ExitCommand());
         commands.put("execute_script", new ExecuteScriptCommand(getCommandsValues()));
         commands.put("load", new LoadFromFileCommand());
-        commands.put("export", new ExportToFileCommand(/*this.getCollectionManager(), this.getFileManager()*/));
+        commands.put("export", new ExportToFileCommand());
+        commands.put("login", new LoginCommand());
+        commands.put("register", new RegisterCommand());
     }
 
     /**

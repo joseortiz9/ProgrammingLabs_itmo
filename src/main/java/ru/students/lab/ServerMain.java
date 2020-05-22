@@ -97,7 +97,10 @@ public class ServerMain {
             }
 
             //create shutdown hook with anonymous implementation
-            Runtime.getRuntime().addShutdownHook(new Thread(requestManager::disconnect));
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                requestManager.disconnect();
+                dbConfigurer.disconnect();
+            }));
 
             requestManager.receiveFromWherever();
 

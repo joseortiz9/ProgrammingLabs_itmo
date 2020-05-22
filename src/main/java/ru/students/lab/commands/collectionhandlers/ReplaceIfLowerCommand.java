@@ -16,7 +16,6 @@ import java.io.IOException;
 
 public class ReplaceIfLowerCommand extends AbsCommand {
 
-    protected boolean requireInputs = true;
     protected Dragon dragon = null;
 
     public ReplaceIfLowerCommand() {
@@ -25,8 +24,8 @@ public class ReplaceIfLowerCommand extends AbsCommand {
     }
 
     @Override
-    public void addDragonInput(Dragon dragon) {
-        this.dragon = dragon;
+    public void addInput(Object dragon) {
+        this.dragon = (Dragon) dragon;
     }
 
     @Override
@@ -44,11 +43,11 @@ public class ReplaceIfLowerCommand extends AbsCommand {
     }
 
     @Override
-    public boolean requireDragonInput() {
-        return requireInputs;
+    public int requireInput() {
+        return TYPE_INPUT_DRAGON;
     }
     @Override
-    public Dragon getDragon() {
+    public Object getInput() {
         return dragon;
     }
 }

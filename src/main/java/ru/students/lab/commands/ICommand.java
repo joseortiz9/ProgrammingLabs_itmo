@@ -10,6 +10,11 @@ import java.io.IOException;
  * @version 1.0
 */
 public interface ICommand {
+
+    int TYPE_NO_INPUT = 0;
+    int TYPE_INPUT_DRAGON = 1;
+    int TYPE_INPUT_CREDENTIAL = 2;
+
     /**
     * Функция для выполнения команды по работе с коллекцией
      * @param context - the context usable by every command to communicate with the collection and file manager

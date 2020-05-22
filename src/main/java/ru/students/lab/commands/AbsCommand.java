@@ -1,7 +1,5 @@
 package ru.students.lab.commands;
 
-import ru.students.lab.models.Dragon;
-
 import java.io.Serializable;
 import java.util.Arrays;
 /**
@@ -37,22 +35,23 @@ public abstract class AbsCommand implements ICommand, Serializable {
      *
      * Создает объект класса dragon для передачи его серверу
      *
-     * @param dragon
+     * @param obj
      */
-    public void addDragonInput(Dragon dragon) {
+    public void addInput(Object obj) {
         //
     }
+
     /**
      *
      * Определяет, нужен ли данной команде дополнительный ввод объекта класса dragon
      *
-     *
      * @return true если ввод необходим, иначе false
      */
-    public boolean requireDragonInput() {
-        return requireInputs;
+    public int requireInput() {
+        return TYPE_NO_INPUT;
     }
-    public Dragon getDragon() {
+
+    public Object getInput() {
         return null;
     }
 
@@ -61,7 +60,7 @@ public abstract class AbsCommand implements ICommand, Serializable {
         return this.getClass().getSimpleName() +
                 "{" +
                 "args=" + Arrays.toString(args) +
-                "dragon=" + getDragon() +
+                "dragon=" + getInput() +
                 '}';
     }
 }

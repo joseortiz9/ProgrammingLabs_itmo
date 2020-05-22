@@ -28,8 +28,8 @@ public class InsertCommand extends AbsCommand {
     }
 
     @Override
-    public void addDragonInput(Dragon dragon) {
-        this.dragon = dragon;
+    public void addInput(Object dragon) {
+        this.dragon = (Dragon) dragon;
     }
 
     @Override
@@ -51,12 +51,12 @@ public class InsertCommand extends AbsCommand {
     }
 
     @Override
-    public boolean requireDragonInput() {
-        return requireInputs;
+    public int requireInput() {
+        return TYPE_INPUT_DRAGON;
     }
 
     @Override
-    public Dragon getDragon() {
+    public Object getInput() {
         return dragon;
     }
 }

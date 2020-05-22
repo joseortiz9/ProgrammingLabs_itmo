@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.database.Credentials;
 import ru.students.lab.exceptions.NoSuchCommandException;
+import ru.students.lab.factories.CredentialFactory;
 import ru.students.lab.util.IHandlerInput;
 import ru.students.lab.commands.*;
 import ru.students.lab.factories.DragonFactory;
@@ -55,9 +56,12 @@ public class CommandReader {
       * @param command - команда
      */
     public void checkForInputs(AbsCommand command) {
-        if (command.requireDragonInput()) {
+        if (command.requireInput() == ICommand.TYPE_INPUT_DRAGON) {
             Dragon dragon = dragonFactory.generateDragonByInput(userInputHandler);
-            command.addDragonInput(dragon);
+            command.addInput(dragon);
+        } else if (command.requireInput() == ICommand.TYPE_INPUT_CREDENTIAL) {
+            Credentials credentials = CredentialFactory.getInstance().generateCredentialByInput(userInputHandler);
+            command.addInput(credentials);
         }
     }
     /**

@@ -55,4 +55,14 @@ public class DatabaseConfigurer {
     public Connection getDbConnection() {
         return dbConnection;
     }
+
+    public void disconnect() {
+        LOG.info("Disconnecting the database...");
+        System.out.println("Disconnecting the database...");
+        try {
+            dbConnection.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 }

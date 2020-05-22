@@ -36,6 +36,6 @@ public class CredentialFactory {
             pass = pass.isEmpty() ? null : pass;
         } while (pass == null);
 
-        return new Credentials(username, pass);
+        return new Credentials(-1, username, pass);
     }
 }

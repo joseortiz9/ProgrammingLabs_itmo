@@ -5,7 +5,6 @@ import ru.students.lab.database.Credentials;
 import ru.students.lab.database.UserModel;
 import ru.students.lab.models.Dragon;
 
-import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -29,8 +28,9 @@ public class CollectionController {
 
     public Object login(Credentials credentials) {
         try {
-            if (userModel.checkUser(credentials))
-                return credentials;
+            int id = userModel.checkUserAndGetID(credentials);
+            if (id > 0)
+                return new Credentials(id, credentials.username, credentials.password);
             else
                 return "User/Password given not found or incorrect";
         } catch (SQLException | NoSuchAlgorithmException ex) {
@@ -41,17 +41,29 @@ public class CollectionController {
 
     public Object register(Credentials credentials) {
         try {
-            userModel.registerUser(credentials);
-            return credentials;
+            int id = userModel.registerUser(credentials);
+            if (id > 0)
+                return new Credentials(id, credentials.username, credentials.password);
+            else
+                return credentials;
         } catch (Throwable ex) {
             return ex.getMessage();
         }
     }
 
-    public String addDragon(int key, Dragon dragon) {
+    public String addDragon(int key, Dragon dragon, Credentials credentials) {
         try {
-            return collectionModel.insert(key, dragon);
+            return collectionModel.insert(key, dragon, credentials);
         } catch (Throwable ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String updateDragon(int id, Dragon dragon, Credentials credentials) {
+        try {
+            return collectionModel.update(id, dragon, credentials);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
             return ex.getMessage();
         }
     }

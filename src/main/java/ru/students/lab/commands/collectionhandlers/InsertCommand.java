@@ -44,7 +44,7 @@ public class InsertCommand extends AbsCommand {
         if (dragon == null)
             throw new DragonFormatException();
 
-        String dragonIDaddedToDB = context.collectionController().addDragon(Integer.parseInt(args[0]), dragon);
+        String dragonIDaddedToDB = context.collectionController().addDragon(Integer.parseInt(args[0]), dragon, credentials);
 
         //If the resulted from the db_execution is null and If it doesn't exist and it successfully put it, so it returns null
         if (isNumeric(dragonIDaddedToDB)) {
@@ -54,17 +54,6 @@ public class InsertCommand extends AbsCommand {
         } else
             context.result().append("Error saving the Dragon: ").append(dragonIDaddedToDB);
         return context.result().toString();
-    }
-
-    public boolean isNumeric(String strNum) {
-        if (strNum == null)
-            return false;
-        try {
-            double d = Double.parseDouble(strNum);
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-        return true;
     }
 
     @Override

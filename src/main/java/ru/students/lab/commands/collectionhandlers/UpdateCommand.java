@@ -34,11 +34,14 @@ public class UpdateCommand extends AbsCommand {
         if (dragon == null)
             throw new DragonFormatException();
 
+        String dragonIDaddedToDB = context.collectionController().updateDragon(Integer.parseInt(args[0]), dragon, credentials);
+
         // If it successfully replace it, returns the value of the old mapped object
-        if (context.collectionManager().update(Integer.valueOf(args[0]), dragon) != null)
-            context.result().append(dragon.toString()).append(" Updated!");
-        else
-            context.result().append("The ID '").append(Integer.valueOf(args[0])).append("' doesn't exist");
+        if (dragonIDaddedToDB == null) {
+            if (context.collectionManager().update(Integer.valueOf(args[0]), dragon) != null)
+                context.result().append(dragon.toString()).append(" Updated!");
+        } else
+            context.result().append("Problems updating dragon: ").append(dragonIDaddedToDB);
 
         return context.result().toString();
     }

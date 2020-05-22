@@ -3,6 +3,8 @@ package ru.students.lab.network;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.database.Credentials;
+import ru.students.lab.database.UserModel;
+import ru.students.lab.exceptions.AuthorizationException;
 import ru.students.lab.exceptions.NoSuchCommandException;
 import ru.students.lab.factories.CredentialFactory;
 import ru.students.lab.util.IHandlerInput;
@@ -11,6 +13,7 @@ import ru.students.lab.factories.DragonFactory;
 import ru.students.lab.managers.CommandManager;
 import ru.students.lab.models.Dragon;
 
+import javax.security.sasl.AuthenticationException;
 import java.io.*;
 
 /**
@@ -47,6 +50,10 @@ public class CommandReader {
         else if (command instanceof ExitCommand)
             finishClient();
         else {
+            if (credentials.username.equals(UserModel.DEFAULT_USERNAME)
+                    && !(command instanceof LoginCommand)
+                    && !(command instanceof RegisterCommand))
+                throw new AuthorizationException("The default user can not execute special commands, please login");
             checkForInputs(command);
             channel.sendCommand(new CommandPacket(command, credentials));
         }

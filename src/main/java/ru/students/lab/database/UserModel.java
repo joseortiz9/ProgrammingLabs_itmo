@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class UserModel {
-    private static final String DEFAULT_USERNAME = "default";
+    public static final String DEFAULT_USERNAME = "default";
     private static final String ROOT_USERNAME = "root";
     private final Connection connection;
     private final ReentrantLock mainLock = new ReentrantLock();
@@ -21,20 +21,25 @@ public class UserModel {
         this.connection = connection;
     }
 
-    public boolean checkUser(Credentials credentials) throws SQLException, NoSuchAlgorithmException {
+    public int checkUserAndGetID(Credentials credentials) throws SQLException, NoSuchAlgorithmException {
         if (credentials == null || credentials.username.equals(DEFAULT_USERNAME))
-            return false;
+            return -1;
 
         PreparedStatement preparedStatement = connection.prepareStatement(SQLQuery.Get.PASS_USING_USERNAME);
         preparedStatement.setString(1, credentials.username);
         ResultSet rs = preparedStatement.executeQuery();
-        if (rs.next())
-            return hashPassword(credentials.password).equals(rs.getString(1));
-        return false;
+        if (rs.next()) {
+            if (hashPassword(credentials.password).equals(rs.getString(1)))
+                return rs.getInt(2);
+            else
+                return -1;
+        }
+
+        return -1;
     }
 
 
-    public void registerUser(Credentials credentials) throws SQLException, NoSuchAlgorithmException {
+    public int registerUser(Credentials credentials) throws SQLException, NoSuchAlgorithmException {
         //final ReentrantLock mainLock = this.mainLock;
         //mainLock.lock();
         //try {
@@ -42,12 +47,18 @@ public class UserModel {
             try {
                 connection.setAutoCommit(false);
                 PreparedStatement preparedStatement = connection.prepareStatement(SQLQuery.Add.USER);
-
                 int pointer = 0;
                 preparedStatement.setString(++pointer, credentials.username);
                 preparedStatement.setString(++pointer, hashPassword(credentials.password));
-
                 preparedStatement.executeUpdate();
+
+                preparedStatement = connection.prepareStatement(SQLQuery.Get.ID_USING_USERNAME);
+                pointer = 0;
+                preparedStatement.setString(++pointer, credentials.username);
+                ResultSet rs = preparedStatement.executeQuery();
+                if (rs.next())
+                    return rs.getInt(1);
+
                 connection.commit();
             } catch (Throwable e) {
                 connection.rollback();
@@ -55,6 +66,7 @@ public class UserModel {
             } finally {
                 connection.setAutoCommit(oldAutoCommit);
             }
+            return -1;
 
         /*} finally {
             mainLock.unlock();

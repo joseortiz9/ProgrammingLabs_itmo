@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.database.Credentials;
 import ru.students.lab.database.CurrentUser;
+import ru.students.lab.exceptions.AuthorizationException;
 import ru.students.lab.exceptions.NoSuchCommandException;
 import ru.students.lab.network.ClientResponseHandler;
 import ru.students.lab.util.IHandlerInput;
@@ -53,7 +54,7 @@ public class ClientMain {
             System.exit(-1);
         }
 
-        CurrentUser currentUser = new CurrentUser(new Credentials("default", ""));
+        CurrentUser currentUser = new CurrentUser(new Credentials(-1, "default", ""));
         System.out.println("Logged as the 'default' user, please use login command");
 
         IHandlerInput userInputHandler = new UserInputHandler(true);
@@ -70,7 +71,7 @@ public class ClientMain {
 
                 responseHandler.checkForResponse();
 
-            } catch (NoSuchCommandException ex) {
+            } catch (NoSuchCommandException | AuthorizationException ex) {
                 System.out.println(ex.getMessage());
             } catch (NoSuchElementException ex) {
                 reader.finishClient();

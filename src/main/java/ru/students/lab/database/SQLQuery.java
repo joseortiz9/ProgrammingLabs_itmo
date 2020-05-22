@@ -12,9 +12,12 @@ public class SQLQuery {
                 "    INNER JOIN dragon_heads ON dragons.id = dragon_heads.dragon_id";
 
         //USERS
-        public static final String Users = "SELECT * FROM users";
-        public static final String PASS_USING_USERNAME = "SELECT password FROM users WHERE username = ?";
+        public static final String USERS = "SELECT * FROM users";
+        public static final String PASS_USING_USERNAME = "SELECT password, id FROM users WHERE username = ?";
+        public static final String ID_USING_USERNAME = "SELECT id FROM users WHERE username = ?";
 
+        public static final String USER_HAS_PERMISSIONS = "" +
+                "SELECT exists(SELECT 1 from users_dragons where user_id = ? AND dragon_id = ?)";
     }
 
     public static class Add {
@@ -30,6 +33,19 @@ public class SQLQuery {
 
         public static final String USER = "" +
                 "INSERT INTO users(username, password) VALUES(?, ?)";
+
+        public static final String DRAGON_USER_RELATIONSHIP = "" +
+                "INSERT INTO users_dragons VALUES (?, ?)";
+    }
+
+    public static class Update {
+        public static final String DRAGON = "" +
+                "UPDATE dragons SET name = ?, creation_date = ?, age = ?, color = ?, type = ?, character = ?\n" +
+                "WHERE dragons.id = ?";
+        public static final String COORDINATE = "" +
+                "UPDATE coordinates SET x = ?, y = ? WHERE dragon_id = ?";
+        public static final String DRAGON_HEAD = "" +
+                "UPDATE dragon_heads SET num_eyes = ? WHERE dragon_id = ?";
     }
 
     public static class Delete {

@@ -55,6 +55,17 @@ public abstract class AbsCommand implements ICommand, Serializable {
         return null;
     }
 
+    public boolean isNumeric(String strNum) {
+        if (strNum == null)
+            return false;
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public String toString() {
         return this.getClass().getSimpleName() +

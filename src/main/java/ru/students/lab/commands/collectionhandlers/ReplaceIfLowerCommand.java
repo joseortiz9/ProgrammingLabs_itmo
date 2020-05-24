@@ -34,11 +34,18 @@ public class ReplaceIfLowerCommand extends AbsCommand {
         if (dragon == null)
             throw new DragonFormatException();
 
-        // If it successfully replace it, returns the value of the old mapped object
-        if (context.collectionManager().replaceIfLower(Integer.valueOf(args[0]), dragon) != null)
-            context.result().append(dragon.toString()).append(" replaced the young poor dragon!");
-        else
-            context.result().append("The key '").append(Integer.valueOf(args[0])).append("' doesn't exist or is not old enough!");
+        int dragonID = context.collectionManager().isLowerAndGetID(Integer.valueOf(args[0]), dragon);
+        if (dragonID > 0) {
+            String resultDragonUpdated = context.collectionController().updateDragon(dragonID, dragon, credentials);
+
+            if (resultDragonUpdated == null) {
+                context.collectionManager().replaceIfLower(Integer.valueOf(args[0]), dragon);
+                context.result().append(dragon.toString()).append(" replaced the young poor dragon!");
+            } else
+                context.result().append("Problems updating dragon: ").append(resultDragonUpdated);
+        } else
+            context.result().append("The given Dragon is not old enough! or the key is wrong!");
+
         return context.result().toString();
     }
 

@@ -26,7 +26,9 @@ public class HelpCommand extends AbsCommand {
     @Override
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
         StringBuilder s = new StringBuilder();
-        s.append("Some Commands for you! \n").append(this.keysCommands.toString()).append("\nWrite man {key} to have some details");
+        s.append("Some Commands for you! \n");
+        this.keysCommands.forEach(e -> s.append("- ").append(e).append("\n"));
+        s.append("\nWrite man {key} to have some details");
         return s.toString();
     }
 

@@ -8,14 +8,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class UserModel {
     public static final String DEFAULT_USERNAME = "default";
-    private static final String ROOT_USERNAME = "root";
+    public static final String ROOT_USERNAME = "root";
     private final Connection connection;
-    private final ReentrantLock mainLock = new ReentrantLock();
 
     public UserModel(Connection connection) {
         this.connection = connection;

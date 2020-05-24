@@ -22,6 +22,15 @@ First represents the mode of operating, second the port to the server we want to
 java -jar -Dmode=server Progra_Lab6.jar 5433 data.xml
 ```
 
+**Database Structure:**
+
+The db configuration is taken from the resources file 'db.properties'
+
+And with the file generate_db_script.sql is possible to generate the database ready to run.
+
+![db_structure](docs/db_structure.png)
+
+
 #### Порядок выполнения работы:
 * В качестве базы данных использовать PostgreSQL.
 * Для подключения к БД на кафедральном сервере использовать хост `pg`, имя базы данных - `studs`, имя пользователя/пароль совпадают с таковыми для подключения к серверу. 

@@ -40,10 +40,13 @@ public class ClientResponseHandler {
          * Функция для получения данных
          */
         public void receiveData() throws IOException, ClassNotFoundException {
-            //check if server is online comparing the passed time with the actual from the request sent
-            //TODO: is resetting the connection after every success request
-            if (channel.requestWasSent() && System.currentTimeMillis() - startRequestTime > 1000) {
-                channel.setConnectionToFalse();
+            synchronized (ClientResponseHandler.class) {
+                //check if server is online comparing the passed time with the actual from the request sent
+                //TODO only restarting connection after the second command, find a way to wait after the send
+                //TODO is being like that because in the first send not have time to check the down condition
+                if (channel.requestWasSent() && !flagReceived && System.currentTimeMillis() - startRequestTime > 1000) {
+                    channel.setConnectionToFalse();
+                }
             }
 
             final ByteBuffer buf = ByteBuffer.allocate(AbsUdpSocket.DATA_SIZE);
@@ -56,11 +59,13 @@ public class ClientResponseHandler {
             if (bytes.length < 1)
                 return;
 
-            channel.setRequestSent(false);
-            if (bytes.length < AbsUdpSocket.DATA_SIZE)
-                receivedObject = processResponse(bytes);
-            else
-                throw new EOFException();
+            synchronized (ClientResponseHandler.class) {
+                channel.setRequestSent(false);
+                if (bytes.length < AbsUdpSocket.DATA_SIZE)
+                    receivedObject = processResponse(bytes);
+                else
+                    throw new EOFException();
+            }
         }
 
         /**
@@ -83,9 +88,9 @@ public class ClientResponseHandler {
     protected static final Logger LOG = LogManager.getLogger(ClientResponseHandler.class);
     private final ResponseReceiver receiverThread;
     private final ClientUdpChannel channel;
-    private CurrentUser currentUser;
+    private final CurrentUser currentUser;
     private volatile long startRequestTime = 0L;
-    //private volatile boolean assertedObj = false;
+    private volatile boolean flagReceived = false;
 
     public ClientResponseHandler(ClientUdpChannel channel, CurrentUser currentUser) {
         this.channel = channel;
@@ -107,11 +112,15 @@ public class ClientResponseHandler {
             System.out.println("Successfully connected to the server");
         }
 
-        if (received != null) {
-            printResponse(received);
+        synchronized (this) {
+            if (received != null) {
+                flagReceived = true;
+                printResponse(received);
+            } else {
+                flagReceived = false;
+            }
+            receiverThread.receivedObject = null;
         }
-
-        receiverThread.receivedObject = null;
 
         System.out.println("wassent: " + channel.requestWasSent() + "  connection: " + channel.connected + "   addr: " + channel.addressServer);
     }

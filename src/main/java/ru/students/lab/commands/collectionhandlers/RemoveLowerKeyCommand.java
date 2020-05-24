@@ -22,11 +22,18 @@ public class RemoveLowerKeyCommand extends AbsCommand {
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
         context.result().setLength(0);
         int initialSize = context.collectionManager().getCollection().size();
-        context.collectionManager().removeLowerKey(Integer.valueOf(args[0]));
+
+        String resultDeletedByKey = context.collectionController().deleteDragonsLowerThanKey(Integer.parseInt(args[0]), credentials);
+
+        if (resultDeletedByKey == null) {
+            context.collectionManager().removeLowerKey(Integer.valueOf(args[0]));
+        } else
+            context.result().append("Problems deleting dragons: ").append(resultDeletedByKey);
+
         int finalSize = context.collectionManager().getCollection().size();
 
         if (initialSize == finalSize)
-            context.result().append("No Dragons removed");
+            context.result().append("\nNo Dragons removed");
         else
             context.result().append("A total of ").append(initialSize - finalSize).append(" were removed");
         return context.result().toString();

@@ -129,7 +129,7 @@ public class ServerRequestHandler {
             System.out.println("Future Object gotten from executor: \n" + resulted.get().toString());
         } catch (InterruptedException | ExecutionException e) {
             LOG.error("Error getting result from executor", e);
-            System.out.println("Error getting result from executor");
+            System.out.println("Error getting result from executor: " + e.getMessage());
         }
     }
 

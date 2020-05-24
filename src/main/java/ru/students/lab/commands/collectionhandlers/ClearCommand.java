@@ -20,7 +20,13 @@ public class ClearCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
-        context.collectionManager().clear();
-        return "All elems deleted successfully!";
+
+        String resDeletingAll = context.collectionController().deleteAllDragons(credentials);
+
+        if (resDeletingAll == null) {
+            context.collectionManager().clear();
+            return "All elems deleted successfully!";
+        } else
+            return "Problem clearing dragons: " + resDeletingAll;
     }
 }

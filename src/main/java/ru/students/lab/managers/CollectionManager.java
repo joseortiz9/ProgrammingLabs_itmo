@@ -139,32 +139,38 @@ public class CollectionManager {
     }
 
     /**
-     * Функция изменения коллекции - изменение элемента коллекции в случае если ключ экземпляра меньше заданного 
+     * в случае если ключ экземпляра меньше заданного (Using creation_date)
      * @param key - ключ, представляющий экземпляр класса Dragon внутри коллекции
      * @param newDragon - экземпляр класса Dragon
-     * @return возвращает измененную коллекцию 
+     * @return value of the ID to replace if is found
      */
-    public Object replaceIfLower(Integer key, Dragon newDragon)
-    {
+    public int isLowerAndGetID(Integer key, Dragon newDragon) {
         if (!this.getCollection().containsKey(key))
-            return null;
+            return -1;
 
-        //is newer
-        if (newDragon.compareTo(this.getCollection().get(key)) > 0) {
-            return this.getCollection().replace(key, newDragon);
-        }
-        return null;
+        return (newDragon.compareTo(this.getCollection().get(key)) > 0)
+                ? this.getCollection().get(key).getId()
+                : -1;
+    }
+
+    /**
+     * Функция изменения коллекции - изменение элемента коллекции
+     * @param key - ключ, представляющий экземпляр класса Dragon внутри коллекции
+     * @param newDragon - экземпляр класса Dragon
+     */
+    public void replaceIfLower(Integer key, Dragon newDragon) {
+        newDragon.setId(getCollection().get(key).getId());
+        this.getCollection().replace(key, newDragon);
     }
 
     /**
      * Функция изменения коллекции - удаление элементов коллекции, ключ которых больше заданного 
-     * @param key - ключ, представляющий экземпляр класса Dragon внутри коллекции
+     * @param keys - ключи, представляющий экземпляр класса Dragon внутри коллекции
      */
-    public void removeGreaterKey(Integer key)
+    public void removeGreaterKey(int[] keys)
     {
-        this.getCollection()
-                .entrySet()
-                .removeIf(dragonEntry -> dragonEntry.getKey() > key);
+        for (int key: keys)
+            this.getCollection().remove(key);
     }
 
     /**

@@ -7,9 +7,10 @@ public class SQLQuery {
                 "FROM dragons\n" +
                 "    INNER JOIN coordinates ON dragons.id = coordinates.dragon_id\n" +
                 "    INNER JOIN dragon_colors ON dragons.color = dragon_colors.id\n" +
-                "    INNER JOIN dragon_types ON dragons.color = dragon_types.id\n" +
-                "    INNER JOIN dragon_characters ON dragons.color = dragon_characters.id\n" +
+                "    INNER JOIN dragon_types ON dragons.type = dragon_types.id\n" +
+                "    INNER JOIN dragon_characters ON dragons.character = dragon_characters.id\n" +
                 "    INNER JOIN dragon_heads ON dragons.id = dragon_heads.dragon_id";
+        public static final String DRAGON_BY_KEY = "SELECT id FROM dragons where key = ?";
 
         //USERS
         public static final String USERS = "SELECT * FROM users";
@@ -49,7 +50,21 @@ public class SQLQuery {
     }
 
     public static class Delete {
-        public static final String DRAGON = "";
-        public static final String USER = "";
+        public static final String ALL_DRAGONS = "DELETE FROM DRAGONS";
+        public static final String DRAGON_BY_KEY = "DELETE FROM dragons where key = ?";
+        public static final String DRAGONS_WITH_GREATER_KEY = "" +
+                "DELETE FROM dragons \n" +
+                "WHERE id IN (SELECT d.id FROM dragons d, users u, users_dragons ud\n" +
+                "             WHERE d.key > ?\n" +
+                "               AND ud.dragon_id = d.id\n" +
+                "               AND ud.user_id in (select id from users where id = ?)) RETURNING key INTO ?";
+        public static final String DRAGONS_WITH_LOWER_KEY = "" +
+                "DELETE FROM dragons \n" +
+                "WHERE id IN (SELECT d.id FROM dragons d, users u, users_dragons ud\n" +
+                "             WHERE d.key < ?\n" +
+                "               AND ud.dragon_id = d.id\n" +
+                "               AND ud.user_id in (select id from users where id = ?))";
+
+        public static final String USER = "DELETE FROM users where username = ?";
     }
 }

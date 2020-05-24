@@ -15,7 +15,6 @@ import java.io.IOException;
 */
 public class InsertCommand extends AbsCommand {
 
-    protected boolean requireInputs = true;
     protected Dragon dragon = null;
 
     public InsertCommand() {

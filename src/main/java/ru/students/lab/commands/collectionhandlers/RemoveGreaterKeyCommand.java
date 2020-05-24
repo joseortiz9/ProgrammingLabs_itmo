@@ -5,6 +5,7 @@ import ru.students.lab.commands.ExecutionContext;
 import ru.students.lab.database.Credentials;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Класс для выполнения и получения информации о функции удаления из коллекции элементов, ключ которых превышает заданный
@@ -23,11 +24,25 @@ public class RemoveGreaterKeyCommand extends AbsCommand {
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
         context.result().setLength(0);
         int initialSize = context.collectionManager().getCollection().size();
-        context.collectionManager().removeGreaterKey(Integer.valueOf(args[0]));
+
+        String resultDeletedByKey = "";
+        int[] deletedIDs = null;
+        try {
+            deletedIDs = context.collectionController().deleteDragonsGreaterThanKey(Integer.parseInt(args[0]), credentials);
+        } catch (SQLException ex) {
+            resultDeletedByKey = ex.getMessage();
+        }
+
+
+        if (deletedIDs != null) {
+            context.collectionManager().removeGreaterKey(deletedIDs);
+        } else
+            context.result().append("Problems deleting dragons: ").append(resultDeletedByKey);
+
         int finalSize = context.collectionManager().getCollection().size();
 
         if (initialSize == finalSize)
-            context.result().append("No Dragons removed");
+            context.result().append("\nNo Dragons removed");
         else
             context.result().append("A total of ").append(initialSize - finalSize).append(" were removed");
         return context.result().toString();

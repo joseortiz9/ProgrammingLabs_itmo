@@ -17,15 +17,15 @@ public class LoadFromFileCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
-        context.result().setLength(0);
+        StringBuilder sb = new StringBuilder();
         try {
             context.collectionManager().setCollection(context.fileManager().getCollectionFromFile(args[0]));
-            context.result().append("All elems added to the collection!");
+            sb.append("All elems added to the collection!");
         } catch (JAXBException e) {
-            context.result().append("Converter error adding the elems");
+            sb.append("Converter error adding the elems");
         } catch (InvalidPathException e) {
-            context.result().append("Error finding the provided file");
+            sb.append("Error finding the provided file");
         }
-        return context.result().toString();
+        return sb.toString();
     }
 }

@@ -22,7 +22,7 @@ public class RemoveGreaterKeyCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
-        context.result().setLength(0);
+        StringBuilder sb = new StringBuilder();
         int initialSize = context.collectionManager().getCollection().size();
 
         String resultDeletedByKey = "";
@@ -33,18 +33,17 @@ public class RemoveGreaterKeyCommand extends AbsCommand {
             resultDeletedByKey = ex.getMessage();
         }
 
-
-        if (deletedIDs != null) {
-            context.collectionManager().removeGreaterKey(deletedIDs);
-        } else
-            context.result().append("Problems deleting dragons: ").append(resultDeletedByKey);
+        if (deletedIDs != null)
+            context.collectionManager().removeOnKey(deletedIDs);
+        else
+            sb.append("Problems deleting dragons: ").append(resultDeletedByKey);
 
         int finalSize = context.collectionManager().getCollection().size();
 
         if (initialSize == finalSize)
-            context.result().append("\nNo Dragons removed");
+            sb.append("No Dragons removed");
         else
-            context.result().append("A total of ").append(initialSize - finalSize).append(" were removed");
-        return context.result().toString();
+            sb.append("A total of ").append(initialSize - finalSize).append(" dragons were removed");
+        return sb.toString();
     }
 }

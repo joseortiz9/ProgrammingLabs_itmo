@@ -33,11 +33,11 @@ public class InsertCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
-        context.result().setLength(0);
+        StringBuilder sb = new StringBuilder();
 
         if (context.collectionManager().getCollection().containsKey(Integer.valueOf(args[0]))) {
-            context.result().append("The key '").append(Integer.valueOf(args[0])).append("' already exist");
-            return context.result().toString();
+            sb.append("The key '").append(Integer.valueOf(args[0])).append("' already exist");
+            return sb.toString();
         }
 
         if (dragon == null)
@@ -49,10 +49,10 @@ public class InsertCommand extends AbsCommand {
         if (isNumeric(dragonIDaddedToDB)) {
             dragon.setId(Integer.valueOf(dragonIDaddedToDB));
             if (context.collectionManager().insert(Integer.valueOf(args[0]), dragon) == null)
-                context.result().append(dragon.toString()).append(" successfully saved!");
+                sb.append(dragon.toString()).append(" successfully saved!");
         } else
-            context.result().append("Error saving the Dragon: ").append(dragonIDaddedToDB);
-        return context.result().toString();
+            sb.append("Error saving the Dragon: ").append(dragonIDaddedToDB);
+        return sb.toString();
     }
 
     @Override

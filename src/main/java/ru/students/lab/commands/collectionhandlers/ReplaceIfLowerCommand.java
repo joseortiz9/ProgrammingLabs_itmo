@@ -30,7 +30,7 @@ public class ReplaceIfLowerCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
-        context.result().setLength(0);
+        StringBuilder sb = new StringBuilder();
         if (dragon == null)
             throw new DragonFormatException();
 
@@ -40,13 +40,13 @@ public class ReplaceIfLowerCommand extends AbsCommand {
 
             if (resultDragonUpdated == null) {
                 context.collectionManager().replaceIfLower(Integer.valueOf(args[0]), dragon);
-                context.result().append(dragon.toString()).append(" replaced the young poor dragon!");
+                sb.append(dragon.toString()).append(" replaced the young poor dragon!");
             } else
-                context.result().append("Problems updating dragon: ").append(resultDragonUpdated);
+                sb.append("Problems updating dragon: ").append(resultDragonUpdated);
         } else
-            context.result().append("The given Dragon is not old enough! or the key is wrong!");
+            sb.append("The given Dragon is not old enough! or the key is wrong!");
 
-        return context.result().toString();
+        return sb.toString();
     }
 
     @Override

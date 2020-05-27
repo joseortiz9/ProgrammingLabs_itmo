@@ -12,5 +12,4 @@ public interface ExecutionContext {
     CollectionManager collectionManager();
     CollectionController collectionController();
     FileManager fileManager();
-    StringBuilder result();
 }

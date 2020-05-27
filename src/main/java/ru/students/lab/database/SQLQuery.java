@@ -57,13 +57,13 @@ public class SQLQuery {
                 "WHERE id IN (SELECT d.id FROM dragons d, users u, users_dragons ud\n" +
                 "             WHERE d.key > ?\n" +
                 "               AND ud.dragon_id = d.id\n" +
-                "               AND ud.user_id in (select id from users where id = ?)) RETURNING key INTO ?";
+                "               AND ud.user_id in (select id from users where id = ?)) RETURNING key";
         public static final String DRAGONS_WITH_LOWER_KEY = "" +
                 "DELETE FROM dragons \n" +
                 "WHERE id IN (SELECT d.id FROM dragons d, users u, users_dragons ud\n" +
                 "             WHERE d.key < ?\n" +
                 "               AND ud.dragon_id = d.id\n" +
-                "               AND ud.user_id in (select id from users where id = ?))";
+                "               AND ud.user_id in (select id from users where id = ?)) RETURNING key";
 
         public static final String USER = "DELETE FROM users where username = ?";
     }

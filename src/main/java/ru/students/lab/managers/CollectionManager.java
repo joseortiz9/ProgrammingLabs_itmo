@@ -167,21 +167,10 @@ public class CollectionManager {
      * Функция изменения коллекции - удаление элементов коллекции, ключ которых больше заданного 
      * @param keys - ключи, представляющий экземпляр класса Dragon внутри коллекции
      */
-    public void removeGreaterKey(int[] keys)
+    public void removeOnKey(int[] keys)
     {
         for (int key: keys)
             this.getCollection().remove(key);
-    }
-
-    /**
-     * Функция изменения коллекции - удаление элементов коллекции , ключ которых меньше заданного 
-     * @param key - ключ, представляющий экземпляр класса Dragon внутри коллекции
-     */
-    public void removeLowerKey(Integer key)
-    {
-        this.getCollection()
-                .entrySet()
-                .removeIf(dragonEntry -> key > dragonEntry.getKey());
     }
 
     /**

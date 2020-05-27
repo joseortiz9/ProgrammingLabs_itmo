@@ -23,15 +23,15 @@ public class ExportToFileCommand extends AbsCommand {
 
      @Override
      public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
-         context.result().setLength(0);
+         StringBuilder sb = new StringBuilder();
          try {
              context.fileManager().SaveCollectionInXML(context.collectionManager().getCollection(), args[0]);
-             context.result().append("All elems saved!");
+             sb.append("All elems saved!");
          } catch (JAXBException e) {
-             context.result().append("Converter error saving the data");
+             sb.append("Converter error saving the data");
          } catch (InvalidPathException e) {
-             context.result().append("Error finding the provided file");
+             sb.append("Error finding the provided file");
          }
-         return context.result().toString();
+         return sb.toString();
      }
 }

@@ -22,7 +22,7 @@ public class PrintDescendingCommand extends AbsCommand {
 
      @Override
      public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
-         context.result().setLength(0);
+         StringBuilder sb = new StringBuilder();
          List<ListEntrySerializable> sortedDragons = null;
 
          switch (args[0]) {
@@ -44,11 +44,11 @@ public class PrintDescendingCommand extends AbsCommand {
                  sortedDragons = context.collectionManager().sortByCreationDate();
                  break;
              default:
-                 context.result().append("This option is not available. Correct= -{k/i/n/d}");
+                 sb.append("This option is not available. Correct= -{k/i/n/d}");
          }
          if (sortedDragons != null)
              return sortedDragons;
-         return context.result().toString();
+         return sb.toString();
      }
 
      @Override

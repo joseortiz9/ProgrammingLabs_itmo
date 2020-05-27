@@ -19,6 +19,7 @@ import java.net.*;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 /**
  * Класс для запуска работы сервера
@@ -52,7 +53,10 @@ public class ServerMain {
          * database config
          * */
         final DatabaseConfigurer dbConfigurer = new DatabaseConfigurer();
-        dbConfigurer.loadProperties();
+        if (dbConfigurer.needReadProperties())
+            dbConfigurer.readCustomProperties();
+        else
+            dbConfigurer.loadProperties();
         dbConfigurer.setConnection();
 
         /*
@@ -67,7 +71,6 @@ public class ServerMain {
 
             final FileManager fileManager = new FileManager();
             final CollectionManager collectionManager = new CollectionManager(controller.fetchCollectionFromDB());
-            final StringBuilder result = new StringBuilder();
 
             final ExecutionContext executionContext = new ExecutionContext() {
                 @Override
@@ -81,10 +84,6 @@ public class ServerMain {
                 @Override
                 public FileManager fileManager() {
                     return fileManager;
-                }
-                @Override
-                public StringBuilder result() {
-                    return result;
                 }
             };
             final ServerRequestHandler requestManager = new ServerRequestHandler(socket, executionContext);

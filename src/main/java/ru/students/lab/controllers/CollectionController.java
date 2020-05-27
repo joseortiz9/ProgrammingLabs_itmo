@@ -2,6 +2,7 @@ package ru.students.lab.controllers;
 
 import ru.students.lab.database.CollectionModel;
 import ru.students.lab.database.Credentials;
+import ru.students.lab.database.SQLQuery;
 import ru.students.lab.database.UserModel;
 import ru.students.lab.models.Dragon;
 
@@ -90,22 +91,10 @@ public class CollectionController {
     }
 
     public int[] deleteDragonsGreaterThanKey(int key, Credentials credentials) throws SQLException {
-        try {
-            int[] s = collectionModel.deleteGreaterThanKey(key, credentials);
-            for (int value : s) System.out.println(value);
-            return collectionModel.deleteGreaterThanKey(key, credentials);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
+        return collectionModel.deleteOnKey(key, credentials, SQLQuery.Delete.DRAGONS_WITH_GREATER_KEY);
     }
 
-    public String deleteDragonsLowerThanKey(int key, Credentials credentials) {
-        try {
-            return collectionModel.deleteLowerThanKey(key, credentials);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-            return ex.getMessage();
-        }
+    public int[] deleteDragonsLowerThanKey(int key, Credentials credentials) throws SQLException {
+        return collectionModel.deleteOnKey(key, credentials, SQLQuery.Delete.DRAGONS_WITH_LOWER_KEY);
     }
 }

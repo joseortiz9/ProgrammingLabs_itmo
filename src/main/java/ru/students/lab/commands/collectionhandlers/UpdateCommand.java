@@ -29,7 +29,7 @@ public class UpdateCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
-        context.result().setLength(0);
+        StringBuilder sb = new StringBuilder();
 
         if (dragon == null)
             throw new DragonFormatException();
@@ -39,11 +39,11 @@ public class UpdateCommand extends AbsCommand {
         // If it successfully replace it, returns the value of the old mapped object
         if (dragonIDaddedToDB == null) {
             if (context.collectionManager().update(Integer.valueOf(args[0]), dragon) != null)
-                context.result().append(dragon.toString()).append(" Updated!");
+                sb.append(dragon.toString()).append(" Updated!");
         } else
-            context.result().append("Problems updating dragon: ").append(dragonIDaddedToDB);
+            sb.append("Problems updating dragon: ").append(dragonIDaddedToDB);
 
-        return context.result().toString();
+        return sb.toString();
     }
 
     @Override

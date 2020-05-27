@@ -20,16 +20,16 @@ public class RemoveKeyCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
-        context.result().setLength(0);
+        StringBuilder sb = new StringBuilder();
 
         String resultDeletedByKey = context.collectionController().deleteDragon(Integer.parseInt(args[0]), credentials);
 
         // If it successfully replace it, returns the value of the old mapped object
         if (resultDeletedByKey == null) {
             if (context.collectionManager().removeKey(Integer.valueOf(args[0])) != null)
-                context.result().append("k:").append(args[0]).append(" Successfully removed!");
+                sb.append("k:").append(args[0]).append(" Successfully removed!");
         } else
-            context.result().append("Problems deleting dragon: ").append(resultDeletedByKey);
-        return context.result().toString();
+            sb.append("Problems deleting dragon: ").append(resultDeletedByKey);
+        return sb.toString();
     }
 }

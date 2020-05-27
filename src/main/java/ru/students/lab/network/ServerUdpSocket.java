@@ -35,10 +35,8 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
      * @param client - адрес сокета клиента
      */
     //@Override
-    public void sendDatagram(ByteBuffer content, SocketAddress client) throws IOException {
-        byte[] buf = new byte[content.remaining()];
-        content.get(buf);
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, client);
+    public void sendDatagram(byte[] content, SocketAddress client) throws IOException {
+        DatagramPacket packet = new DatagramPacket(content, content.length, client);
         socket.send(packet);
 
         System.out.println("Sent datagram from SERVER to " + client);
@@ -74,8 +72,7 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
             System.out.println("send object " + response.toString());
             LOG.info("send object " + response.toString());
 
-            final ByteBuffer objectBuffer = ByteBuffer.wrap(byteArrayStream.toByteArray());
-            sendDatagram(objectBuffer, client);
+            sendDatagram(byteArrayStream.toByteArray(), client);
 
         } catch (IOException e) {
             System.err.println("Problem sending the response: " + e.getMessage());
@@ -86,7 +83,7 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
      * Функция проверки клиента
      * @param a - адрес последнего клиента, отправившего команду серверу
      */
-    public SocketAddress checkClient(SocketAddress a) {
+    /*public SocketAddress checkClient(SocketAddress a) {
         SocketAddress client = clientList.stream()
                 .filter((c) -> c.equals(a))
                 .findFirst()
@@ -97,7 +94,7 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
             return clientList.get(clientList.size() - 1);
         }
         return client;
-    }
+    }*/
 
     public DatagramSocket getSocket() {
         return socket;

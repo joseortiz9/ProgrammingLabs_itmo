@@ -19,12 +19,10 @@ public class CollectionController {
     protected static final Logger LOG = LogManager.getLogger(CollectionController.class);
     private final CollectionModel collectionModel;
     private final UserModel userModel;
-    private final ReentrantLock mainLock;
 
     public CollectionController(CollectionModel collectionModel, UserModel userModel) {
         this.collectionModel = collectionModel;
         this.userModel = userModel;
-        mainLock = new ReentrantLock();
     }
 
     public HashMap<Integer, Dragon> fetchCollectionFromDB() throws SQLException {

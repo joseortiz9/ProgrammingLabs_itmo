@@ -7,19 +7,20 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class CollectionModel {
     private final Connection connection;
+    private final Lock mainLock;
 
     public CollectionModel(Connection connection) {
         this.connection = connection;
+        mainLock = new ReentrantLock();
     }
 
 
     public HashMap<Integer, Dragon> fetchCollection() throws SQLException {
-        //final ReentrantLock mainLock = this.mainLock;
-        //mainLock.lock();
-        //try {
         HashMap<Integer, Dragon> collection = new HashMap<>();
         PreparedStatement preparedStatement = connection.prepareStatement(SQLQuery.Get.DRAGONS);
         ResultSet rs = preparedStatement.executeQuery();
@@ -39,9 +40,6 @@ public class CollectionModel {
             collection.putIfAbsent(rs.getInt("key"), dragon);
         }
         return collection;
-        /*} finally {
-            mainLock.unlock();
-        }*/
     }
 
 
@@ -63,9 +61,7 @@ public class CollectionModel {
 
 
     public String insert(int key, Dragon dragon, Credentials credentials) throws SQLException {
-        //final ReentrantLock mainLock = this.mainLock;
-        //mainLock.lock();
-        //try {
+        mainLock.lock();
         final boolean oldAutoCommit = connection.getAutoCommit();
         try {
             connection.setAutoCommit(false);
@@ -114,10 +110,8 @@ public class CollectionModel {
             throw e;
         } finally {
             connection.setAutoCommit(oldAutoCommit);
-        }
-        /*} finally {
             mainLock.unlock();
-        }*/
+        }
     }
 
 
@@ -125,9 +119,7 @@ public class CollectionModel {
         if (!hasPermissions(credentials, id))
             return "You have no permissions to edit this dragon";
 
-        //final ReentrantLock mainLock = this.mainLock;
-        //mainLock.lock();
-        //try {
+        mainLock.lock();
         final boolean oldAutoCommit = connection.getAutoCommit();
         try {
             connection.setAutoCommit(false);
@@ -167,10 +159,8 @@ public class CollectionModel {
             throw e;
         } finally {
             connection.setAutoCommit(oldAutoCommit);
-        }
-        /*} finally {
             mainLock.unlock();
-        }*/
+        }
     }
 
     public int getDragonByKey(int key) throws SQLException {
@@ -188,9 +178,7 @@ public class CollectionModel {
         if (!credentials.username.equals(UserModel.ROOT_USERNAME))
             return "You have no permissions to delete all dragons";
 
-        //final ReentrantLock mainLock = this.mainLock;
-        //mainLock.lock();
-        //try {
+        mainLock.lock();
         final boolean oldAutoCommit = connection.getAutoCommit();
         try {
             connection.setAutoCommit(false);
@@ -203,23 +191,19 @@ public class CollectionModel {
             throw e;
         } finally {
             connection.setAutoCommit(oldAutoCommit);
-        }
-        /*} finally {
             mainLock.unlock();
-        }*/
+        }
     }
 
 
     public String delete(int key, Credentials credentials) throws SQLException {
-        //final ReentrantLock mainLock = this.mainLock;
-        //mainLock.lock();
-        //try {
+        int dragonID = getDragonByKey(key);
+        if (!hasPermissions(credentials, dragonID))
+            return "You have no permissions to delete this dragon";
+
+        mainLock.lock();
         final boolean oldAutoCommit = connection.getAutoCommit();
         try {
-            int dragonID = getDragonByKey(key);
-            if (!hasPermissions(credentials, dragonID))
-                return "You have no permissions to delete this dragon";
-
             connection.setAutoCommit(false);
             PreparedStatement preparedStatement = connection.prepareStatement(SQLQuery.Delete.DRAGON_BY_KEY);
             int pointer = 0;
@@ -234,16 +218,12 @@ public class CollectionModel {
             throw e;
         } finally {
             connection.setAutoCommit(oldAutoCommit);
-        }
-        /*} finally {
             mainLock.unlock();
-        }*/
+        }
     }
 
     public int[] deleteOnKey(int key, Credentials credentials, String query) throws SQLException {
-        //final ReentrantLock mainLock = this.mainLock;
-        //mainLock.lock();
-        //try {
+        mainLock.lock();
         final boolean oldAutoCommit = connection.getAutoCommit();
         try {
             connection.setAutoCommit(false);
@@ -261,10 +241,8 @@ public class CollectionModel {
             throw e;
         } finally {
             connection.setAutoCommit(oldAutoCommit);
-        }
-        /*} finally {
             mainLock.unlock();
-        }*/
+        }
     }
 
     public int[] getKeysFromResultSet(ResultSet rs) throws SQLException {

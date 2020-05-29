@@ -9,14 +9,14 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 /** 
- * Класс, редактирующий и сортирующий коллекцию с переменной <b>nextIDToAdd</b>
+ * Класс, редактирующий и сортирующий коллекцию
  * @autor Хосе Ортис
  * @version 1.0
 */
 public class CollectionManager {
     private HashMap<Integer, Dragon> collection;
     private final Date collectionCreationDate;
-    private final ReentrantLock mainLock;
+    private final Lock mainLock;
 
     /** 
      * Конструктор - создает объект класса CollectionManager для работы с коллекцией, создает пустую коллекцию с его датой создания
@@ -39,10 +39,110 @@ public class CollectionManager {
      * Функция удаления всех элементов коллекции 
      */
     public void clear() {
-        final ReentrantLock mainLock = this.mainLock;
         mainLock.lock();
         try {
             this.getCollection().clear();
+        } finally {
+            mainLock.unlock();
+        }
+    }
+
+    /**
+     * Функция изменения коллекции
+     * @param key - ключ, представляющий экземпляр класса Dragon внутри коллекции
+     * @param newDragon - экземпляр класса Dragon
+     * @return возвращает коллекцию с добавлением нового элемента
+     */
+    public Object insert(Integer key, Dragon newDragon) {
+        mainLock.lock();
+        try {
+            return this.getCollection().putIfAbsent(key, newDragon);
+        } finally {
+            mainLock.unlock();
+        }
+    }
+
+    /**
+     * Функция изменения коллекции
+     * @param id - номер обновляемого экземпляра класса Dragon
+     * @param newDragon - новый экземпляр класса Dragon с номером id
+     * @return возвращает коллекцию с измененным элементом
+     */
+    public Object update(Integer id, Dragon newDragon)
+    {
+        mainLock.lock();
+        try {
+            Optional<Map.Entry<Integer, Dragon>> oldDragonKey =
+                    this.getCollection()
+                            .entrySet()
+                            .stream()
+                            .filter(dragonEntry -> dragonEntry.getValue().getId().equals(id))
+                            .findFirst();
+
+            if (oldDragonKey.isPresent())
+                newDragon.setId(id);
+
+            return oldDragonKey.map(integerDragonEntry ->
+                    this.getCollection().replace(integerDragonEntry.getKey(), newDragon)).orElse(null);
+        } finally {
+            mainLock.unlock();
+        }
+    }
+
+    /**
+     * Функция изменения коллекции - удаление элемента по ключу
+     * @param key - ключ, представляющий экземпляр класса Dragon внутри коллекции
+     * @return возвращает измененную коллекцию
+     */
+    public Object removeKey(Integer key) {
+        mainLock.lock();
+        try {
+            return this.getCollection().remove(key);
+        } finally {
+            mainLock.unlock();
+        }
+    }
+
+    /**
+     * в случае если ключ экземпляра меньше заданного (Using creation_date)
+     * @param key - ключ, представляющий экземпляр класса Dragon внутри коллекции
+     * @param newDragon - экземпляр класса Dragon
+     * @return value of the ID to replace if is found
+     */
+    public int isLowerAndGetID(Integer key, Dragon newDragon) {
+        if (!this.getCollection().containsKey(key))
+            return -1;
+
+        return (newDragon.compareTo(this.getCollection().get(key)) > 0)
+                ? this.getCollection().get(key).getId()
+                : -1;
+    }
+
+    /**
+     * Функция изменения коллекции - изменение элемента коллекции
+     * @param key - ключ, представляющий экземпляр класса Dragon внутри коллекции
+     * @param newDragon - экземпляр класса Dragon
+     */
+    public void replaceIfLower(Integer key, Dragon newDragon) {
+        mainLock.lock();
+        try {
+            newDragon.setId(getCollection().get(key).getId());
+            this.getCollection().replace(key, newDragon);
+        } finally {
+            mainLock.unlock();
+        }
+    }
+
+    /**
+     * Функция изменения коллекции - удаление элементов коллекции, ключ которых больше заданного
+     * @param keys - ключи, представляющий экземпляр класса Dragon внутри коллекции
+     */
+    public void removeOnKey(int[] keys)
+    {
+        mainLock.lock();
+        try {
+            for (int key: keys)
+                this.getCollection().remove(key);
         } finally {
             mainLock.unlock();
         }
@@ -68,7 +168,6 @@ public class CollectionManager {
      */
     public List<ListEntrySerializable> sortById()
     {
-
         return this.getCollection()
                 .entrySet()
                 .stream()
@@ -103,83 +202,6 @@ public class CollectionManager {
                 .sorted(Map.Entry.comparingByValue())
                 .map(e -> new ListEntrySerializable(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * Функция изменения коллекции 
-     * @param key - ключ, представляющий экземпляр класса Dragon внутри коллекции
-     * @param newDragon - экземпляр класса Dragon
-     * @return возвращает коллекцию с добавлением нового элемента
-     */
-    public Object insert(Integer key, Dragon newDragon) {
-        return this.getCollection().putIfAbsent(key, newDragon);
-    }
-
-    /**
-     * Функция изменения коллекции 
-     * @param id - номер обновляемого экземпляра класса Dragon
-     * @param newDragon - новый экземпляр класса Dragon с номером id
-     * @return возвращает коллекцию с измененным элементом 
-     */
-    public Object update(Integer id, Dragon newDragon)
-    {
-        Optional<Map.Entry<Integer, Dragon>> oldDragonKey =
-                this.getCollection()
-                .entrySet()
-                .stream()
-                .filter(dragonEntry -> dragonEntry.getValue().getId().equals(id))
-                .findFirst();
-
-        if (oldDragonKey.isPresent())
-            newDragon.setId(id);
-
-        return oldDragonKey.map(integerDragonEntry ->
-                this.getCollection().replace(integerDragonEntry.getKey(), newDragon)).orElse(null);
-    }
-
-    /**
-     * Функция изменения коллекции - удаление элемента по ключу
-     * @param key - ключ, представляющий экземпляр класса Dragon внутри коллекции
-     * @return возвращает измененную коллекцию 
-     */
-    public Object removeKey(Integer key)
-    {
-        return this.getCollection().remove(key);
-    }
-
-    /**
-     * в случае если ключ экземпляра меньше заданного (Using creation_date)
-     * @param key - ключ, представляющий экземпляр класса Dragon внутри коллекции
-     * @param newDragon - экземпляр класса Dragon
-     * @return value of the ID to replace if is found
-     */
-    public int isLowerAndGetID(Integer key, Dragon newDragon) {
-        if (!this.getCollection().containsKey(key))
-            return -1;
-
-        return (newDragon.compareTo(this.getCollection().get(key)) > 0)
-                ? this.getCollection().get(key).getId()
-                : -1;
-    }
-
-    /**
-     * Функция изменения коллекции - изменение элемента коллекции
-     * @param key - ключ, представляющий экземпляр класса Dragon внутри коллекции
-     * @param newDragon - экземпляр класса Dragon
-     */
-    public void replaceIfLower(Integer key, Dragon newDragon) {
-        newDragon.setId(getCollection().get(key).getId());
-        this.getCollection().replace(key, newDragon);
-    }
-
-    /**
-     * Функция изменения коллекции - удаление элементов коллекции, ключ которых больше заданного 
-     * @param keys - ключи, представляющий экземпляр класса Dragon внутри коллекции
-     */
-    public void removeOnKey(int[] keys)
-    {
-        for (int key: keys)
-            this.getCollection().remove(key);
     }
 
     /**
@@ -223,7 +245,6 @@ public class CollectionManager {
 
     public void setCollection(HashMap<Integer, Dragon> collection) {
         this.collection = collection;
-        //this.nextIDToAdd = collection.size() + 1;
     }
 
     /**

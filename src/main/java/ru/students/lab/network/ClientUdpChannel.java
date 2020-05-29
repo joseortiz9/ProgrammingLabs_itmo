@@ -20,7 +20,7 @@ public class ClientUdpChannel extends AbsUdpSocket {
     protected static final Logger LOG = LogManager.getLogger(ClientUdpChannel.class);
 
     protected DatagramChannel channel;
-    protected SocketAddress addressServer;
+    protected volatile SocketAddress addressServer;
     protected volatile boolean connected;
     protected volatile boolean requestSent;
 

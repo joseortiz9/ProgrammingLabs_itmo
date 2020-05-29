@@ -8,15 +8,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class UserModel {
     public static final String DEFAULT_USERNAME = "default";
     public static final String ROOT_USERNAME = "root";
-    public static final String WRONG_CREDENTIALS_CODE = "wrong_credentials";
     private final Connection connection;
+    private final Lock mainLock;
 
     public UserModel(Connection connection) {
         this.connection = connection;
+        mainLock = new ReentrantLock();
     }
 
     public int checkUserAndGetID(Credentials credentials) throws SQLException, NoSuchAlgorithmException {
@@ -32,43 +35,37 @@ public class UserModel {
             else
                 return -1;
         }
-
         return -1;
     }
 
 
     public int registerUser(Credentials credentials) throws SQLException, NoSuchAlgorithmException {
-        //final ReentrantLock mainLock = this.mainLock;
-        //mainLock.lock();
-        //try {
-            final boolean oldAutoCommit = connection.getAutoCommit();
-            try {
-                connection.setAutoCommit(false);
-                PreparedStatement preparedStatement = connection.prepareStatement(SQLQuery.Add.USER);
-                int pointer = 0;
-                preparedStatement.setString(++pointer, credentials.username);
-                preparedStatement.setString(++pointer, hashPassword(credentials.password));
-                preparedStatement.executeUpdate();
+        mainLock.lock();
+        final boolean oldAutoCommit = connection.getAutoCommit();
+        try {
+            connection.setAutoCommit(false);
+            PreparedStatement preparedStatement = connection.prepareStatement(SQLQuery.Add.USER);
+            int pointer = 0;
+            preparedStatement.setString(++pointer, credentials.username);
+            preparedStatement.setString(++pointer, hashPassword(credentials.password));
+            preparedStatement.executeUpdate();
 
-                preparedStatement = connection.prepareStatement(SQLQuery.Get.ID_USING_USERNAME);
-                pointer = 0;
-                preparedStatement.setString(++pointer, credentials.username);
-                ResultSet rs = preparedStatement.executeQuery();
-                if (rs.next())
-                    return rs.getInt(1);
+            preparedStatement = connection.prepareStatement(SQLQuery.Get.ID_USING_USERNAME);
+            pointer = 0;
+            preparedStatement.setString(++pointer, credentials.username);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next())
+                return rs.getInt(1);
 
-                connection.commit();
-            } catch (Throwable e) {
-                connection.rollback();
-                throw e;
-            } finally {
-                connection.setAutoCommit(oldAutoCommit);
-            }
-            return -1;
-
-        /*} finally {
+            connection.commit();
+        } catch (Throwable e) {
+            connection.rollback();
+            throw e;
+        } finally {
+            connection.setAutoCommit(oldAutoCommit);
             mainLock.unlock();
-        }*/
+        }
+        return -1;
     }
 
 

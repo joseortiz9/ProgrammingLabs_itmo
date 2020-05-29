@@ -40,15 +40,6 @@ public class ClientResponseHandler {
          * Функция для получения данных
          */
         public void receiveData() throws IOException, ClassNotFoundException {
-            synchronized (ClientResponseHandler.class) {
-                //check if server is online comparing the passed time with the actual from the request sent
-                //TODO only restarting connection after the second command, find a way to wait after the send
-                //TODO is being like that because in the first send not have time to check the down condition
-                if (channel.requestWasSent() && !flagReceived && System.currentTimeMillis() - startRequestTime > 1000) {
-                    channel.setConnectionToFalse();
-                }
-            }
-
             final ByteBuffer buf = ByteBuffer.allocate(AbsUdpSocket.DATA_SIZE);
             final SocketAddress addressFromServer = channel.receiveDatagram(buf);
             buf.flip();
@@ -89,8 +80,6 @@ public class ClientResponseHandler {
     private final ResponseReceiver receiverThread;
     private final ClientUdpChannel channel;
     private final CurrentUser currentUser;
-    private volatile long startRequestTime = 0L;
-    private volatile boolean flagReceived = false;
 
     public ClientResponseHandler(ClientUdpChannel channel, CurrentUser currentUser) {
         this.channel = channel;
@@ -102,8 +91,6 @@ public class ClientResponseHandler {
     }
 
     public void checkForResponse() throws ClassNotFoundException {
-        startRequestTime = System.currentTimeMillis();
-
         Object received = receiverThread.receivedObject;
 
         if (received instanceof String && received.equals("connect")) {
@@ -113,16 +100,11 @@ public class ClientResponseHandler {
         }
 
         synchronized (this) {
-            if (received != null) {
-                flagReceived = true;
+            if (received != null)
                 printResponse(received);
-            } else {
-                flagReceived = false;
-            }
+
             receiverThread.receivedObject = null;
         }
-
-        System.out.println("wassent: " + channel.requestWasSent() + "  connection: " + channel.connected + "   addr: " + channel.addressServer);
     }
 
     /**

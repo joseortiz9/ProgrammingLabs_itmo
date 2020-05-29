@@ -71,6 +71,15 @@ public class ClientMain {
 
                 responseHandler.checkForResponse();
 
+                final long start = System.currentTimeMillis();
+                while (channel.requestWasSent()) {
+                    if (channel.requestWasSent() && System.currentTimeMillis() - start > 1000) {
+                        System.out.println("Seems the server went down!");
+                        channel.setConnectionToFalse();
+                        break;
+                    }
+                }
+
             } catch (NoSuchCommandException | AuthorizationException ex) {
                 System.out.println(ex.getMessage());
             } catch (NoSuchElementException ex) {

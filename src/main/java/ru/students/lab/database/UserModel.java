@@ -12,6 +12,7 @@ import java.sql.SQLException;
 public class UserModel {
     public static final String DEFAULT_USERNAME = "default";
     public static final String ROOT_USERNAME = "root";
+    public static final String WRONG_CREDENTIALS_CODE = "wrong_credentials";
     private final Connection connection;
 
     public UserModel(Connection connection) {

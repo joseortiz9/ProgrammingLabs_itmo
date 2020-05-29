@@ -54,13 +54,15 @@ public class CommandReader {
                     && !(command instanceof LoginCommand)
                     && !(command instanceof RegisterCommand))
                 throw new AuthorizationException("The default user can not execute special commands, please login");
+
             checkForInputs(command);
             channel.sendCommand(new CommandPacket(command, credentials));
         }
     }
-     /**
+
+    /**
      * Функция для проверки, нужны ли еще входные данные для отправки команды
-      * @param command - команда
+     * @param command - команда
      */
     public void checkForInputs(AbsCommand command) {
         if (command.requireInput() == ICommand.TYPE_INPUT_DRAGON) {
@@ -71,10 +73,12 @@ public class CommandReader {
             command.addInput(credentials);
         }
     }
+
     /**
      * Функция для отключения клиента
      */
     public void finishClient() {
+        System.out.println("Good bye!");
         LOG.info("Finishing client");
         channel.disconnect();
         System.exit(0);

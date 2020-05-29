@@ -58,9 +58,7 @@ public class ClientUdpChannel extends AbsUdpSocket {
      * @return ret - адрес сервера
      */
     public SocketAddress receiveDatagram(ByteBuffer buffer) throws IOException {
-        SocketAddress ret;
-        ret = channel.receive(buffer);
-        return ret;
+        return channel.receive(buffer);
     }
 
     /**
@@ -94,6 +92,7 @@ public class ClientUdpChannel extends AbsUdpSocket {
             System.exit(-1);
         }
     }
+
     /**
      * Функция для проверки подключения к серверу
      */
@@ -117,7 +116,7 @@ public class ClientUdpChannel extends AbsUdpSocket {
     }
 
     /**
-     * Функция получения информации о том, был ли отправлен ответ
+     * Функция получения информации о том, был ли отправлен запрос
      * @return boolean requestSent
      */
     public boolean requestWasSent() {

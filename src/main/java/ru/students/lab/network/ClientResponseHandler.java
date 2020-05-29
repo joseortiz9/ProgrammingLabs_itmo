@@ -137,8 +137,13 @@ public class ClientResponseHandler {
             printList(obj);
         }
         else if (obj instanceof Credentials) {
+            if (((Credentials) obj).id == -1) {
+                currentUser.setCredentials((Credentials) obj);
+                System.out.println("Logged out! Weird behaviour checking your credentials");
+                return;
+            }
             currentUser.setCredentials((Credentials) obj);
-            System.out.println("Current User set to: " + ((Credentials) obj).username);
+            System.out.println("Welcome back " + ((Credentials) obj).username + "!");
         }
         else
             throw new ClassNotFoundException();

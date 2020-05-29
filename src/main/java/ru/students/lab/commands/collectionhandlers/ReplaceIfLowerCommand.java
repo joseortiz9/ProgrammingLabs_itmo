@@ -3,6 +3,8 @@ package ru.students.lab.commands.collectionhandlers;
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ExecutionContext;
 import ru.students.lab.database.Credentials;
+import ru.students.lab.database.UserModel;
+import ru.students.lab.exceptions.AuthorizationException;
 import ru.students.lab.exceptions.DragonFormatException;
 import ru.students.lab.models.Dragon;
 
@@ -36,7 +38,14 @@ public class ReplaceIfLowerCommand extends AbsCommand {
 
         int dragonID = context.collectionManager().isLowerAndGetID(Integer.valueOf(args[0]), dragon);
         if (dragonID > 0) {
-            String resultDragonUpdated = context.collectionController().updateDragon(dragonID, dragon, credentials);
+            //AuthorizationException happens when the credentials passed are wrong and the user was already logged
+            String resultDragonUpdated = "";
+            try {
+                resultDragonUpdated = context.collectionController().updateDragon(dragonID, dragon, credentials);
+            } catch (AuthorizationException ex) {
+                return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
+            }
+
 
             if (resultDragonUpdated == null) {
                 context.collectionManager().replaceIfLower(Integer.valueOf(args[0]), dragon);

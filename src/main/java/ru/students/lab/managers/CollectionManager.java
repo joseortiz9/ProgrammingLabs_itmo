@@ -4,6 +4,8 @@ import ru.students.lab.models.Dragon;
 import ru.students.lab.util.ListEntrySerializable;
 
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 /** 
@@ -14,13 +16,13 @@ import java.util.stream.Collectors;
 public class CollectionManager {
     private HashMap<Integer, Dragon> collection;
     private final Date collectionCreationDate;
+    private final ReentrantLock mainLock;
 
     /** 
      * Конструктор - создает объект класса CollectionManager для работы с коллекцией, создает пустую коллекцию с его датой создания
      */
     public CollectionManager() {
-        this.collection = new HashMap<>();
-        this.collectionCreationDate = new Date();
+        this(new HashMap<>());
     }
 
     /** 
@@ -30,13 +32,20 @@ public class CollectionManager {
     public CollectionManager(HashMap<Integer, Dragon> collection) {
         this.collection = collection;
         this.collectionCreationDate = new Date();
+        this.mainLock = new ReentrantLock();
     }
 
     /**
      * Функция удаления всех элементов коллекции 
      */
     public void clear() {
-        this.getCollection().clear();
+        final ReentrantLock mainLock = this.mainLock;
+        mainLock.lock();
+        try {
+            this.getCollection().clear();
+        } finally {
+            mainLock.unlock();
+        }
     }
 
     /**

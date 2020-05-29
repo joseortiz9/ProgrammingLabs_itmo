@@ -3,6 +3,8 @@ package ru.students.lab.commands.collectionhandlers;
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ExecutionContext;
 import ru.students.lab.database.Credentials;
+import ru.students.lab.database.UserModel;
+import ru.students.lab.exceptions.AuthorizationException;
 
 import java.io.IOException;
 
@@ -22,7 +24,13 @@ public class RemoveKeyCommand extends AbsCommand {
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
         StringBuilder sb = new StringBuilder();
 
-        String resultDeletedByKey = context.collectionController().deleteDragon(Integer.parseInt(args[0]), credentials);
+        //AuthorizationException happens when the credentials passed are wrong and the user was already logged
+        String resultDeletedByKey = "";
+        try {
+            resultDeletedByKey = context.collectionController().deleteDragon(Integer.parseInt(args[0]), credentials);
+        } catch (AuthorizationException ex) {
+            return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
+        }
 
         // If it successfully replace it, returns the value of the old mapped object
         if (resultDeletedByKey == null) {

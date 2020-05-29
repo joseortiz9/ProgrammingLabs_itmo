@@ -13,7 +13,6 @@ import java.io.ObjectInputStream;
 import java.net.SocketAddress;
 import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
-import java.sql.SQLException;
 import java.util.concurrent.*;
 
 /**
@@ -146,7 +145,7 @@ public class ServerRequestHandler {
             LOG.error("Interrupted executor during shutdown",e);
             System.out.println("Interrupted during finishing the queued tasks");
         }
-        socket.getSocket().disconnect();
+        socket.disconnect();
         requestReceiver.interrupt();
     }
 }

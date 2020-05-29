@@ -3,6 +3,8 @@ package ru.students.lab.commands.collectionhandlers;
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ExecutionContext;
 import ru.students.lab.database.Credentials;
+import ru.students.lab.database.UserModel;
+import ru.students.lab.exceptions.AuthorizationException;
 import ru.students.lab.exceptions.DragonFormatException;
 import ru.students.lab.models.Dragon;
 
@@ -43,7 +45,13 @@ public class InsertCommand extends AbsCommand {
         if (dragon == null)
             throw new DragonFormatException();
 
-        String dragonIDaddedToDB = context.collectionController().addDragon(Integer.parseInt(args[0]), dragon, credentials);
+        //AuthorizationException happens when the credentials passed are wrong and the user was already logged
+        String dragonIDaddedToDB = "";
+        try {
+            dragonIDaddedToDB = context.collectionController().addDragon(Integer.parseInt(args[0]), dragon, credentials);
+        } catch (AuthorizationException ex) {
+            return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
+        }
 
         //If the resulted from the db_execution is null and If it doesn't exist and it successfully put it, so it returns null
         if (isNumeric(dragonIDaddedToDB)) {

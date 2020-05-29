@@ -47,7 +47,7 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
      * @param buffer - полученные данные
      * @return  адрес клиента, отправившего пакет
      */
-   // @Override
+    //@Override
     public SocketAddress receiveDatagram(ByteBuffer buffer) throws IOException {
         byte[] buf = new byte[buffer.remaining()];
 
@@ -79,22 +79,6 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
             LOG.error("Problem sending the response", e);
         }
     }
-    /**
-     * Функция проверки клиента
-     * @param a - адрес последнего клиента, отправившего команду серверу
-     */
-    /*public SocketAddress checkClient(SocketAddress a) {
-        SocketAddress client = clientList.stream()
-                .filter((c) -> c.equals(a))
-                .findFirst()
-                .orElse(null);
-
-        if (client == null) {
-            clientList.add(a);
-            return clientList.get(clientList.size() - 1);
-        }
-        return client;
-    }*/
 
     public DatagramSocket getSocket() {
         return socket;

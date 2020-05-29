@@ -3,8 +3,11 @@ package ru.students.lab.commands.collectionhandlers;
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ExecutionContext;
 import ru.students.lab.database.Credentials;
+import ru.students.lab.database.UserModel;
+import ru.students.lab.exceptions.AuthorizationException;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 /**
@@ -29,8 +32,10 @@ public class RemoveGreaterKeyCommand extends AbsCommand {
         int[] deletedIDs = null;
         try {
             deletedIDs = context.collectionController().deleteDragonsGreaterThanKey(Integer.parseInt(args[0]), credentials);
-        } catch (SQLException ex) {
+        } catch (SQLException | NoSuchAlgorithmException ex) {
             resultDeletedByKey = ex.getMessage();
+        } catch (AuthorizationException ex) {
+            return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
         }
 
         if (deletedIDs != null)

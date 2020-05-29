@@ -13,7 +13,6 @@ public abstract class AbsCommand implements ICommand, Serializable {
     protected String commandKey;
     protected String description = "No Description";
     protected String[] args;
-    protected boolean requireInputs = false;
 
     public AbsCommand() {}
     public AbsCommand(String[] args) {
@@ -35,7 +34,7 @@ public abstract class AbsCommand implements ICommand, Serializable {
      *
      * Создает объект класса dragon для передачи его серверу
      *
-     * @param obj
+     * @param obj in order to set the input required by the command called
      */
     public void addInput(Object obj) {
         //

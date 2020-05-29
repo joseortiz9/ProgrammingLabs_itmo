@@ -14,6 +14,11 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Controls and organize all the database requests
+ * @autor Хосе Ортис
+ * @version 1.0
+ */
 public class CollectionController {
 
     protected static final Logger LOG = LogManager.getLogger(CollectionController.class);
@@ -25,6 +30,12 @@ public class CollectionController {
         this.userModel = userModel;
     }
 
+    /**
+     * Fetch the collection from the database
+     *
+     * @return collection that will be used as the local representation of the database
+     * @throws SQLException the database sent an error
+     */
     public HashMap<Integer, Dragon> fetchCollectionFromDB() throws SQLException {
         HashMap<Integer, Dragon> collection = collectionModel.fetchCollection();
         if (collection == null)
@@ -32,6 +43,11 @@ public class CollectionController {
         return collection;
     }
 
+    /**
+     *
+     * @param credentials to try in the database
+     * @return the credentials if the user was checked successfully and a str if was failed
+     */
     public Object login(Credentials credentials) {
         try {
             int id = userModel.checkUserAndGetID(credentials);

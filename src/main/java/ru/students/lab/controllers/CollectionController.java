@@ -139,4 +139,14 @@ public class CollectionController {
     public boolean assertUserNotExist(Credentials credentials) throws SQLException, NoSuchAlgorithmException {
         return userModel.checkUserAndGetID(credentials) == -1;
     }
+
+    public boolean credentialsNotExist(Credentials credentials) {
+        try {
+            if (assertUserNotExist(credentials))
+                return true;
+        } catch (SQLException | NoSuchAlgorithmException e) {
+            return true;
+        }
+        return false;
+    }
 }

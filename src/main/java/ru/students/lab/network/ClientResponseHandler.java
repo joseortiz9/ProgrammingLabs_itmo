@@ -119,16 +119,20 @@ public class ClientResponseHandler {
             printList(obj);
         }
         else if (obj instanceof Credentials) {
-            if (((Credentials) obj).id == -1) {
-                currentUser.setCredentials((Credentials) obj);
-                System.out.println("Logged out! Weird behaviour checking your credentials");
-                return;
-            }
-            currentUser.setCredentials((Credentials) obj);
-            System.out.println("Welcome back " + ((Credentials) obj).username + "!");
+            handleCredentialsResponse((Credentials) obj);
         }
         else
             throw new ClassNotFoundException();
+    }
+
+    private void handleCredentialsResponse(Credentials obj) {
+        if (obj.id == -1) {
+            currentUser.setCredentials(obj);
+            System.out.println("Logged out! Weird behaviour checking your credentials");
+            return;
+        }
+        currentUser.setCredentials(obj);
+        System.out.println("Welcome back " + obj.username + "!");
     }
 
 

@@ -3,6 +3,7 @@ package ru.students.lab.commands.collectionhandlers;
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ExecutionContext;
 import ru.students.lab.database.Credentials;
+import ru.students.lab.database.UserModel;
 import ru.students.lab.util.ListEntrySerializable;
 
 import java.io.IOException;
@@ -22,6 +23,10 @@ public class PrintDescendingCommand extends AbsCommand {
 
      @Override
      public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
+
+         if (context.collectionController().credentialsNotExist(credentials))
+             return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
+
          StringBuilder sb = new StringBuilder();
          List<ListEntrySerializable> sortedDragons = null;
 

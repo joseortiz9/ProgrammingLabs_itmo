@@ -1,6 +1,7 @@
 package ru.students.lab.commands;
 
 import ru.students.lab.database.Credentials;
+import ru.students.lab.database.UserModel;
 import ru.students.lab.exceptions.DragonFormatException;
 import ru.students.lab.factories.DragonFactory;
 
@@ -31,6 +32,9 @@ public class ExecuteScriptCommand extends AbsCommand {
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
         if (args.length < 1)
             throw new ArrayIndexOutOfBoundsException();
+
+        if (context.collectionController().credentialsNotExist(credentials))
+            return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
 
         ArrayList<Object> result = new ArrayList<Object>();
 

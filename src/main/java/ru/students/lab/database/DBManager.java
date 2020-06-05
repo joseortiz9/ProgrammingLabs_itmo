@@ -1,31 +1,26 @@
-package ru.students.lab.controllers;
+package ru.students.lab.database;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.students.lab.database.CollectionModel;
-import ru.students.lab.database.Credentials;
-import ru.students.lab.database.SQLQuery;
-import ru.students.lab.database.UserModel;
 import ru.students.lab.exceptions.AuthorizationException;
 import ru.students.lab.models.Dragon;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Controls and organize all the database requests
  * @autor Хосе Ортис
  * @version 1.0
  */
-public class CollectionController {
+public class DBManager {
 
-    protected static final Logger LOG = LogManager.getLogger(CollectionController.class);
+    protected static final Logger LOG = LogManager.getLogger(DBManager.class);
     private final CollectionModel collectionModel;
     private final UserModel userModel;
 
-    public CollectionController(CollectionModel collectionModel, UserModel userModel) {
+    public DBManager(CollectionModel collectionModel, UserModel userModel) {
         this.collectionModel = collectionModel;
         this.userModel = userModel;
     }

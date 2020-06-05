@@ -3,13 +3,12 @@ package ru.students.lab;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.commands.ExecutionContext;
-import ru.students.lab.controllers.CollectionController;
+import ru.students.lab.database.DBManager;
 import ru.students.lab.database.CollectionModel;
 import ru.students.lab.database.DatabaseConfigurer;
 import ru.students.lab.database.UserModel;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.managers.FileManager;
-import ru.students.lab.models.Dragon;
 import ru.students.lab.network.ServerRequestHandler;
 import ru.students.lab.network.ServerUdpSocket;
 
@@ -17,9 +16,7 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.net.*;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 /**
  * Класс для запуска работы сервера
@@ -67,7 +64,7 @@ public class ServerMain {
 
             final CollectionModel collectionModel = new CollectionModel(dbConfigurer.getDbConnection());
             final UserModel userModel = new UserModel(dbConfigurer.getDbConnection());
-            final CollectionController controller = new CollectionController(collectionModel, userModel);
+            final DBManager controller = new DBManager(collectionModel, userModel);
 
             final FileManager fileManager = new FileManager();
             final CollectionManager collectionManager = new CollectionManager(controller.fetchCollectionFromDB());
@@ -78,7 +75,7 @@ public class ServerMain {
                     return collectionManager;
                 }
                 @Override
-                public CollectionController collectionController() {
+                public DBManager collectionController() {
                     return controller;
                 }
                 @Override

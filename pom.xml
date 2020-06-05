@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.students.lab</groupId>
-    <artifactId>Lab7</artifactId>
-    <version>2.0</version>
+    <artifactId>Lab8</artifactId>
+    <version>3.0</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -78,6 +78,12 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.2.12</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.jfoenix/jfoenix -->
+        <dependency>
+            <groupId>com.jfoenix</groupId>
+            <artifactId>jfoenix</artifactId>
+            <version>8.0.8</version>
         </dependency>
 
         <dependency>

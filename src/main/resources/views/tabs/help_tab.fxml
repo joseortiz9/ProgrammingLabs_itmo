@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="ru.students.lab.clientUI.controllers.HelpTabController"
+            minHeight="0.0" minWidth="0.0"
+            prefHeight="180.0" prefWidth="200.0">
+
+</AnchorPane>

@@ -3,8 +3,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.canvas.Canvas?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="ru.students.lab.clientUI.controllers.MapTabController">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml">
+            <!--fx:controller="ru.students.lab.clientUI.controllers.tabs.MapTabController">-->
     <children>
         <Canvas fx:id="dragonsMap" height="548.0" layoutX="58.0" layoutY="51.0"
                 width="977.0" AnchorPane.bottomAnchor="10.0"

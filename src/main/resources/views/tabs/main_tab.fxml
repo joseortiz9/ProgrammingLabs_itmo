@@ -9,8 +9,8 @@
 <?import javafx.scene.control.MenuItem?>
 <?import java.lang.String?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ru.students.lab.clientUI.controllers.MainTabController">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1">
+            <!--fx:controller="ru.students.lab.clientUI.controllers.tabs.MainTabController">-->
     <children>
         <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0"
               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"

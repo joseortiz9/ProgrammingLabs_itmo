@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -29,7 +30,6 @@ public class LoginRegisterController implements Initializable {
 
     @FXML public JFXTextField username;
     @FXML public JFXPasswordField password;
-    @FXML public Label introTitle;
 
     private ClientContext clientContext;
 
@@ -41,18 +41,15 @@ public class LoginRegisterController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
     }
 
-    public void handleRegisterButtonAction(ActionEvent actionEvent) {
-
-    }
-
     @FXML
-    public void handleLoginButtonAction(ActionEvent actionEvent) {
+    public void handleLoginRegisterButtonAction(ActionEvent actionEvent) {
+        String buttonClicked = ((Control)actionEvent.getSource()).getId();
         String usernameText = username.getText();
         String passwordText = password.getText();
-        AbsCommand loginCommand = clientContext.commandManager().getCommand("login");
-        loginCommand.addInput(new Credentials(-1, usernameText, passwordText));
+        AbsCommand command = clientContext.commandManager().getCommand(buttonClicked);
+        command.addInput(new Credentials(-1, usernameText, passwordText));
 
-        clientContext.clientChannel().sendCommand(new CommandPacket(loginCommand, clientContext.responseHandler().getCurrentUser().getCredentials()));
+        clientContext.clientChannel().sendCommand(new CommandPacket(command, clientContext.responseHandler().getCurrentUser().getCredentials()));
 
         Object response = clientContext.responseHandler().checkForResponse();
 

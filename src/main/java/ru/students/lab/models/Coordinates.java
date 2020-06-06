@@ -66,6 +66,6 @@ public class Coordinates implements Serializable {
 
     @Override
     public String toString() {
-        return "[x=" + this.getX() + ", y=" + this.getY() + "]";
+        return "{" + this.getX() + "; " + this.getY() + "}";
     }
 }

@@ -75,7 +75,6 @@ public class ClientUIMain extends Application {
             LOG.info("Logged as the 'default' user, please use login command");
 
             CommandManager manager = new CommandManager();
-            //CommandReader reader = new CommandReader(channel, manager, userInputHandler);
             ClientResponseHandler responseHandler = new ClientResponseHandler(channel, currentUser);
 
             clientContext = new ClientContext() {

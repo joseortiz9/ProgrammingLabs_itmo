@@ -22,6 +22,7 @@ public class Dragon implements Comparable<Dragon>, Serializable {
     private static final long serialVersionUID = -4227836017018935821L;
 
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    private Integer key = 0;
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
     @XmlJavaTypeAdapter(value = ZonedDateTimeSerializer.class)
@@ -103,6 +104,9 @@ public class Dragon implements Comparable<Dragon>, Serializable {
     public Integer getId() {
         return id;
     }
+    public Integer getKey() {
+        return key;
+    }
     public String getName() {
         return name;
     }
@@ -158,7 +162,9 @@ public class Dragon implements Comparable<Dragon>, Serializable {
     public void setCreationDate() {
         this.creationDate = ZonedDateTime.now();
     }
-
+    public void setKey(Integer key) {
+        this.key = key;
+    }
 
     @Override
     public int hashCode() {

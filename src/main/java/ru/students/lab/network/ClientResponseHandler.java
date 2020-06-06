@@ -102,8 +102,13 @@ public class ClientResponseHandler {
             }
         }
 
-        if (received != null)
+        if (received != null) {
             channel.setConnected(true);
+            /* In the case a weird user was put cheating, we logout */
+            if (received instanceof Credentials && ((Credentials)received).id == -1) {
+                //TODO: LOGOUT TO THE FIRST STAGE
+            }
+        }
 
         return received;
     }
@@ -112,10 +117,6 @@ public class ClientResponseHandler {
         synchronized (this) {
             receiverThread.receivedObject = null;
         }
-    }
-
-    public Object getReceivedObject() {
-        return receiverThread.receivedObject;
     }
 
     public void setCurrentUser(Credentials credentials) {

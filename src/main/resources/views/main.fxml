@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane fx:id="rootAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="625.0" prefWidth="1000.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171"
+            prefHeight="625.0" prefWidth="1300.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.171"
             xmlns:fx="http://javafx.com/fxml/1"> <!--fx:controller="ru.students.lab.clientUI.controllers.MainController">-->
     <children>
 
@@ -21,24 +21,24 @@
 
                         <Tab fx:id="mainTab" closable="false" styleClass="tab-main" text="Main">
                             <content>
-                                <!--Main content (collection table and command buttons)-->
-                                <fx:include fx:id="mainViewResource" source="tabs/main_tab.fxml"/>
+                                <!--Main content (collection table and command buttons)
+                                <fx:include fx:id="mainViewResource" source="tabs/main_tab.fxml"/>-->
                             </content>
                         </Tab>
 
 
                         <Tab fx:id="mapTab" closable="false" styleClass="tab-main" text="Map">
                             <content>
-                                <!--Map tab content-->
-                                <fx:include fx:id="mapTabResource" source="tabs/map_tab.fxml"/>
+                                <!--Map tab content
+                                <fx:include fx:id="mapTabResource" source="tabs/map_tab.fxml"/>-->
                             </content>
                         </Tab>
 
 
                         <Tab fx:id="helpTab" closable="false" styleClass="tab-main" text="Help">
                             <content>
-                                <!--Help tab content-->
-                                <fx:include fx:id="helpTabResource" source="tabs/help_tab.fxml"/>
+                                <!--Help tab content
+                                <fx:include fx:id="helpTabResource" source="tabs/help_tab.fxml"/>-->
                             </content>
                         </Tab>
                     </tabs>

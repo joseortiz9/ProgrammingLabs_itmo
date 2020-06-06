@@ -7,8 +7,8 @@
 <?import com.jfoenix.controls.JFXListView?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ru.students.lab.clientUI.controllers.HelpTabController">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1">
+            <!--fx:controller="ru.students.lab.clientUI.controllers.tabs.HelpTabController">-->
     <children>
         <HBox layoutX="104.0" layoutY="87.0" prefHeight="100.0" prefWidth="200.0"
               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"

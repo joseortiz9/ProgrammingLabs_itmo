@@ -26,8 +26,7 @@ public class AlertMaker {
 
     private static void styleAlert(Alert alert) {
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        //stage.getIcons().add(new Image("media/dialog_icon.png"));
-        //TODO: change image of alert
+        //stage.getIcons().add(new Image("/resources/media/dialog_icon.png"));
 
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(AlertMaker.class.getClassLoader().getResource("styles.css").toExternalForm());

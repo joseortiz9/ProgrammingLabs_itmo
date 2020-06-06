@@ -2,11 +2,18 @@ package ru.students.lab.clientUI.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import ru.students.lab.clientUI.ClientContext;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MenuController implements Initializable {
+
+    private ClientContext clientContext;
+
+    public void init(ClientContext clientContext) {
+        this.clientContext = clientContext;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -44,6 +51,7 @@ public class MenuController implements Initializable {
     public void handleAboutMenu(ActionEvent actionEvent) {
 
     }
+
 
 
 }

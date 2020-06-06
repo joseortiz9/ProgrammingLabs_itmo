@@ -14,6 +14,7 @@ public class ListEntrySerializable implements Serializable {
     public ListEntrySerializable(int key, Dragon dragon) {
         this.key = key;
         this.dragon = dragon;
+        this.dragon.setKey(this.key);
     }
     public Dragon getDragon() {
         return dragon;

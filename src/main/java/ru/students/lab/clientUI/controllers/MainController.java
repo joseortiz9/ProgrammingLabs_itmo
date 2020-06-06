@@ -1,5 +1,8 @@
 package ru.students.lab.clientUI.controllers;
 
+import com.jfoenix.controls.JFXTabPane;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +24,7 @@ public class MainController implements Initializable {
 
     private static final Logger LOG = LogManager.getLogger(MainController.class);
 
+    @FXML private JFXTabPane mainTabPane;
     @FXML private Tab mainTab, mapTab, helpTab;
     private final ClientContext clientContext;
 
@@ -40,15 +44,21 @@ public class MainController implements Initializable {
             Parent root = loader.load();
             mainTab.setContent(root);
 
+            FXMLLoader mapLoader = new FXMLLoader(getClass().getResource("/views/tabs/map_tab.fxml"));
+            mapLoader.setController(new MapTabController(clientContext));
+            Parent mapRoot = mapLoader.load();
+            mapTab.setContent(mapRoot);
+
+            /*mainTabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
+                if(newTab == mapTab) {
+                }
+            });*/
+
             loader = new FXMLLoader(getClass().getResource("/views/tabs/help_tab.fxml"));
             loader.setController(new HelpTabController(clientContext));
             root = loader.load();
             helpTab.setContent(root);
 
-            loader = new FXMLLoader(getClass().getResource("/views/tabs/map_tab.fxml"));
-            loader.setController(new MapTabController(clientContext));
-            root = loader.load();
-            mapTab.setContent(root);
 
             /* loader = new FXMLLoader(getClass().getResource("/views/menu/main_menu.fxml"));
             loader.setController(new MenuController(this));

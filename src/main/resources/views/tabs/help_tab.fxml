@@ -7,7 +7,7 @@
 <?import com.jfoenix.controls.JFXListView?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane minHeight="0.0" minWidth="0.0" xmlns:fx="http://javafx.com/fxml/1">
             <!--fx:controller="ru.students.lab.clientUI.controllers.tabs.HelpTabController">-->
     <children>
         <HBox layoutX="104.0" layoutY="87.0" prefHeight="100.0" prefWidth="200.0"
@@ -28,7 +28,7 @@
                         </JFXListView>
                     </children>
                 </VBox>
-                <VBox prefHeight="575.0" prefWidth="458.0">
+                <VBox prefHeight="575.0" prefWidth="720.0">
                     <children>
                         <Label fx:id="detailsTitle" styleClass="main-title"
                                text="Command details:">

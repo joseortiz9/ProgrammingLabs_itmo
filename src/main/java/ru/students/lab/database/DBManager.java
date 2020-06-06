@@ -4,9 +4,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.exceptions.AuthorizationException;
 import ru.students.lab.models.Dragon;
+import ru.students.lab.util.DragonUserCouple;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -36,6 +38,24 @@ public class DBManager {
         if (collection == null)
             throw new SQLException("It was not possible to fetch the collection from database");
         return collection;
+    }
+
+    /**
+     * Fetch the collection from the database
+     *
+     * @return collection with user_id to use it in the map interface
+     */
+    public Object fetchCollectionWithUser(Credentials credentials) {
+        try {
+            ArrayList<DragonUserCouple> collection = collectionModel.fetchCollectionWithUser();
+            if (assertUserNotExist(credentials))
+                throw new AuthorizationException();
+
+            return collection;
+        } catch (Throwable ex) {
+            LOG.error("inserting dragon in db", ex);
+            return ex.getMessage();
+        }
     }
 
     /**

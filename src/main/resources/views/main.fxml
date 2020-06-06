@@ -12,13 +12,12 @@
         <!--Menu items-->
         <fx:include fx:id="mainMenuResource" source="menu/main_menu.fxml"/>
 
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="31.0">
+        <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
             <children>
                 <JFXTabPane fx:id="mainTabPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                             AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <tabs>
-
                         <Tab fx:id="mainTab" closable="false" styleClass="tab-main" text="Main">
                             <content>
                                 <!--Main content (collection table and command buttons)

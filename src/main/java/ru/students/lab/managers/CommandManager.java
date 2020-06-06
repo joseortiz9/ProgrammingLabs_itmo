@@ -27,6 +27,7 @@ public class CommandManager {
         commands.put("man", new ManDescriptorCommand(this.getCommands()));
         commands.put("info", new InfoCommand());
         commands.put("show", new ShowCommand());
+        commands.put("fetch_map_elements", new FetchMapCommand());
         commands.put("insert", new InsertCommand());
         commands.put("update", new UpdateCommand());
         commands.put("remove_key", new RemoveKeyCommand());

@@ -1,6 +1,7 @@
 package ru.students.lab.database;
 
 import ru.students.lab.models.*;
+import ru.students.lab.util.DragonUserCouple;
 
 import java.sql.*;
 import java.time.ZoneId;
@@ -25,23 +26,39 @@ public class CollectionModel {
         PreparedStatement preparedStatement = connection.prepareStatement(SQLQuery.Get.DRAGONS);
         ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
-            ZonedDateTime creationDate = rs.getTimestamp("creation_date").toLocalDateTime().atZone(ZoneId.of("UTC"));
-            DragonHead head = new DragonHead((rs.getDouble("num_eyes") == 0) ? null : rs.getDouble("num_eyes")) ;
-            Dragon dragon = new Dragon(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    new Coordinates(rs.getLong("x"), rs.getFloat("y")),
-                    rs.getLong("age"),
-                    creationDate,
-                    Color.valueOf(rs.getString("color")),
-                    DragonType.valueOf(rs.getString("type")),
-                    DragonCharacter.valueOf(rs.getString("character")),
-                    head);
+            Dragon dragon = createDragonFromResultSet(rs);
             collection.putIfAbsent(rs.getInt("key"), dragon);
         }
         return collection;
     }
 
+
+    public ArrayList<DragonUserCouple> fetchCollectionWithUser() throws SQLException {
+        ArrayList<DragonUserCouple> collection = new ArrayList<>();
+        PreparedStatement preparedStatement = connection.prepareStatement(SQLQuery.Get.DRAGONS_WITH_USER);
+        ResultSet rs = preparedStatement.executeQuery();
+        while (rs.next()) {
+            Dragon dragon = createDragonFromResultSet(rs);
+            int userID = rs.getInt("user_id");
+            collection.add(new DragonUserCouple(userID, dragon));
+        }
+        return collection;
+    }
+
+    private Dragon createDragonFromResultSet(ResultSet rs) throws SQLException {
+        ZonedDateTime creationDate = rs.getTimestamp("creation_date").toLocalDateTime().atZone(ZoneId.of("UTC"));
+        DragonHead head = new DragonHead((rs.getDouble("num_eyes") == 0) ? null : rs.getDouble("num_eyes")) ;
+        return new Dragon(
+                rs.getInt("id"),
+                rs.getString("name"),
+                new Coordinates(rs.getLong("x"), rs.getFloat("y")),
+                rs.getLong("age"),
+                creationDate,
+                Color.valueOf(rs.getString("color")),
+                DragonType.valueOf(rs.getString("type")),
+                DragonCharacter.valueOf(rs.getString("character")),
+                head);
+    }
 
 
     public boolean hasPermissions(Credentials credentials, int dragonID) throws SQLException {

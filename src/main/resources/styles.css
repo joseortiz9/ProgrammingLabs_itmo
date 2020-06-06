@@ -82,8 +82,8 @@
 }
 
 .tab-main {
-    -fx-pref-height : 50;
-    -fx-max-height : 50;
+    -fx-pref-width : 200;
+    -fx-pref-height : 40;
 }
 
 
@@ -201,3 +201,9 @@
     -fx-fill: -fx-primary;
 }
 
+
+/* map section */
+
+.map-wrapper {
+    -fx-background-color: -fx-primarytext;
+}

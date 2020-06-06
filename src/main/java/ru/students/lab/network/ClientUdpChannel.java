@@ -20,26 +20,16 @@ public class ClientUdpChannel extends AbsUdpSocket {
     protected static final Logger LOG = LogManager.getLogger(ClientUdpChannel.class);
 
     protected DatagramChannel channel;
-    protected volatile SocketAddress addressServer;
+    protected SocketAddress addressServer;
+    protected volatile SocketAddress addressServerUP;
     protected volatile boolean connected;
     protected volatile boolean requestSent;
 
-    public ClientUdpChannel() throws IOException {
+    public ClientUdpChannel(InetSocketAddress addressServer) throws IOException {
         channel = DatagramChannel.open();
         channel.configureBlocking(false);
         channel.bind(null);
-        addressServer = null;
-    }
-
-    /**
-     * Функция для подключения к серверу по адресу
-     * @param addressServer - адрес сервера
-     */
-    public void tryToConnect(InetSocketAddress addressServer) {
         this.addressServer = addressServer;
-        sendCommand("connect");
-        System.out.println("Trying to reach the server...");
-        LOG.info("Trying to reach the server...");
     }
 
     /**
@@ -76,8 +66,7 @@ public class ClientUdpChannel extends AbsUdpSocket {
             sendDatagram(objectBuffer);
             Thread.sleep(500);
         } catch (IOException | InterruptedException e) {
-            System.err.println(e.getMessage());
-            LOG.error("", e);
+            LOG.error(""+e.getMessage(), e);
         }
     }
 
@@ -97,7 +86,7 @@ public class ClientUdpChannel extends AbsUdpSocket {
      * Функция для проверки подключения к серверу
      */
     public boolean isConnected() {
-        return addressServer != null && connected;
+        return addressServerUP != null && connected;
     }
 
     /**
@@ -111,7 +100,7 @@ public class ClientUdpChannel extends AbsUdpSocket {
      * Функция для задания отключения от сервера
      */
     public void setConnectionToFalse() {
-        this.addressServer = null;
+        this.addressServerUP = null;
         this.connected = false;
     }
 

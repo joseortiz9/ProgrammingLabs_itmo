@@ -15,7 +15,7 @@
         </RollingFile>
 
         <Console name="console" target="SYSTEM_OUT">
-            <PatternLayout   pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
+            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
         </Console>
     </Appenders>
     <Loggers>
@@ -23,7 +23,7 @@
             <appender-ref ref="fileLogger" level="debug" />
         </Logger>
         <Root level="debug" additivity="false">
-            <!--<appender-ref ref="console" />-->
+            <appender-ref ref="console" />
         </Root>
     </Loggers>
 </Configuration>

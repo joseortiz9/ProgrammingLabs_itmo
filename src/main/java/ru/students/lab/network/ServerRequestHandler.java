@@ -137,13 +137,11 @@ public class ServerRequestHandler {
      */
     public void disconnect() {
         LOG.info("Disconnecting the server...");
-        System.out.println("Disconnecting the server...");
         try {
             executor.shutdown();
             executor.awaitTermination(500, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             LOG.error("Interrupted executor during shutdown",e);
-            System.out.println("Interrupted during finishing the queued tasks");
         }
         socket.disconnect();
         requestReceiver.interrupt();

@@ -22,7 +22,9 @@ public class DatabaseConfigurer {
     public DatabaseConfigurer() {
         sc = new Scanner(System.in);
         config = new LinkedHashMap<>();
-        config.put("url", "");
+        config.put("host", "");
+        config.put("port", "");
+        config.put("db_name", "");
         config.put("user", "");
         config.put("password", "");
     }
@@ -31,12 +33,10 @@ public class DatabaseConfigurer {
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(DB_PROPS_FILE)) {
             Properties dbProps = new Properties();
             dbProps.load(inputStream);
-            setConfig(dbProps.getProperty("url"), dbProps.getProperty("user"), dbProps.getProperty("password"));
+            setConfig(dbProps.getProperty("host"), dbProps.getProperty("port"), dbProps.getProperty("db_name"), dbProps.getProperty("user"), dbProps.getProperty("password"));
 
-            System.out.println("Database properties have been loaded from resource 'db.properties'");
             LOG.info("Database properties have been loaded from resource 'db.properties'");
         } catch (IOException | IllegalArgumentException e) {
-            System.out.println("Unable to load default database settings");
             LOG.error("Unable to load default database settings", e);
             System.exit(-1);
         }
@@ -64,28 +64,26 @@ public class DatabaseConfigurer {
     public void setConnection() {
         try {
             dbConnection = DriverManager.getConnection(getDBUrl(), getDBUser(), getDBPass());
-            System.out.println("DB_driver Successfully connected on: " + getDBUrl());
             LOG.info("DB Connection successfully mounted on: " + getDBUrl());
         } catch (SQLException e) {
-            LOG.error("Unable to connect to database", e);
-            System.err.println("Unable to connect to database. Check the URL, the username and the password and try again. Check logs for details.");
+            LOG.error("Unable to connect to database, Check logs for details.", e);
             System.exit(-1);
         }
     }
 
-    public void setConfig(String url, String user, String pass) {
-        this.config.put("url", url);
-        this.config.put("user", user);
-        this.config.put("password", pass);
+    public void setConfig(String host, String port, String dbName, String user, String pass) {
+        config.put("host", host);
+        config.put("port", port);
+        config.put("db_name", dbName);
+        config.put("user", user);
+        config.put("password", pass);
     }
 
     public void disconnect() {
         LOG.info("Disconnecting the database...");
-        System.out.println("Disconnecting the database...");
         try {
             dbConnection.close();
         } catch (SQLException ex) {
-            System.err.println("error disconnecting the database, check the logs");
             LOG.error("error disconnecting the database", ex);
         }
     }
@@ -94,7 +92,7 @@ public class DatabaseConfigurer {
         return config;
     }
     public String getDBUrl() {
-        return config.get("url");
+        return "jdbc:postgresql://" + config.get("host") + ":" + config.get("port") + "/" + config.get("db_name");
     }
     public String getDBUser() {
         return config.get("user");

@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
+import ru.students.lab.clientUI.ClientContext;
 import ru.students.lab.models.*;
 
 import java.net.URL;
@@ -28,7 +29,11 @@ public class MainController implements Initializable {
     @FXML public TableColumn<Dragon, DragonCharacter> characterCol;
     @FXML public TableColumn<Dragon, DragonHead> headCol;
 
+    private ClientContext clientContext;
 
+    public MainController(ClientContext clientContext) {
+        this.clientContext = clientContext;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

@@ -90,21 +90,39 @@ public class ClientResponseHandler {
         receiverThread.start();
     }
 
-    public void checkForResponse() throws ClassNotFoundException {
+    public Object checkForResponse() {
         Object received = receiverThread.receivedObject;
 
-        if (received instanceof String && received.equals("connect")) {
-            channel.setConnected(true);
-            LOG.info("Successfully connected to the server");
-            System.out.println("Successfully connected to the server");
+        final long start = System.currentTimeMillis();
+        while (channel.requestWasSent()) {
+            if (channel.requestWasSent() && System.currentTimeMillis() - start > 1500) {
+                LOG.error("Seems the server went down!");
+                channel.setConnectionToFalse();
+                return "The server is down, please check the connection";
+            }
         }
 
-        synchronized (this) {
-            if (received != null)
-                printResponse(received);
+        if (received != null)
+            channel.setConnected(true);
 
+        return received;
+    }
+
+    public void setReceivedObjectToNull() {
+        synchronized (this) {
             receiverThread.receivedObject = null;
         }
+    }
+
+    public Object getReceivedObject() {
+        return receiverThread.receivedObject;
+    }
+
+    public void setCurrentUser(Credentials credentials) {
+        currentUser.setCredentials(credentials);
+    }
+    public CurrentUser getCurrentUser() {
+        return currentUser;
     }
 
     /**

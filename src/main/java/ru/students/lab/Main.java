@@ -1,7 +1,5 @@
 package ru.students.lab;
 
-import ru.students.lab.clientUI.UIMain;
-
 /**
  * Класс для запуска клиента или сервера
  * @autor Хосе Ортис
@@ -12,7 +10,7 @@ public class Main {
     public static void main( String[] args) {
         String mode = System.getProperty("mode").toLowerCase();
         if (mode.equals("client"))
-            UIMain.main(args);
+            ClientUIMain.main(args);
         else if (mode.equals("server"))
             ServerMain.main(args);
         else

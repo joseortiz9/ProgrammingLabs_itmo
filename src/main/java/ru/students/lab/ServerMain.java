@@ -37,11 +37,9 @@ public class ServerMain {
             final int port = Integer.parseInt(args[0]);
             address = new InetSocketAddress(port);
         } catch (ArrayIndexOutOfBoundsException ex) {
-            System.err.println("Port isn't provided");
             LOG.error("Port isn't provided");
             System.exit(-1);
         } catch (IllegalArgumentException ex) {
-            System.err.println("The provided port is out of the available range: " + args[0]);
             LOG.error("The provided port is out of the available range: " + args[0], ex);
             System.exit(-1);
         }
@@ -87,11 +85,9 @@ public class ServerMain {
 
             if (socket.getSocket().isBound()) {
                 LOG.info("Socket Successfully opened on " + address);
-                System.out.println("Socket Successfully opened on " + address);
             }
             else {
                 LOG.error("Strange behaviour trying to bind the server");
-                System.err.println("Strange behaviour trying to bind the server");
                 System.exit(-1);
             }
 
@@ -107,13 +103,10 @@ public class ServerMain {
             }
 
         } catch (IOException | SQLException ex) {
-            System.err.println("Problems: " + ex.getMessage() + "\nCheck logs for details");
-            LOG.error("Severe Issue",ex);
+            LOG.error("Several Issues: " + ex.getMessage() + "\n",ex);
         } catch (NoSuchElementException ex) {
-            System.err.println("You wrote something strange");
             LOG.error("You wrote something strange",ex);
         } catch (JAXBException ex) {
-            System.err.println("Error initialing the Parser");
             LOG.error("Error initialing the Parser", ex);
         }
     }

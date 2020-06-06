@@ -173,3 +173,31 @@
     -fx-text-fill: black;
 }
 
+
+/* Alert Dialog */
+
+.custom-alert {
+    -fx-background-color: -fx-primary;
+    -fx-text-fill: white;
+}
+.custom-alert > *.button-bar > *.container {
+    -fx-background-color: -fx-primary;
+}
+.custom-alert > *.label.content {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+.custom-alert:header *.header-panel {
+    -fx-background-color: -fx-blue;
+}
+.custom-alert:header .header-panel .label {
+    -fx-font-style: normal;
+    -fx-text-fill: white;
+}
+.custom-alert:header *.header-panel *.label {
+    -fx-font-size: 18px;
+    -fx-font-style: italic;
+    -fx-fill: -fx-primary;
+}
+

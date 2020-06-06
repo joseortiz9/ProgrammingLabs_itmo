@@ -11,7 +11,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import ru.students.lab.clientUI.AlertMaker;
+import ru.students.lab.clientUI.ClientContext;
+import ru.students.lab.commands.AbsCommand;
+import ru.students.lab.database.Credentials;
+import ru.students.lab.network.CommandPacket;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,12 +25,17 @@ import java.util.ResourceBundle;
 
 public class LoginRegisterController implements Initializable {
 
-    @FXML
-    public JFXTextField username;
-    @FXML
-    public JFXPasswordField password;
-    @FXML
-    public Label intro_title;
+    private static final Logger LOG = LogManager.getLogger(LoginRegisterController.class);
+
+    @FXML public JFXTextField username;
+    @FXML public JFXPasswordField password;
+    @FXML public Label introTitle;
+
+    private ClientContext clientContext;
+
+    public LoginRegisterController(ClientContext clientContext) {
+        this.clientContext = clientContext;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -34,14 +45,26 @@ public class LoginRegisterController implements Initializable {
 
     }
 
+    @FXML
     public void handleLoginButtonAction(ActionEvent actionEvent) {
-        if (checkCredentials()) {
+        String usernameText = username.getText();
+        String passwordText = password.getText();
+        AbsCommand loginCommand = clientContext.commandManager().getCommand("login");
+        loginCommand.addInput(new Credentials(-1, usernameText, passwordText));
+
+        clientContext.clientChannel().sendCommand(new CommandPacket(loginCommand, clientContext.responseHandler().getCurrentUser().getCredentials()));
+
+        Object response = clientContext.responseHandler().checkForResponse();
+
+        if (response instanceof Credentials) {
             closeStage();
+            clientContext.responseHandler().setCurrentUser((Credentials) response);
+            LOG.info("User successfully logged in {}", clientContext.responseHandler().getCurrentUser().getCredentials().username);
+            clientContext.responseHandler().setReceivedObjectToNull();
             loadMain();
-            //LOGGER.log(Level.INFO, "User successfully logged in {}", uname);
-        }
-        else {
+        } else {
             setWrongCredentialsStyle();
+            AlertMaker.showErrorMessage("Not possible to Log In/Register", (String)response);
         }
     }
 
@@ -50,26 +73,21 @@ public class LoginRegisterController implements Initializable {
         password.getStyleClass().add("wrong-credentials");
     }
 
-    private boolean checkCredentials() {
-        String uname = username.getText();
-        String pword = password.getText();
-        return uname.equals("root") && pword.equals("root");
-    }
-
     private void closeStage() {
         ((Stage) username.getScene().getWindow()).close();
     }
 
     void loadMain() {
         try {
-            Parent parent = FXMLLoader.load(getClass().getResource("/views/main.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main.fxml"));
+            loader.setController(new MainController(clientContext));
+            Parent parent = loader.load();
             Stage stage = new Stage(StageStyle.DECORATED);
             stage.setTitle("Dragons Dashboard");
             stage.setScene(new Scene(parent));
             stage.show();
         } catch (IOException ex) {
-            ex.printStackTrace();
-            //LOGGER.log(Level.ERROR, "{}", ex);
+            LOG.error("Error loading the main dashboard", ex);
         }
     }
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.students.lab.clientUI.controllers.MenuController">
+    <children>
+        <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <menus>
+                <Menu fx:id="menuUser" mnemonicParsing="false" text="User">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="CurrentUser"/>
+                        <MenuItem mnemonicParsing="false" onAction="#handleMenuLogOut" text="Log out"/>
+                    </items>
+                </Menu>
+                <Menu fx:id="menuAdd" mnemonicParsing="false" text="Add">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#handleMenuAddDragon" text="Add Dragon"/>
+                    </items>
+                </Menu>
+                <Menu fx:id="menuLanguage" mnemonicParsing="false" text="Language">
+                    <items>
+                        <RadioMenuItem mnemonicParsing="false" onAction="#changeLanguageToEnglish" selected="true"
+                                       text="English">
+                            <toggleGroup>
+                                <ToggleGroup fx:id="languageOptions"/>
+                            </toggleGroup>
+                        </RadioMenuItem>
+                        <RadioMenuItem mnemonicParsing="false" onAction="#changeLanguageToRussian" text="Russian"
+                                       toggleGroup="$languageOptions"/>
+                        <RadioMenuItem mnemonicParsing="false" onAction="#changeLanguageToSerbian" text="Serbian"
+                                       toggleGroup="$languageOptions"/>
+                        <RadioMenuItem mnemonicParsing="false" onAction="#changeLanguageToCroatian" text="Croatian"
+                                       toggleGroup="$languageOptions"/>
+                        <RadioMenuItem mnemonicParsing="false" onAction="#changeLanguageToSpanish" text="Spanish"
+                                       toggleGroup="$languageOptions"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#handleAboutMenu" text="About"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </children>
+</StackPane>
+

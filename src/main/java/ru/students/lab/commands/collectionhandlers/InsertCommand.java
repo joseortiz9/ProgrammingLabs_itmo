@@ -57,7 +57,7 @@ public class InsertCommand extends AbsCommand {
         if (isNumeric(dragonIDaddedToDB)) {
             dragon.setId(Integer.valueOf(dragonIDaddedToDB));
             if (context.collectionManager().insert(Integer.valueOf(args[0]), dragon) == null)
-                sb.append(dragon.toString()).append(" successfully saved!");
+                sb.append("Dragon of ID: ").append(dragon.getId()).append(" successfully saved!");
         } else
             sb.append("Error saving the Dragon: ").append(dragonIDaddedToDB);
         return sb.toString();

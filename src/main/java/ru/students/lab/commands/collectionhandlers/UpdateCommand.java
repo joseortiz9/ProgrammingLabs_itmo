@@ -47,7 +47,7 @@ public class UpdateCommand extends AbsCommand {
         // If it successfully replace it, returns the value of the old mapped object
         if (dragonIDaddedToDB == null) {
             if (context.collectionManager().update(Integer.valueOf(args[0]), dragon) != null)
-                sb.append(dragon.toString()).append(" Updated!");
+                sb.append("Dragon of ID: ").append(dragon.getId()).append(" Updated!");
         } else
             sb.append("Problems updating dragon: ").append(dragonIDaddedToDB);
 

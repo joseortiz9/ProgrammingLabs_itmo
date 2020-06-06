@@ -4,26 +4,35 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.clientUI.AlertMaker;
 import ru.students.lab.clientUI.ClientContext;
+import ru.students.lab.clientUI.controllers.LoginRegisterController;
+import ru.students.lab.clientUI.controllers.forms.AddDragonController;
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.models.*;
 import ru.students.lab.network.CommandPacket;
 import ru.students.lab.util.ListEntrySerializable;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 
 public class MainTabController implements Initializable {
 
@@ -121,7 +130,32 @@ public class MainTabController implements Initializable {
 
     @FXML
     public void handleDragonEdit(ActionEvent actionEvent) {
-        
+        // Get selected row
+        Dragon selectedForEdit = dragonsTableView.getSelectionModel().getSelectedItem();
+        if (selectedForEdit == null) {
+            AlertMaker.showErrorMessage("No dragon selected", "Please select a dragon for edit.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/forms/add_dragon.fxml"));
+            AddDragonController controller = new AddDragonController(clientContext);
+            loader.setController(controller);
+            Parent parent = loader.load();
+            controller.inflateUI(selectedForEdit);
+
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.setTitle("Edit Dragon");
+            stage.setScene(new Scene(parent));
+            stage.show();
+
+            stage.setOnHiding((e) -> {
+                handleRefresh(new ActionEvent());
+            });
+
+        } catch (IOException ex) {
+            LOG.error("error trying to edit a dragon from list, ", ex);
+        }
     }
 
     @FXML

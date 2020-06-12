@@ -19,6 +19,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.clientUI.AlertMaker;
 import ru.students.lab.clientUI.ClientContext;
+import ru.students.lab.clientUI.controllers.MainController;
 import ru.students.lab.clientUI.controllers.forms.AddDragonController;
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.models.*;
@@ -39,7 +40,7 @@ public class MainTabController implements Initializable {
 
     private static final Logger LOG = LogManager.getLogger(MainTabController.class);
 
-    ObservableList<DragonEntrySerializable> dragonsList = FXCollections.observableArrayList();
+    private final ObservableList<DragonEntrySerializable> dragonsList = FXCollections.observableArrayList();
 
     @FXML public GridPane commandsBtnGrid;
     @FXML public TableView<DragonEntrySerializable> dragonsTableView;
@@ -54,10 +55,10 @@ public class MainTabController implements Initializable {
     @FXML public TableColumn<DragonEntrySerializable, DragonCharacter> characterCol;
     @FXML public TableColumn<DragonEntrySerializable, DragonHead> headCol;
 
-    private final ClientContext clientContext;
+    private final MainController mainController;
 
-    public MainTabController(ClientContext clientContext) {
-        this.clientContext = clientContext;
+    public MainTabController(MainController mainController) {
+        this.mainController = mainController;
     }
 
     @Override
@@ -69,7 +70,7 @@ public class MainTabController implements Initializable {
 
     private void initCommandButtons() {
         int x = 0, y = 0;
-        for (String commandKey: clientContext.commandManager().getCommands().keySet()) {
+        for (String commandKey: mainController.getContext().commandManager().getCommands().keySet()) {
             final Button btnTemp = new Button(commandKey);
             btnTemp.setId(commandKey);
             btnTemp.setOnAction(this::handleButtonCommandPressed);
@@ -96,22 +97,9 @@ public class MainTabController implements Initializable {
     }
 
     private void loadData() {
+        //mainController.refreshLocalCollection();
         dragonsList.clear();
-        AbsCommand command = clientContext.commandManager().getCommand("show");
-        clientContext.clientChannel().sendCommand(new CommandPacket(command, clientContext.responseHandler().getCurrentUser().getCredentials()));
-
-        Object response = clientContext.responseHandler().checkForResponse();
-
-        if (response instanceof List) {
-            List<DragonEntrySerializable> responseList = (List<DragonEntrySerializable>) response;
-            dragonsList.addAll(responseList);
-
-            LOG.info("Successfully fetched collection: {} elements", responseList.size());
-            clientContext.responseHandler().setReceivedObjectToNull();
-        } else {
-            AlertMaker.showErrorMessage("Not possible to fetch data, please check logs", (String)response);
-        }
-
+        dragonsList.addAll(mainController.getContext().localCollection().getLocalList());
         dragonsTableView.setItems(dragonsList);
     }
 
@@ -130,61 +118,13 @@ public class MainTabController implements Initializable {
     public void handleDragonEdit(ActionEvent actionEvent) {
         // Get selected row
         DragonEntrySerializable selectedForEdit = dragonsTableView.getSelectionModel().getSelectedItem();
-        if (selectedForEdit == null) {
-            AlertMaker.showErrorMessage("No dragon selected", "Please select a dragon for edit.");
-            return;
-        }
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/forms/add_dragon.fxml"));
-            AddDragonController controller = new AddDragonController(clientContext);
-            loader.setController(controller);
-            Parent parent = loader.load();
-            controller.inflateUI(selectedForEdit);
-
-            Stage stage = new Stage(StageStyle.DECORATED);
-            stage.setTitle("Edit Dragon");
-            stage.setScene(new Scene(parent));
-            stage.show();
-
-            stage.setOnHiding((e) -> {
-                handleRefresh(new ActionEvent());
-            });
-
-        } catch (IOException ex) {
-            LOG.error("error trying to edit a dragon from list, ", ex);
-        }
+        mainController.loadEditDragonDialog(selectedForEdit, true);
     }
 
     @FXML
     public void handleDragonRemove(ActionEvent actionEvent) {
         // Get selected row
         DragonEntrySerializable selectedForRemove = dragonsTableView.getSelectionModel().getSelectedItem();
-        if (selectedForRemove == null) {
-            AlertMaker.showErrorMessage("No dragon selected", "Please select a dragon to remove.");
-            return;
-        }
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Removing Dragon");
-        alert.setContentText("Are you sure want to remove the dragon {ID="+ selectedForRemove.getId() +"} ?");
-        Optional<ButtonType> answer = alert.showAndWait();
-        if (answer.get() == ButtonType.OK) {
-            AbsCommand command = clientContext.commandManager().getCommand("remove_key");
-            command.setArgs(new String[]{String.valueOf(selectedForRemove.getKey())});
-
-            clientContext.clientChannel().sendCommand(new CommandPacket(command, clientContext.responseHandler().getCurrentUser().getCredentials()));
-
-            Object response = clientContext.responseHandler().checkForResponse();
-
-            if (response instanceof String) {
-                AlertMaker.showSimpleAlert("Result of the request", (String)response);
-                loadData();
-                clientContext.responseHandler().setReceivedObjectToNull();
-                LOG.info("Result of the deleting process: {}", (String) response);
-            }
-        } else {
-            AlertMaker.showSimpleAlert("Remove cancelled", "Remove process cancelled");
-        }
+        mainController.loadRemoveDragonDialog(selectedForRemove);
     }
 }

@@ -9,23 +9,17 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.clientUI.ClientContext;
+import ru.students.lab.clientUI.LocalCollectionManager;
 import ru.students.lab.clientUI.controllers.LoginRegisterController;
 import ru.students.lab.database.Credentials;
 import ru.students.lab.database.CurrentUser;
-import ru.students.lab.exceptions.AuthorizationException;
-import ru.students.lab.exceptions.NoSuchCommandException;
 import ru.students.lab.managers.CommandManager;
 import ru.students.lab.network.ClientResponseHandler;
 import ru.students.lab.network.ClientUdpChannel;
-import ru.students.lab.network.CommandReader;
-import ru.students.lab.util.IHandlerInput;
-import ru.students.lab.util.UserInputHandler;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.channels.ClosedChannelException;
 import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
 
 /**
  * Класс для запуска UI работы клиента
@@ -79,6 +73,7 @@ public class ClientUIMain extends Application {
 
             CommandManager manager = new CommandManager();
             ClientResponseHandler responseHandler = new ClientResponseHandler(channel, currentUser);
+            LocalCollectionManager collectionManager = new LocalCollectionManager();
 
             clientContext = new ClientContext() {
                 @Override
@@ -92,6 +87,10 @@ public class ClientUIMain extends Application {
                 @Override
                 public ClientResponseHandler responseHandler() {
                     return responseHandler;
+                }
+                @Override
+                public LocalCollectionManager localCollection() {
+                    return collectionManager;
                 }
             };
 

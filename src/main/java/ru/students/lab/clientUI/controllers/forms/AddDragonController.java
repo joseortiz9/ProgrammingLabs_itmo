@@ -44,8 +44,9 @@ public class AddDragonController implements Initializable {
     private boolean editMode = false;
     private int editingID = -1;
 
-    public AddDragonController(ClientContext clientContext) {
+    public AddDragonController(ClientContext clientContext, boolean editMode) {
         this.clientContext = clientContext;
+        this.editMode = editMode;
     }
 
     @Override
@@ -93,13 +94,13 @@ public class AddDragonController implements Initializable {
                 head);
 
         if (editMode) {
-            handleRequestSent(dragon, dragon.getId().toString(), "update");
+            sendRequest(dragon, dragon.getId().toString(), "update");
             editMode = false;
         } else
-            handleRequestSent(dragon, keyTextField.getText(), "insert");
+            sendRequest(dragon, keyTextField.getText(), "insert");
     }
 
-    public void handleRequestSent(Dragon input, String arg, String commandKey) {
+    public void sendRequest(Dragon input, String arg, String commandKey) {
         AbsCommand command = clientContext.commandManager().getCommand(commandKey);
         command.setArgs(new String[]{arg});
         command.addInput(input);
@@ -146,7 +147,6 @@ public class AddDragonController implements Initializable {
         autoSelectComboBoxValue(typeBox, dragon.getDragon().getType(), (type, typeBoxVal) -> type.equals(Enum.valueOf(DragonType.class, typeBoxVal)));
         autoSelectComboBoxValue(characterBox, dragon.getDragon().getCharacter(), (character, characterBoxVal) -> character.equals(Enum.valueOf(DragonCharacter.class, characterBoxVal)));
         keyTextField.setEditable(false);
-        editMode = true;
     }
 
     public <T> void autoSelectComboBoxValue(JFXComboBox<Label> comboBox, T value, Func<T, String> f) {

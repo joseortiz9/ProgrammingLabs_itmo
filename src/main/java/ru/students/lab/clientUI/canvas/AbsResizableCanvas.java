@@ -14,6 +14,8 @@ public abstract class AbsResizableCanvas extends Canvas {
 
     public abstract Object findObj(double coordX, double coordY);
 
+    public abstract void setObj(Object obj);
+
     @Override
     public boolean isResizable() {
         return true;

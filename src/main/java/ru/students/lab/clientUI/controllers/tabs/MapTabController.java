@@ -1,12 +1,22 @@
 package ru.students.lab.clientUI.controllers.tabs;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.animation.RotateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.clientUI.AlertMaker;
@@ -14,14 +24,21 @@ import ru.students.lab.clientUI.ClientContext;
 import ru.students.lab.clientUI.canvas.AbsResizableCanvas;
 import ru.students.lab.clientUI.canvas.ResizableDragonPictureCanvas;
 import ru.students.lab.clientUI.canvas.ResizableMapCanvas;
+import ru.students.lab.clientUI.controllers.MainController;
+import ru.students.lab.clientUI.controllers.forms.AddDragonController;
 import ru.students.lab.commands.AbsCommand;
+import ru.students.lab.models.Dragon;
+import ru.students.lab.models.DragonType;
 import ru.students.lab.network.CommandPacket;
 import ru.students.lab.util.DragonEntrySerializable;
+import ru.students.lab.util.FxUtils;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MapTabController implements Initializable {
@@ -31,29 +48,15 @@ public class MapTabController implements Initializable {
     @FXML public Pane wrapperMapPane, dragonPicturePane;
     @FXML public JFXButton editDragonButton, removeDragonButton;
     @FXML public GridPane dragonDetailsGrid;
+    private AbsResizableCanvas dragonsMapCanvas;
+    private AbsResizableCanvas dragonPictureCanvas;
 
-    private final ClientContext clientContext;
-    private ArrayList<DragonEntrySerializable> dragonsList = new ArrayList<>();
+    private final MainController mainController;
+    private final ArrayList<DragonEntrySerializable> dragonsList = new ArrayList<>();
+    private DragonEntrySerializable selectedDragon = null;
 
-    public MapTabController(ClientContext clientContext) {
-        this.clientContext = clientContext;
-    }
-
-    private void loadData() {
-        dragonsList.clear();
-        AbsCommand command = clientContext.commandManager().getCommand("show");
-        clientContext.clientChannel().sendCommand(new CommandPacket(command, clientContext.responseHandler().getCurrentUser().getCredentials()));
-
-        Object response = clientContext.responseHandler().checkForResponse();
-
-        if (response instanceof List) {
-            dragonsList = (ArrayList<DragonEntrySerializable>) response;
-
-            LOG.info("Successfully fetched collection for the map: {} elements", dragonsList.size());
-            clientContext.responseHandler().setReceivedObjectToNull();
-        } else {
-            AlertMaker.showErrorMessage("Not possible to fetch data", (String)response);
-        }
+    public MapTabController(MainController mainController) {
+        this.mainController = mainController;
     }
 
     @Override
@@ -61,33 +64,32 @@ public class MapTabController implements Initializable {
         loadData();
 
         // Map canvas init
-        int actualUserID = clientContext.responseHandler().getCurrentUser().getCredentials().id;
-        AbsResizableCanvas dragonsMapCanvas = new ResizableMapCanvas(dragonsList, actualUserID);
+        int actualUserID = mainController.getContext().responseHandler().getCurrentUser().getCredentials().id;
+        dragonsMapCanvas = new ResizableMapCanvas(dragonsList, actualUserID);
         wrapperMapPane.getChildren().add(dragonsMapCanvas);
-
         dragonsMapCanvas.widthProperty().bind(wrapperMapPane.widthProperty());
         dragonsMapCanvas.heightProperty().bind(wrapperMapPane.heightProperty());
         dragonsMapCanvas.setOnMouseClicked(event -> {
-            //DragonUserCouple dragon = (DragonUserCouple)dragonsMapCanvas.findObj(event.getSceneX(), event.getSceneY());
-            //handleDetailDragon(dragon);
-            handleDetailDragon(dragonsList.get(1));
+            selectedDragon = (DragonEntrySerializable)dragonsMapCanvas.findObj(event.getSceneX(), event.getSceneY());
+            handleDetailDragon();
         });
 
         // dragon canvas picture init
-        AbsResizableCanvas dragonPictureCanvas = new ResizableDragonPictureCanvas();
+        dragonPictureCanvas = new ResizableDragonPictureCanvas();
         dragonPicturePane.getChildren().add(dragonPictureCanvas);
         dragonPictureCanvas.widthProperty().bind(dragonPicturePane.widthProperty());
         dragonPictureCanvas.heightProperty().bind(dragonPicturePane.heightProperty());
     }
 
-    public void handleDetailDragon(DragonEntrySerializable dragon) {
-        if (dragon == null)
+    public void handleDetailDragon() {
+        if (selectedDragon == null)
             return;
 
-        changeStatusActionButtons(dragon.getDragon().getUserID());
+        changeStatusActionButtons(selectedDragon.getDragon().getUserID());
 
         try {
-            loadingDragonFields(dragon);
+            loadingDragonPicture();
+            loadingDragonFields();
         } catch (IllegalAccessException ex) {
             ex.printStackTrace();
             AlertMaker.showErrorMessage("Problems fetching attrs of dragon", ex.getMessage());
@@ -95,7 +97,8 @@ public class MapTabController implements Initializable {
     }
 
     private void changeStatusActionButtons(int userID) {
-        if (clientContext.responseHandler().getCurrentUser().getCredentials().id != userID) {
+        int currentUserID = mainController.getContext().responseHandler().getCurrentUser().getCredentials().id;
+        if (currentUserID != 1 && currentUserID != userID) {
             editDragonButton.setDisable(true);
             removeDragonButton.setDisable(true);
         } else {
@@ -104,14 +107,44 @@ public class MapTabController implements Initializable {
         }
     }
 
-    private void loadingDragonFields(DragonEntrySerializable dragon) throws IllegalAccessException {
+    private void loadingDragonPicture() {
+        dragonPictureCanvas.setObj(selectedDragon.getDragon());
+        dragonPictureCanvas.draw();
+
+        //TODO: OPTIMIZE BACKGROUND PAINTING
+        DragonType type = selectedDragon.getType();
+        if (type.equals(DragonType.UNDERGROUND)) {
+            dragonPicturePane.setStyle("-fx-background-color: " + FxUtils.toHexString(Color.PERU));
+        }
+        else if (type.equals(DragonType.WATER)) {
+            dragonPicturePane.setStyle("-fx-background-color: " + FxUtils.toHexString(Color.AQUA));
+        }
+        else if (type.equals(DragonType.AIR)){
+            dragonPicturePane.setStyle("-fx-background-color: " + FxUtils.toHexString(Color.LIGHTGRAY));
+        }
+        else if (type.equals(DragonType.FIRE)) {
+            dragonPicturePane.setStyle("-fx-background-color: " + FxUtils.toHexString(Color.MAROON));
+        }
+
+        //TODO: FIX ANIMATION
+        RotateTransition rotateTransition = new RotateTransition();
+        rotateTransition.setDuration(Duration.millis(1000));
+        rotateTransition.setNode(dragonPictureCanvas);
+        rotateTransition.setByAngle(360);
+        rotateTransition.setCycleCount(2);
+        rotateTransition.setAutoReverse(false);
+        rotateTransition.play();
+    }
+
+    private void loadingDragonFields() throws IllegalAccessException {
+        dragonDetailsGrid.getChildren().clear();
         int x = 0, y = 0;
-        for (Field dragonField: dragon.getDragon().getClass().getDeclaredFields()) {
+        for (Field dragonField: selectedDragon.getDragon().getClass().getDeclaredFields()) {
             if (java.lang.reflect.Modifier.isStatic(dragonField.getModifiers()))
                 continue;
 
             dragonField.setAccessible(true);
-            final Label attrTemp = new Label(dragonField.getName() + ": " + dragonField.get(dragon.getDragon()).toString());
+            final Label attrTemp = new Label(dragonField.getName() + ": " + dragonField.get(selectedDragon.getDragon()).toString());
             attrTemp.getStyleClass().add("simple-text");
             if (x == 2) {
                 y++;
@@ -122,14 +155,28 @@ public class MapTabController implements Initializable {
         }
     }
 
-    @FXML
-    public void handleEditDragonButtonAction(ActionEvent event) {
+    private void loadData() {
+        //mainController.refreshLocalCollection();
+        dragonsList.clear();
+        dragonsList.addAll(mainController.getContext().localCollection().getLocalList());
+    }
 
+    public void handleRefresh() {
+        loadData();
+        dragonsMapCanvas.draw();
+        dragonPictureCanvas.draw();
     }
 
     @FXML
-    public void handleRemoveDragonButtonAction(ActionEvent event) {
+    public void handleEditDragonButtonAction(ActionEvent actionEvent) {
+        mainController.loadEditDragonDialog(selectedDragon, true);
+        handleRefresh();
+    }
 
+    @FXML
+    public void handleRemoveDragonButtonAction(ActionEvent actionEvent) {
+        mainController.loadRemoveDragonDialog(selectedDragon);
+        handleRefresh();
     }
 }
 

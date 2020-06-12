@@ -79,13 +79,17 @@ public class ResizableMapCanvas extends AbsResizableCanvas {
     @Override
     public Object findObj(double coordX, double coordY) throws NullPointerException {
         double min = Math.min(getWidth(), getHeight());
-        double finalCoordX = coordX * (scale / (getWidth() - SCREEN_START_MARGIN_ERROR_X)) - scale / 2.0;
-        double finalCoordY = scale / 2.0 - coordY * (scale / (getWidth() - SCREEN_START_MARGIN_ERROR_Y));
+        double finalCoordX = (coordX - SCREEN_START_MARGIN_ERROR_X) * (scale / min) - scale / 2.0;
+        double finalCoordY = scale / 2.0 - (coordY - SCREEN_START_MARGIN_ERROR_Y) * (scale / min);
 
         return dragonsList.stream().filter(dragon ->
-                Math.abs(dragon.getDragon().getCoordinates().getX() - finalCoordX) < scale * 0.03)
+                Math.abs(dragon.getDragon().getCoordinates().getX() - finalCoordX) < scale * 0.018)
                 .filter(dragon ->
-                        Math.abs(dragon.getDragon().getCoordinates().getY() - finalCoordY) < scale * 0.03)
+                        Math.abs(dragon.getDragon().getCoordinates().getY() - finalCoordY) < scale * 0.018)
                 .findAny().orElse(null);
+    }
+
+    @Override
+    public void setObj(Object obj) {
     }
 }

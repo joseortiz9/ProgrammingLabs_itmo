@@ -8,4 +8,5 @@ public interface ClientContext {
     CommandManager commandManager();
     ClientUdpChannel clientChannel();
     ClientResponseHandler responseHandler();
+    LocalCollectionManager localCollection();
 }

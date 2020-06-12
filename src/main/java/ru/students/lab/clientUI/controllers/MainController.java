@@ -107,10 +107,21 @@ public class MainController implements Initializable {
     }
 
 
+    /**
+     *
+     * If the button is pressed from the main window command section, gets a DragonEntrySerializable with the
+     * key set but the dragon null and editMode in false, so the checks are to fill the received key in the form.
+     * When is trying to insert receives the DragonEntrySerializable totally null and ediMode is false
+     *
+     * @param selectedForEdit dragon to edit
+     * @param editMode trying to update the dragon
+     */
     public void loadEditDragonDialog(DragonEntrySerializable selectedForEdit, boolean editMode) {
-        if (selectedForEdit == null && editMode) {
-            AlertMaker.showErrorMessage("No dragon selected", "Please select a dragon for edit.");
-            return;
+        if (selectedForEdit != null) {
+            if (selectedForEdit.getDragon() == null && editMode) {
+                AlertMaker.showErrorMessage("No dragon selected", "Please select a dragon for edit.");
+                return;
+            }
         }
 
         try {
@@ -118,7 +129,7 @@ public class MainController implements Initializable {
             AddDragonController controller = new AddDragonController(clientContext, editMode);
             loader.setController(controller);
             Parent parent = loader.load();
-            if (editMode)
+            if (editMode || selectedForEdit.getDragon() == null)
                 controller.inflateUI(selectedForEdit);
 
             Stage stage = new Stage(StageStyle.DECORATED);
@@ -138,7 +149,7 @@ public class MainController implements Initializable {
 
     public void loadRemoveDragonDialog(DragonEntrySerializable selectedForRemove) {
         if (selectedForRemove == null) {
-            AlertMaker.showErrorMessage("No dragon selected", "Please select a dragon to remove.");
+            AlertMaker.showErrorMessage("No dragon selected", "Please select a dragon to remove or pass a correct key.");
             return;
         }
 

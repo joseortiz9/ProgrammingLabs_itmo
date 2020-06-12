@@ -31,7 +31,7 @@ public class ExportToFileCommand extends AbsCommand {
 
          try {
              context.fileManager().SaveCollectionInXML(context.collectionManager().getCollection(), args[0]);
-             sb.append("All elems saved!");
+             sb.append("All elems saved in the file: ").append(args[0]);
          } catch (JAXBException e) {
              sb.append("Converter error saving the data");
          } catch (InvalidPathException e) {

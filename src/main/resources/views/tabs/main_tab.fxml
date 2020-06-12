@@ -1,33 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1"
-            xmlns="http://javafx.com/javafx/8.0.171">
+<?import javafx.scene.layout.StackPane?>
+<?import ru.students.lab.clientUI.controls.TitledBorderedPanel?>
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="452.0" prefWidth="639.0" xmlns="http://javafx.com/javafx/8.0.171"
+            xmlns:fx="http://javafx.com/fxml/1">
     <!--fx:controller="ru.students.lab.clientUI.controllers.tabs.MainTabController">-->
     <children>
         <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
             <children>
-                <Label fx:id="titleCommandsButtons" styleClass="main-title" text="Available Commands:">
-                    <font>
-                        <Font size="18.0"/>
-                    </font>
-                    <VBox.margin>
-                        <Insets bottom="5.0"/>
-                    </VBox.margin>
-                </Label>
-                <GridPane fx:id="commandsBtnGrid"/>
+
+                <TitledBorderedPanel title="Available Commands" >
+                    <VBox>
+                        <!--Container for buttons that needs key input-->
+                        <HBox spacing="10.0">
+                            <children>
+                                <JFXTextField fx:id="inputKeyDragon" labelFloat="true" promptText="Dragon Key">
+                                    <HBox.margin>
+                                        <Insets bottom="15.0" left="15.0" top="30.0"/>
+                                    </HBox.margin>
+                                </JFXTextField>
+                                <JFXButton fx:id="insert" onAction="#handleCommandByKeyButtonAction" text="Insert"
+                                           textAlignment="CENTER" >
+                                    <HBox.margin>
+                                        <Insets top="30.0"/>
+                                    </HBox.margin>
+                                </JFXButton>
+                                <JFXButton fx:id="update" onAction="#handleCommandByKeyButtonAction" text="Update"
+                                           textAlignment="CENTER" >
+                                    <HBox.margin>
+                                        <Insets top="30.0"/>
+                                    </HBox.margin>
+                                </JFXButton>
+                                <JFXButton fx:id="remove_key" onAction="#handleRemoveDragonButtonAction" text="Remove"
+                                           textAlignment="CENTER" >
+                                    <HBox.margin>
+                                        <Insets top="30.0"/>
+                                    </HBox.margin>
+                                </JFXButton>
+                                <JFXButton fx:id="replace_if_lower" onAction="#handleCommandByKeyButtonAction"
+                                           text="Replace If Lower" textAlignment="CENTER" >
+                                    <HBox.margin>
+                                        <Insets top="30.0"/>
+                                    </HBox.margin>
+                                </JFXButton>
+                                <JFXButton fx:id="remove_greater_key" onAction="#handleCommandByKeyButtonAction"
+                                           text="Remove greater key" textAlignment="CENTER" >
+                                    <HBox.margin>
+                                        <Insets top="30.0"/>
+                                    </HBox.margin>
+                                </JFXButton>
+                                <JFXButton fx:id="remove_lower_key" onAction="#handleCommandByKeyButtonAction"
+                                           text="Remove Lower key" textAlignment="CENTER" >
+                                    <HBox.margin>
+                                        <Insets top="30.0"/>
+                                    </HBox.margin>
+                                </JFXButton>
+                            </children>
+                        </HBox>
+
+                        <!--Container for buttons that needs edit/insert dialog or don't need-->
+                        <HBox spacing="10.0">
+                            <children>
+                                <JFXButton fx:id="info" onAction="#handleInfoButtonAction" text="Info" textAlignment="CENTER" />
+                                <JFXButton fx:id="export" onAction="#handleCommandWithFileButtonAction" text="Export"
+                                           textAlignment="CENTER" />
+                                <JFXButton fx:id="execute_script" onAction="#handleCommandWithFileButtonAction"
+                                           text="Execute Script" textAlignment="CENTER" />
+                                <JFXButton fx:id="clear" onAction="#handleClearButtonAction" text="Clear"
+                                           textAlignment="CENTER" />
+                                <JFXButton fx:id="exit" onAction="#handleExitButtonAction" text="Exit" textAlignment="CENTER" />
+                            </children>
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                            </padding>
+                        </HBox>
+                    </VBox>
+                </TitledBorderedPanel>
+
+                <HBox>
+                    <children>
+                        <Label fx:id="searchLabel" styleClass="main-title" text="Search: ">
+                            <padding>
+                                <Insets left="10.0" top="30.0"/>
+                            </padding>
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Label>
+                        <JFXTextField fx:id="inputDragonSearch" labelFloat="true" promptText="Dragon property">
+                            <HBox.margin>
+                                <Insets left="10.0" top="30.0"/>
+                            </HBox.margin>
+                        </JFXTextField>
+                    </children>
+                </HBox>
                 <TableView fx:id="dragonsTableView">
                     <columns>
                         <TableColumn fx:id="idCol" maxWidth="2500.0" prefWidth="75.0" text="ID"/>
@@ -58,7 +140,7 @@
                         </ContextMenu>
                     </contextMenu>
                     <VBox.margin>
-                        <Insets top="10.0"/>
+                        <Insets top="15.0"/>
                     </VBox.margin>
                 </TableView>
             </children>

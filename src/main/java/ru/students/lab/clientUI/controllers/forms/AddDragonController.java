@@ -132,6 +132,11 @@ public class AddDragonController implements Initializable {
     }
 
     public void inflateUI(DragonEntrySerializable dragon) {
+        if (dragon.getDragon() == null) {
+            keyTextField.setText(String.valueOf(dragon.getKey()));
+            keyTextField.setEditable(false);
+            return;
+        }
         String headText = (dragon.getDragon().getHead().getEyesCount() != null)
                 ? dragon.getDragon().getHead().getEyesCount().toString()
                 : "null";
@@ -146,7 +151,6 @@ public class AddDragonController implements Initializable {
         autoSelectComboBoxValue(colorBox, dragon.getDragon().getColor(), (color, colorBoxVal) -> color.equals(Enum.valueOf(Color.class, colorBoxVal)));
         autoSelectComboBoxValue(typeBox, dragon.getDragon().getType(), (type, typeBoxVal) -> type.equals(Enum.valueOf(DragonType.class, typeBoxVal)));
         autoSelectComboBoxValue(characterBox, dragon.getDragon().getCharacter(), (character, characterBoxVal) -> character.equals(Enum.valueOf(DragonCharacter.class, characterBoxVal)));
-        keyTextField.setEditable(false);
     }
 
     public <T> void autoSelectComboBoxValue(JFXComboBox<Label> comboBox, T value, Func<T, String> f) {

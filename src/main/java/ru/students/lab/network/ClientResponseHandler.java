@@ -106,7 +106,8 @@ public class ClientResponseHandler {
             channel.setConnected(true);
             /* In the case a weird user was put cheating, we logout */
             if (received instanceof Credentials && ((Credentials)received).id == -1) {
-                //TODO: LOGOUT TO THE FIRST STAGE
+                LOG.error("Seems you were doing something nasty, go out of my system");
+                System.exit(0);
             }
         }
 
@@ -124,34 +125,6 @@ public class ClientResponseHandler {
     }
     public CurrentUser getCurrentUser() {
         return currentUser;
-    }
-
-    /**
-     * Функция для вывода объектов коллекции
-     * @param obj- коллекция с объектами
-     */
-    public void printResponse(Object obj) throws ClassNotFoundException {
-        if (obj instanceof String) {
-            System.out.println(obj);
-        }
-        else if (obj instanceof List) {
-            //printList(obj);
-        }
-        else if (obj instanceof Credentials) {
-            handleCredentialsResponse((Credentials) obj);
-        }
-        else
-            throw new ClassNotFoundException();
-    }
-
-    private void handleCredentialsResponse(Credentials obj) {
-        if (obj.id == -1) {
-            currentUser.setCredentials(obj);
-            System.out.println("Logged out! Weird behaviour checking your credentials");
-            return;
-        }
-        currentUser.setCredentials(obj);
-        System.out.println("Welcome back " + obj.username + "!");
     }
 
 

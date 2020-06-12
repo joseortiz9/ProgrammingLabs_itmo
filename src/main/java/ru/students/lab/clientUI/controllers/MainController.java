@@ -1,16 +1,21 @@
 package ru.students.lab.clientUI.controllers;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXTabPane;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import com.jfoenix.controls.events.JFXDialogEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.logging.log4j.LogManager;
@@ -24,10 +29,10 @@ import ru.students.lab.clientUI.controllers.tabs.MapTabController;
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.database.Credentials;
 import ru.students.lab.database.UserModel;
-import ru.students.lab.models.Dragon;
 import ru.students.lab.network.CommandPacket;
 import ru.students.lab.util.DragonEntrySerializable;
 
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -39,7 +44,7 @@ public class MainController implements Initializable {
     private static final Logger LOG = LogManager.getLogger(MainController.class);
 
     @FXML private JFXTabPane mainTabPane;
-    @FXML private AnchorPane rootAnchorPane;
+    @FXML private StackPane rootPane;
     @FXML private Tab mainTab, mapTab, helpTab;
     @FXML private Label currentUserLabel;
     private final ClientContext clientContext;
@@ -51,15 +56,38 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         currentUserLabel.setText("Current User: " + clientContext.responseHandler().getCurrentUser().getCredentials().username);
+
+        //setLoadingPage(500);
+
+        // Load resources in the background
+        //new Thread(this::refreshLocalCollection);
         refreshLocalCollection();
         loadComponents();
     }
 
+    /*public void setLoadingPage(int milliseconds) {
+        try {
+            JFXDialogLayout loadingDialogLayout = new JFXDialogLayout();
+            JFXButton cancelButton = new JFXButton("Cancel");
+            JFXDialog loadingDialog = new JFXDialog(rootPane, loadingDialogLayout, JFXDialog.DialogTransition.CENTER);
+            cancelButton.setOnMouseClicked(event -> loadingDialog.close());
+            loadingDialogLayout.setHeading(new Label("Loading..."));
+            loadingDialogLayout.setActions(cancelButton);
+            loadingDialog.show();
+            loadingDialog.setOnDialogClosed((JFXDialogEvent event1) -> System.exit(0));
+            rootPane.setEffect(new BoxBlur(3, 3, 3));
+            Thread.sleep(milliseconds);
+            rootPane.setEffect(null);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }*/
+
     private void loadComponents() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/tabs/main_tab.fxml"));
-            loader.setController(new MainTabController(this));
-            Parent root = loader.load();
+            FXMLLoader mainloader = new FXMLLoader(getClass().getResource("/views/tabs/main_tab.fxml"));
+            mainloader.setController(new MainTabController(this));
+            Parent root = mainloader.load();
             mainTab.setContent(root);
 
             FXMLLoader mapLoader = new FXMLLoader(getClass().getResource("/views/tabs/map_tab.fxml"));
@@ -69,22 +97,18 @@ public class MainController implements Initializable {
 
             /*mainTabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
                 if(newTab == mapTab) {
+
                 }
             });*/
 
-            loader = new FXMLLoader(getClass().getResource("/views/tabs/help_tab.fxml"));
-            loader.setController(new HelpTabController(clientContext));
-            root = loader.load();
+            FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/views/tabs/help_tab.fxml"));
+            helpLoader.setController(new HelpTabController(clientContext));
+            root = helpLoader.load();
             helpTab.setContent(root);
-
-
-            /* loader = new FXMLLoader(getClass().getResource("/views/menu/main_menu.fxml"));
-            loader.setController(new MenuController(this));
-             root = loader.load();
-            menuPane.set(root);*/
         }
         catch(IOException ex) {
             LOG.error("unable to load tabs", ex);
+            System.exit(0);
         }
     }
 
@@ -129,17 +153,16 @@ public class MainController implements Initializable {
             AddDragonController controller = new AddDragonController(clientContext, editMode);
             loader.setController(controller);
             Parent parent = loader.load();
-            if (editMode || selectedForEdit.getDragon() == null)
-                controller.inflateUI(selectedForEdit);
+            if (selectedForEdit != null)
+                if (editMode || selectedForEdit.getDragon() == null)
+                    controller.inflateUI(selectedForEdit);
 
             Stage stage = new Stage(StageStyle.DECORATED);
             stage.setTitle((editMode) ? "Edit Dragon" : "Insert Dragon");
             stage.setScene(new Scene(parent));
             stage.show();
 
-            /*stage.setOnHiding((e) -> {
-                handleRefresh(new ActionEvent());
-            });*/
+            stage.setOnHiding((e) -> refreshLocalCollection());
 
         } catch (IOException ex) {
             LOG.error("error trying to edit/insert a dragon, ", ex);
@@ -158,21 +181,24 @@ public class MainController implements Initializable {
         alert.setContentText("Are you sure want to remove the dragon {ID="+ selectedForRemove.getId() +"} ?");
         Optional<ButtonType> answer = alert.showAndWait();
         if (answer.get() == ButtonType.OK) {
-            AbsCommand command = clientContext.commandManager().getCommand("remove_key");
-            command.setArgs(new String[]{String.valueOf(selectedForRemove.getKey())});
-
-            clientContext.clientChannel().sendCommand(new CommandPacket(command, clientContext.responseHandler().getCurrentUser().getCredentials()));
-
-            Object response = clientContext.responseHandler().checkForResponse();
-
-            if (response instanceof String) {
-                AlertMaker.showSimpleAlert("Result of the request", (String)response);
-                //loadData();
-                clientContext.responseHandler().setReceivedObjectToNull();
-                LOG.info("Result of the deleting process: {}", (String) response);
-            }
+            String[] args = new String[]{String.valueOf(selectedForRemove.getKey())};
+            sendRequest("remove_key", args);
         } else {
             AlertMaker.showSimpleAlert("Remove cancelled", "Remove process cancelled");
+        }
+    }
+
+    public void sendRequest(String commandKey, String[] args) {
+        AbsCommand command = clientContext.commandManager().getCommand(commandKey);
+        command.setArgs(args);
+        clientContext.clientChannel().sendCommand(new CommandPacket(command, clientContext.responseHandler().getCurrentUser().getCredentials()));
+        Object response = clientContext.responseHandler().checkForResponse();
+
+        if (response instanceof String) {
+            AlertMaker.showSimpleAlert("Result of the request", (String)response);
+            refreshLocalCollection();
+            clientContext.responseHandler().setReceivedObjectToNull();
+            LOG.info("Result of the command {}: {}", commandKey, (String) response);
         }
     }
 
@@ -184,7 +210,7 @@ public class MainController implements Initializable {
 
     private void closeWindow() {
         clientContext.responseHandler().setCurrentUser(new Credentials(-1, UserModel.DEFAULT_USERNAME, ""));
-        Stage stage = (Stage) rootAnchorPane.getScene().getWindow();
+        Stage stage = (Stage) rootPane.getScene().getWindow();
         stage.close();
     }
 

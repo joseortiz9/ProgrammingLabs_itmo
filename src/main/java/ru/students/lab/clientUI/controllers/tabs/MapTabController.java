@@ -61,8 +61,6 @@ public class MapTabController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadData();
-
         // Map canvas init
         int actualUserID = mainController.getContext().responseHandler().getCurrentUser().getCredentials().id;
         dragonsMapCanvas = new ResizableMapCanvas(dragonsList, actualUserID);
@@ -79,6 +77,15 @@ public class MapTabController implements Initializable {
         dragonPicturePane.getChildren().add(dragonPictureCanvas);
         dragonPictureCanvas.widthProperty().bind(dragonPicturePane.widthProperty());
         dragonPictureCanvas.heightProperty().bind(dragonPicturePane.heightProperty());
+
+        refreshData();
+    }
+
+    private void refreshData() {
+        dragonsList.clear();
+        dragonsList.addAll(mainController.getContext().localCollection().getLocalList());
+        dragonsMapCanvas.draw();
+        dragonPictureCanvas.draw();
     }
 
     public void handleDetailDragon() {
@@ -155,28 +162,16 @@ public class MapTabController implements Initializable {
         }
     }
 
-    private void loadData() {
-        //mainController.refreshLocalCollection();
-        dragonsList.clear();
-        dragonsList.addAll(mainController.getContext().localCollection().getLocalList());
-    }
-
-    public void handleRefresh() {
-        loadData();
-        dragonsMapCanvas.draw();
-        dragonPictureCanvas.draw();
-    }
-
     @FXML
     public void handleEditDragonButtonAction(ActionEvent actionEvent) {
         mainController.loadEditDragonDialog(selectedDragon, true);
-        handleRefresh();
+        refreshData();
     }
 
     @FXML
     public void handleRemoveDragonButtonAction(ActionEvent actionEvent) {
         mainController.loadRemoveDragonDialog(selectedDragon);
-        handleRefresh();
+        refreshData();
     }
 }
 

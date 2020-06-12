@@ -71,8 +71,20 @@ public class MainTabController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initCol();
-        loadData();
+        refreshData();
         loadFilteringOption();
+    }
+
+    private void refreshData() {
+        dragonsList.clear();
+        dragonsList.addAll(mainController.getContext().localCollection().getLocalList());
+        dragonsTableView.setItems(dragonsList);
+    }
+
+    @FXML
+    public void handleRefresh(ActionEvent actionEvent) {
+        mainController.refreshLocalCollection();
+        refreshData();
     }
 
     private void initCol() {
@@ -86,13 +98,6 @@ public class MainTabController implements Initializable {
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         characterCol.setCellValueFactory(new PropertyValueFactory<>("character"));
         headCol.setCellValueFactory(new PropertyValueFactory<>("head"));
-    }
-
-    private void loadData() {
-        //mainController.refreshLocalCollection();
-        dragonsList.clear();
-        dragonsList.addAll(mainController.getContext().localCollection().getLocalList());
-        dragonsTableView.setItems(dragonsList);
     }
 
     public void loadFilteringOption() {
@@ -122,15 +127,11 @@ public class MainTabController implements Initializable {
     }
 
     @FXML
-    public void handleRefresh(ActionEvent actionEvent) {
-        loadData();
-    }
-
-    @FXML
     public void handleDragonEdit(ActionEvent actionEvent) {
         // Get selected row
         DragonEntrySerializable selectedForEdit = dragonsTableView.getSelectionModel().getSelectedItem();
         mainController.loadEditDragonDialog(selectedForEdit, true);
+        refreshData();
     }
 
     @FXML
@@ -138,6 +139,7 @@ public class MainTabController implements Initializable {
         // Get selected row
         DragonEntrySerializable selectedForRemove = dragonsTableView.getSelectionModel().getSelectedItem();
         mainController.loadRemoveDragonDialog(selectedForRemove);
+        refreshData();
     }
 
     @FXML
@@ -151,16 +153,8 @@ public class MainTabController implements Initializable {
             return;
         }
 
-        command.setArgs(new String[]{arg});
-
-        mainController.getContext().clientChannel().sendCommand(new CommandPacket(command, mainController.getContext().responseHandler().getCurrentUser().getCredentials()));
-        Object response = mainController.getContext().responseHandler().checkForResponse();
-
-        if (response instanceof String) {
-            AlertMaker.showSimpleAlert("Result of the request", (String)response);
-            mainController.getContext().responseHandler().setReceivedObjectToNull();
-            LOG.info("Result of commandWithKey process: {}", (String) response);
-        }
+        mainController.sendRequest(commandCalled, new String[]{arg});
+        refreshData();
     }
 
     @FXML
@@ -168,6 +162,7 @@ public class MainTabController implements Initializable {
         String arg = inputKeyDragon.getText();
         DragonEntrySerializable selectedForRemove = mainController.getContext().localCollection().getByKey(Integer.parseInt(arg));
         mainController.loadRemoveDragonDialog(selectedForRemove);
+        refreshData();
     }
 
     @FXML
@@ -175,20 +170,12 @@ public class MainTabController implements Initializable {
         String commandCalled = ((Control)actionEvent.getSource()).getId();
         TextInputDialog dialog = new TextInputDialog("example.txt");
         dialog.setTitle(commandCalled);
-        dialog.setHeaderText("Running" + commandCalled);
+        dialog.setHeaderText("Executing '" + commandCalled + "'");
         dialog.setContentText("Please specify the files name");
         Optional<String> answer = dialog.showAndWait();
         if (answer.isPresent()) {
-            AbsCommand command = mainController.getContext().commandManager().getCommand(commandCalled);
-            mainController.getContext().clientChannel().sendCommand(new CommandPacket(command, mainController.getContext().responseHandler().getCurrentUser().getCredentials()));
-            command.setArgs(new String[]{answer.get()});
-            Object response = mainController.getContext().responseHandler().checkForResponse();
-
-            if (response instanceof String) {
-                AlertMaker.showSimpleAlert("Result of the request", (String)response);
-                mainController.getContext().responseHandler().setReceivedObjectToNull();
-                LOG.info("Result of the fileRelatedCommand process: {}", (String) response);
-            }
+            mainController.sendRequest(commandCalled, new String[]{answer.get()});
+            refreshData();
         } else {
             AlertMaker.showSimpleAlert("Remove cancelled", "Remove process cancelled");
         }
@@ -196,15 +183,8 @@ public class MainTabController implements Initializable {
 
     @FXML
     public void handleInfoButtonAction(ActionEvent actionEvent) {
-        AbsCommand command = mainController.getContext().commandManager().getCommand("info");
-        mainController.getContext().clientChannel().sendCommand(new CommandPacket(command, mainController.getContext().responseHandler().getCurrentUser().getCredentials()));
-        Object response = mainController.getContext().responseHandler().checkForResponse();
-
-        if (response instanceof String) {
-            AlertMaker.showSimpleAlert("Result of the request", (String)response);
-            mainController.getContext().responseHandler().setReceivedObjectToNull();
-            LOG.info("Result of the info request: {}", (String) response);
-        }
+        mainController.sendRequest("info", null);
+        refreshData();
     }
 
     @FXML
@@ -214,16 +194,8 @@ public class MainTabController implements Initializable {
         alert.setContentText("Are you sure want to remove ALL dragons ?");
         Optional<ButtonType> answer = alert.showAndWait();
         if (answer.get() == ButtonType.OK) {
-            AbsCommand command = mainController.getContext().commandManager().getCommand("clear");
-            mainController.getContext().clientChannel().sendCommand(new CommandPacket(command, mainController.getContext().responseHandler().getCurrentUser().getCredentials()));
-            Object response = mainController.getContext().responseHandler().checkForResponse();
-
-            if (response instanceof String) {
-                AlertMaker.showSimpleAlert("Result of the request", (String)response);
-                //loadData();
-                mainController.getContext().responseHandler().setReceivedObjectToNull();
-                LOG.info("Result of the clearing process: {}", (String) response);
-            }
+            mainController.sendRequest("clear", null);
+            refreshData();
         } else {
             AlertMaker.showSimpleAlert("Remove cancelled", "Remove process cancelled");
         }

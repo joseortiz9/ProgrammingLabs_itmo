@@ -39,7 +39,7 @@ public class UpdateCommand extends AbsCommand {
         //AuthorizationException happens when the credentials passed are wrong and the user was already logged
         String dragonIDaddedToDB = "";
         try {
-            dragonIDaddedToDB = context.collectionController().updateDragon(Integer.parseInt(args[0]), dragon, credentials);
+            dragonIDaddedToDB = context.DBRequestManager().updateDragon(Integer.parseInt(args[0]), dragon, credentials);
         } catch (AuthorizationException ex) {
             return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
         }

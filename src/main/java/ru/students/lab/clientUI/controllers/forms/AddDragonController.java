@@ -15,6 +15,7 @@ import ru.students.lab.clientUI.ClientContext;
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.models.*;
 import ru.students.lab.network.CommandPacket;
+import ru.students.lab.util.DragonEntrySerializable;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -81,6 +82,8 @@ public class AddDragonController implements Initializable {
                     : (Double.parseDouble(headTextField.getText()))) ;
         Dragon dragon = new Dragon(
                 editingID,
+                Integer.parseInt(keyTextField.getText()),
+                
                 nameTextField.getText(),
                 new Coordinates(Long.parseLong(coordinateX.getText()), Float.parseFloat(coordinateY.getText())),
                 Long.parseLong(ageTextField.getText()),
@@ -127,19 +130,21 @@ public class AddDragonController implements Initializable {
         headTextField.setText("");
     }
 
-    public void inflateUI(Dragon dragon) {
-        String headText = (dragon.getHead().getEyesCount() != null) ? dragon.getHead().getEyesCount().toString() : "null";
-        idLabel.setText("ID= " + dragon.getId().toString());
-        editingID = dragon.getId();
-        keyTextField.setText(dragon.getKey().toString());
-        nameTextField.setText(dragon.getName());
-        coordinateX.setText(dragon.getCoordinates().getX().toString());
-        coordinateY.setText(dragon.getCoordinates().getY().toString());
-        ageTextField.setText(dragon.getAge().toString());
+    public void inflateUI(DragonEntrySerializable dragon) {
+        String headText = (dragon.getDragon().getHead().getEyesCount() != null)
+                ? dragon.getDragon().getHead().getEyesCount().toString()
+                : "null";
+        idLabel.setText("ID= " + dragon.getDragon().getId().toString());
+        editingID = dragon.getDragon().getId();
+        keyTextField.setText(String.valueOf(dragon.getKey()));
+        nameTextField.setText(dragon.getDragon().getName());
+        coordinateX.setText(dragon.getDragon().getCoordinates().getX().toString());
+        coordinateY.setText(dragon.getDragon().getCoordinates().getY().toString());
+        ageTextField.setText(dragon.getDragon().getAge().toString());
         headTextField.setText(headText);
-        autoSelectComboBoxValue(colorBox, dragon.getColor(), (color, colorBoxVal) -> color.equals(Enum.valueOf(Color.class, colorBoxVal)));
-        autoSelectComboBoxValue(typeBox, dragon.getType(), (type, typeBoxVal) -> type.equals(Enum.valueOf(DragonType.class, typeBoxVal)));
-        autoSelectComboBoxValue(characterBox, dragon.getCharacter(), (character, characterBoxVal) -> character.equals(Enum.valueOf(DragonCharacter.class, characterBoxVal)));
+        autoSelectComboBoxValue(colorBox, dragon.getDragon().getColor(), (color, colorBoxVal) -> color.equals(Enum.valueOf(Color.class, colorBoxVal)));
+        autoSelectComboBoxValue(typeBox, dragon.getDragon().getType(), (type, typeBoxVal) -> type.equals(Enum.valueOf(DragonType.class, typeBoxVal)));
+        autoSelectComboBoxValue(characterBox, dragon.getDragon().getCharacter(), (character, characterBoxVal) -> character.equals(Enum.valueOf(DragonCharacter.class, characterBoxVal)));
         keyTextField.setEditable(false);
         editMode = true;
     }

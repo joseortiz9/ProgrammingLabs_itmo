@@ -27,7 +27,6 @@ public class CommandManager {
         commands.put("man", new ManDescriptorCommand(this.getCommands()));
         commands.put("info", new InfoCommand());
         commands.put("show", new ShowCommand());
-        commands.put("fetch_map_elements", new FetchMapCommand());
         commands.put("insert", new InsertCommand());
         commands.put("update", new UpdateCommand());
         commands.put("remove_key", new RemoveKeyCommand());
@@ -88,7 +87,7 @@ public class CommandManager {
         return commands.getOrDefault(key, null);
     }
 
-    private List<AbsCommand> getCommandsValues(){
+    private List<AbsCommand> getCommandsValues() {
         List<AbsCommand> l = new ArrayList<>();
         commands.values().stream().forEach(e -> {
             if(!(e.getCommandKey().equals("help")) && !(e.getCommandKey().equals("man")))

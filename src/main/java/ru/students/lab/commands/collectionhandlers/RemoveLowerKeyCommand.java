@@ -30,7 +30,7 @@ public class RemoveLowerKeyCommand extends AbsCommand {
         String resultDeletedByKey = "";
         int[] deletedIDs = null;
         try {
-            deletedIDs = context.collectionController().deleteDragonsLowerThanKey(Integer.parseInt(args[0]), credentials);
+            deletedIDs = context.DBRequestManager().deleteDragonsLowerThanKey(Integer.parseInt(args[0]), credentials);
         } catch (SQLException | NoSuchAlgorithmException ex) {
             resultDeletedByKey = ex.getMessage();
         } catch (AuthorizationException ex) {

@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.database.Credentials;
 import ru.students.lab.database.CurrentUser;
-import ru.students.lab.util.ListEntrySerializable;
+import ru.students.lab.util.DragonEntrySerializable;
 
 import java.io.ByteArrayInputStream;
 import java.io.EOFException;
@@ -135,7 +135,7 @@ public class ClientResponseHandler {
             System.out.println(obj);
         }
         else if (obj instanceof List) {
-            printList(obj);
+            //printList(obj);
         }
         else if (obj instanceof Credentials) {
             handleCredentialsResponse((Credentials) obj);
@@ -152,27 +152,6 @@ public class ClientResponseHandler {
         }
         currentUser.setCredentials(obj);
         System.out.println("Welcome back " + obj.username + "!");
-    }
-
-
-    private void printList(Object obj) {
-        if (((List) obj).size() == 0) {
-            System.out.println("Elements found: 0");
-            return;
-        }
-        if (((List) obj).get(0) instanceof ListEntrySerializable) {
-            ((List<ListEntrySerializable>) obj).stream().forEach(e -> System.out.println("key:" + e.getKey() + " -> " + e.getDragon().toString()));
-            System.out.println("Elements found: "+ ((List) obj).size());
-        }else {
-            for (Object objFromScript: (List)obj) {
-                if (objFromScript instanceof String)
-                    System.out.println(objFromScript);
-                else if (objFromScript instanceof List) {
-                    ((List<ListEntrySerializable>) objFromScript).stream().forEach(e -> System.out.println("key:" + e.getKey() + " -> " + e.getDragon().toString()));
-                    System.out.println("Elements found: "+ ((List) objFromScript).size());
-                }
-            }
-        }
     }
 
 

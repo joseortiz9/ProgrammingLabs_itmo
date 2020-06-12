@@ -1,10 +1,8 @@
 package ru.students.lab.commands;
 
 import ru.students.lab.database.Credentials;
-import ru.students.lab.models.Dragon;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class LoginCommand extends AbsCommand {
 
@@ -22,7 +20,7 @@ public class LoginCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
-        return context.collectionController().login(this.credentials);
+        return context.DBRequestManager().login(this.credentials);
     }
 
     @Override

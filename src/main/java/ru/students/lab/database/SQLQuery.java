@@ -12,7 +12,7 @@ public class SQLQuery {
                 "    INNER JOIN dragon_heads ON dragons.id = dragon_heads.dragon_id";
         public static final String DRAGON_BY_KEY = "SELECT id FROM dragons where key = ?";
 
-        public static final String DRAGONS_WITH_USER = "SELECT dragons.id, dragons.name, dragons.age, dragons.creation_date, dragons.key, coordinates.x, coordinates.y, dragon_colors.color, dragon_types.type, dragon_characters.character, dragon_heads.num_eyes, user_id\n" +
+        public static final String DRAGONS_WITH_USER = "SELECT dragons.id, dragons.key, dragons.name, dragons.age, dragons.creation_date, dragons.key, coordinates.x, coordinates.y, dragon_colors.color, dragon_types.type, dragon_characters.character, dragon_heads.num_eyes, user_id\n" +
                 "FROM dragons\n" +
                 "    INNER JOIN coordinates ON dragons.id = coordinates.dragon_id\n" +
                 "    INNER JOIN dragon_colors ON dragons.color = dragon_colors.id\n" +

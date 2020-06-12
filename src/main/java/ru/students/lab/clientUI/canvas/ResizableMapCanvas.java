@@ -1,34 +1,31 @@
-package ru.students.lab.clientUI;
+package ru.students.lab.clientUI.canvas;
 
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import ru.students.lab.util.DragonUserCouple;
+import ru.students.lab.util.DragonEntrySerializable;
 
 import java.util.ArrayList;
 
-public class ResizableCanvas extends Canvas {
+public class ResizableMapCanvas extends AbsResizableCanvas {
 
     private static final int SCREEN_START_MARGIN_ERROR_X = 10;
     private static final int SCREEN_START_MARGIN_ERROR_Y = 90;
-    private ArrayList<DragonUserCouple> dragonsList = new ArrayList<>();
+
+    private ArrayList<DragonEntrySerializable> dragonsList = new ArrayList<>();
     private int lastID = -1;
     private int actualUserID = -1;
     private double scale = 0;
 
-    public ResizableCanvas(ArrayList<DragonUserCouple> dragonsList, int actualUserID) {
+    public ResizableMapCanvas(ArrayList<DragonEntrySerializable> dragonsList, int actualUserID) {
+        super();
         this.dragonsList = dragonsList;
         this.actualUserID = actualUserID;
-
-        // Redraw canvas when size changes.
-        widthProperty().addListener(evt -> draw());
-        heightProperty().addListener(evt -> draw());
     }
 
-    private void draw() {
+    @Override
+    public void draw() {
         double width = getWidth();
         double height = getHeight();
-        System.out.println(width+"  "+height);
         double min = Math.min(width, height);
 
         GraphicsContext gc = getGraphicsContext2D();
@@ -54,15 +51,15 @@ public class ResizableCanvas extends Canvas {
         gc.fillText(String.valueOf((int)(scale / 4)), min * 3.0 / 4.0, min / 2 + 20);
 
         // Draw dragons
-        dragonsList.stream().sorted((o1, o2) -> o1.getUserID() - o2.getUserID())
+        dragonsList.stream().sorted((o1, o2) -> o1.getDragon().getUserID() - o2.getDragon().getUserID())
                 .forEach(d -> drawDragons(gc, d, min));
     }
 
-    private void drawDragons(GraphicsContext gc, DragonUserCouple dragon, double width) {
-        if (lastID != dragon.getUserID()) {
+    private void drawDragons(GraphicsContext gc, DragonEntrySerializable dragon, double width) {
+        if (lastID != dragon.getDragon().getUserID()) {
             gc.setFill(Color.color(Math.random(), Math.random(), Math.random()));
         }
-        if (actualUserID == dragon.getUserID()) {
+        if (actualUserID == dragon.getDragon().getUserID()) {
             gc.fillOval(((dragon.getDragon().getCoordinates().getX() + scale / 2.0) * (width / scale)),
                     ((scale / 2.0 - dragon.getDragon().getCoordinates().getY()) * (width / scale)), 11, 11);
             gc.strokeOval(((dragon.getDragon().getCoordinates().getX() + scale / 2.0) * (width / scale)),
@@ -76,10 +73,11 @@ public class ResizableCanvas extends Canvas {
             gc.fillOval(((dragon.getDragon().getCoordinates().getX() + scale / 2.0) * (width / scale)),
                     ((scale / 2.0 - dragon.getDragon().getCoordinates().getY()) * (width / scale)), 8, 8);
         }
-        lastID = dragon.getUserID();
+        lastID = dragon.getDragon().getUserID();
     }
 
-    public DragonUserCouple findDragon(double coordX, double coordY) throws NullPointerException {
+    @Override
+    public Object findObj(double coordX, double coordY) throws NullPointerException {
         double min = Math.min(getWidth(), getHeight());
         double finalCoordX = coordX * (scale / (getWidth() - SCREEN_START_MARGIN_ERROR_X)) - scale / 2.0;
         double finalCoordY = scale / 2.0 - coordY * (scale / (getWidth() - SCREEN_START_MARGIN_ERROR_Y));
@@ -89,20 +87,5 @@ public class ResizableCanvas extends Canvas {
                 .filter(dragon ->
                         Math.abs(dragon.getDragon().getCoordinates().getY() - finalCoordY) < scale * 0.03)
                 .findAny().orElse(null);
-    }
-
-    @Override
-    public boolean isResizable() {
-        return true;
-    }
-
-    @Override
-    public double prefWidth(double height) {
-        return getWidth();
-    }
-
-    @Override
-    public double prefHeight(double width) {
-        return getHeight();
     }
 }

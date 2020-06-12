@@ -1,7 +1,7 @@
 package ru.students.lab.managers;
 
 import ru.students.lab.models.Dragon;
-import ru.students.lab.util.ListEntrySerializable;
+import ru.students.lab.util.DragonEntrySerializable;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -152,13 +152,13 @@ public class CollectionManager {
      * Функция сортировки коллекции по ключу
      * @return возвращает коллекцию
      */
-    public List<ListEntrySerializable> sortByKey()
+    public List<DragonEntrySerializable> sortByKey()
     {
         return this.getCollection()
                 .entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByKey())
-                .map(e -> new ListEntrySerializable(e.getKey(), e.getValue()))
+                .map(e -> new DragonEntrySerializable(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
 
@@ -166,13 +166,13 @@ public class CollectionManager {
      * Функция сортировки коллекции
      * @return возвращает отсортированную по ID коллекцию
      */
-    public List<ListEntrySerializable> sortById()
+    public List<DragonEntrySerializable> sortById()
     {
         return this.getCollection()
                 .entrySet()
                 .stream()
                 .sorted(Comparator.comparing(x -> x.getValue().getId()))
-                .map(e -> new ListEntrySerializable(e.getKey(), e.getValue()))
+                .map(e -> new DragonEntrySerializable(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
 
@@ -180,13 +180,13 @@ public class CollectionManager {
      * Функция сортировки коллекции
      * @return возвращает отсортированную по имени коллекцию
      */
-    public List<ListEntrySerializable> sortByName() {
+    public List<DragonEntrySerializable> sortByName() {
 
         return this.getCollection()
                 .entrySet()
                 .stream()
                 .sorted((x, y) -> x.getValue().getName().compareTo(y.getValue().getName()))
-                .map(e -> new ListEntrySerializable(e.getKey(), e.getValue()))
+                .map(e -> new DragonEntrySerializable(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
 
@@ -194,13 +194,13 @@ public class CollectionManager {
      * Функция сортировки коллекции
      * @return возвращает отсортированную по дате создания элемента коллекцию
      */
-    public List<ListEntrySerializable> sortByCreationDate() {
+    public List<DragonEntrySerializable> sortByCreationDate() {
 
         return this.getCollection()
                 .entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue())
-                .map(e -> new ListEntrySerializable(e.getKey(), e.getValue()))
+                .map(e -> new DragonEntrySerializable(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
 
@@ -209,13 +209,13 @@ public class CollectionManager {
     * @param name - строка для поиска экземпляров класса Dragon по имени
     * @return возвращает измененную коллекцию
     */
-    public List<ListEntrySerializable> filterContainsName(String name)
+    public List<DragonEntrySerializable> filterContainsName(String name)
     {
         return this.getCollection()
                 .entrySet()
                 .stream()
                 .filter(dragon -> dragon.getValue().getName().contains(name))
-                .map(e -> new ListEntrySerializable(e.getKey(), e.getValue()))
+                .map(e -> new DragonEntrySerializable(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
 
@@ -224,22 +224,22 @@ public class CollectionManager {
      * @param name - строка для поиска экземпляров класса Dragon по имени
      * @return возвращает измененную коллекцию 
      */
-    public List<ListEntrySerializable> filterStartsWithName(String name)
+    public List<DragonEntrySerializable> filterStartsWithName(String name)
     {
         String regex = "^("+name+").*$";
         return this.getCollection()
                 .entrySet()
                 .stream()
                 .filter(dragon -> dragon.getValue().getName().matches(regex))
-                .map(e -> new ListEntrySerializable(e.getKey(), e.getValue()))
+                .map(e -> new DragonEntrySerializable(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
 
-    public List<ListEntrySerializable> getSerializableList() {
+    public List<DragonEntrySerializable> getSerializableList() {
         return this.getCollection()
                 .entrySet()
                 .stream()
-                .map(e -> new ListEntrySerializable(e.getKey(), e.getValue()))
+                .map(e -> new DragonEntrySerializable(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
 

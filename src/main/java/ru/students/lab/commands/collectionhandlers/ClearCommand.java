@@ -26,7 +26,7 @@ public class ClearCommand extends AbsCommand {
         //AuthorizationException happens when the credentials passed are wrong and the user was already logged
         String resDeletingAll = "";
         try {
-            resDeletingAll = context.collectionController().deleteAllDragons(credentials);
+            resDeletingAll = context.DBRequestManager().deleteAllDragons(credentials);
         } catch (AuthorizationException ex) {
             return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
         }

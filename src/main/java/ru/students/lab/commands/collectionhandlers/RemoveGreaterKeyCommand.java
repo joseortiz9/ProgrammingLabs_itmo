@@ -31,7 +31,7 @@ public class RemoveGreaterKeyCommand extends AbsCommand {
         String resultDeletedByKey = "";
         int[] deletedIDs = null;
         try {
-            deletedIDs = context.collectionController().deleteDragonsGreaterThanKey(Integer.parseInt(args[0]), credentials);
+            deletedIDs = context.DBRequestManager().deleteDragonsGreaterThanKey(Integer.parseInt(args[0]), credentials);
         } catch (SQLException | NoSuchAlgorithmException ex) {
             resultDeletedByKey = ex.getMessage();
         } catch (AuthorizationException ex) {

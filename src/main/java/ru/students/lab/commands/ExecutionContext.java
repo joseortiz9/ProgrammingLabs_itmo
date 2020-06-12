@@ -1,6 +1,6 @@
 package ru.students.lab.commands;
 
-import ru.students.lab.database.DBManager;
+import ru.students.lab.database.DBRequestManager;
 import ru.students.lab.managers.CollectionManager;
 import ru.students.lab.managers.FileManager;
 /**
@@ -10,6 +10,6 @@ import ru.students.lab.managers.FileManager;
  */
 public interface ExecutionContext {
     CollectionManager collectionManager();
-    DBManager collectionController();
+    DBRequestManager DBRequestManager();
     FileManager fileManager();
 }

@@ -32,22 +32,23 @@ public class DragonFactory implements Serializable {
      */
     public Dragon generateFromScript(String[] inputs) {
         try {
-            String name = (String) getValueOf(String.class, inputs[0]);
+            Integer userID = (Integer) getValueOf(Integer.class, inputs[0]);
+            String name = (String) getValueOf(String.class, inputs[1]);
 
-            Long x = (Long) getValueOf(Long.class, inputs[1]);
-            Float y = (Float) getValueOf(Float.class, inputs[2]);
+            Long x = (Long) getValueOf(Long.class, inputs[2]);
+            Float y = (Float) getValueOf(Float.class, inputs[3]);
             Coordinates coordinates = new Coordinates(x,y);
 
-            Long age = (Long) getValueOf(Long.class, inputs[3]);
-            Color dColor = (Color) getValueOf(Color.class, inputs[4]);
-            DragonType dType = (DragonType) getValueOf(DragonType.class, inputs[5]);
-            DragonCharacter dCharacter = (DragonCharacter) getValueOf(DragonCharacter.class, inputs[6]);
+            Long age = (Long) getValueOf(Long.class, inputs[4]);
+            Color dColor = (Color) getValueOf(Color.class, inputs[5]);
+            DragonType dType = (DragonType) getValueOf(DragonType.class, inputs[6]);
+            DragonCharacter dCharacter = (DragonCharacter) getValueOf(DragonCharacter.class, inputs[7]);
 
-            Double numEyes =(Double) getValueOf(Double.class, inputs[7]);
+            Double numEyes =(Double) getValueOf(Double.class, inputs[8]);
             DragonHead dHead = new DragonHead(numEyes);
 
             if (x > -328 && age > 0 && numEyes > 0)
-                return new Dragon(name, coordinates, age, dColor, dType, dCharacter, dHead);
+                return new Dragon(userID, name, coordinates, age, dColor, dType, dCharacter, dHead);
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException | ArrayIndexOutOfBoundsException | NullPointerException ex) {
             return null;
         }
@@ -138,40 +139,40 @@ public class DragonFactory implements Serializable {
     }
 
     /**
-    *
-    * check if the number comply the validation rule
-    *
-    * @param num Long representing the number to validate
-    * @param min int validation rule
-    * @return is bigger than the validation rule
-    */
+     *
+     * check if the number comply the validation rule
+     *
+     * @param num Long representing the number to validate
+     * @param min int validation rule
+     * @return is bigger than the validation rule
+     */
     private boolean checkValidNumber(Long num, int min) {
         return num > min;
     }
 
     /**
-    *
-    * check if the number comply the validation rule
-    *
-    * @param num DOuble representing the number to validate
-    * @param min int validation rule
-    * @return is bigger than the validation rule
-    */
+     *
+     * check if the number comply the validation rule
+     *
+     * @param num DOuble representing the number to validate
+     * @param min int validation rule
+     * @return is bigger than the validation rule
+     */
     private boolean checkValidNumber(Double num, int min) {
         return num > min;
     }
 
     /**
-    *
-    * gets the Object resulted from the valueOf method inside the passed class
-    *
-    * @param toClass class from which we want to get the method
-    * @param s parameter of the method
-    * @return the Object got after running the valueOf()
-    * @throws InvocationTargetException happens when the invoke method has a error
-    * @throws IllegalAccessException when the method invoked has no access to the specified class
-    * @throws NoSuchMethodException when the method is not found in the passed class
-    */
+     *
+     * gets the Object resulted from the valueOf method inside the passed class
+     *
+     * @param toClass class from which we want to get the method
+     * @param s parameter of the method
+     * @return the Object got after running the valueOf()
+     * @throws InvocationTargetException happens when the invoke method has a error
+     * @throws IllegalAccessException when the method invoked has no access to the specified class
+     * @throws NoSuchMethodException when the method is not found in the passed class
+     */
     private static Object getValueOf(Class<?> toClass, String s) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         if (toClass.equals(String.class) || s.equals("")) return s;
         Method method = toClass.getMethod("valueOf", String.class);

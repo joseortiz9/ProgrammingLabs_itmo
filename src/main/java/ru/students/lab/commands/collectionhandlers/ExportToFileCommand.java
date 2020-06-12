@@ -4,7 +4,6 @@ import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ExecutionContext;
 import ru.students.lab.database.Credentials;
 import ru.students.lab.database.UserModel;
-import ru.students.lab.exceptions.AuthorizationException;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -27,7 +26,7 @@ public class ExportToFileCommand extends AbsCommand {
      public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
          StringBuilder sb = new StringBuilder();
 
-         if (context.collectionController().credentialsNotExist(credentials))
+         if (context.DBRequestManager().credentialsNotExist(credentials))
              return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
 
          try {

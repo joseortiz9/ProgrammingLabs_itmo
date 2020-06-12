@@ -20,7 +20,7 @@ public class LoadFromFileCommand extends AbsCommand {
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
         StringBuilder sb = new StringBuilder();
 
-        if (context.collectionController().credentialsNotExist(credentials))
+        if (context.DBRequestManager().credentialsNotExist(credentials))
             return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
 
         try {

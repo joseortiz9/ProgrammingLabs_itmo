@@ -18,8 +18,8 @@ import java.util.List;
 */
 public class ExecuteScriptCommand extends AbsCommand {
 
-    private DragonFactory factory;
-    private List<AbsCommand> commands;
+    private final DragonFactory factory;
+    private final List<AbsCommand> commands;
 
     public ExecuteScriptCommand(List<AbsCommand> commands) {
         this.commands = commands;
@@ -33,7 +33,7 @@ public class ExecuteScriptCommand extends AbsCommand {
         if (args.length < 1)
             throw new ArrayIndexOutOfBoundsException();
 
-        if (context.collectionController().credentialsNotExist(credentials))
+        if (context.DBRequestManager().credentialsNotExist(credentials))
             return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
 
         ArrayList<Object> result = new ArrayList<Object>();
@@ -63,7 +63,7 @@ public class ExecuteScriptCommand extends AbsCommand {
                 }
                 result.add(command.execute(context, credentials));
                 if (dragonInputSuccess)
-                    i+=8;
+                    i+=9;
             } catch (DragonFormatException ex) {
                 result.add(ex.getMessage());
             } catch (NumberFormatException ex) {

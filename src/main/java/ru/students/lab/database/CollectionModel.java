@@ -1,7 +1,6 @@
 package ru.students.lab.database;
 
 import ru.students.lab.models.*;
-import ru.students.lab.util.DragonUserCouple;
 
 import java.sql.*;
 import java.time.ZoneId;
@@ -23,24 +22,11 @@ public class CollectionModel {
 
     public HashMap<Integer, Dragon> fetchCollection() throws SQLException {
         HashMap<Integer, Dragon> collection = new HashMap<>();
-        PreparedStatement preparedStatement = connection.prepareStatement(SQLQuery.Get.DRAGONS);
-        ResultSet rs = preparedStatement.executeQuery();
-        while (rs.next()) {
-            Dragon dragon = createDragonFromResultSet(rs);
-            collection.putIfAbsent(rs.getInt("key"), dragon);
-        }
-        return collection;
-    }
-
-
-    public ArrayList<DragonUserCouple> fetchCollectionWithUser() throws SQLException {
-        ArrayList<DragonUserCouple> collection = new ArrayList<>();
         PreparedStatement preparedStatement = connection.prepareStatement(SQLQuery.Get.DRAGONS_WITH_USER);
         ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
             Dragon dragon = createDragonFromResultSet(rs);
-            int userID = rs.getInt("user_id");
-            collection.add(new DragonUserCouple(userID, dragon));
+            collection.putIfAbsent(rs.getInt("key"), dragon);
         }
         return collection;
     }
@@ -50,6 +36,7 @@ public class CollectionModel {
         DragonHead head = new DragonHead((rs.getDouble("num_eyes") == 0) ? null : rs.getDouble("num_eyes")) ;
         return new Dragon(
                 rs.getInt("id"),
+                rs.getInt("user_id"),
                 rs.getString("name"),
                 new Coordinates(rs.getLong("x"), rs.getFloat("y")),
                 rs.getLong("age"),

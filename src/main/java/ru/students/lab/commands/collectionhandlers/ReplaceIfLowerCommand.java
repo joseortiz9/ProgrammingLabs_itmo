@@ -41,7 +41,7 @@ public class ReplaceIfLowerCommand extends AbsCommand {
             //AuthorizationException happens when the credentials passed are wrong and the user was already logged
             String resultDragonUpdated = "";
             try {
-                resultDragonUpdated = context.collectionController().updateDragon(dragonID, dragon, credentials);
+                resultDragonUpdated = context.DBRequestManager().updateDragon(dragonID, dragon, credentials);
             } catch (AuthorizationException ex) {
                 return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
             }

@@ -22,7 +22,7 @@ public class Dragon implements Comparable<Dragon>, Serializable {
     private static final long serialVersionUID = -4227836017018935821L;
 
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
-    private Integer key = 0;
+    private Integer userID = 0;
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
     @XmlJavaTypeAdapter(value = ZonedDateTimeSerializer.class)
@@ -39,16 +39,7 @@ public class Dragon implements Comparable<Dragon>, Serializable {
     public Dragon() {
         this.setCreationDate();
     }
-    /** 
-     * Конструктор - создает непустой экземпляр класса Dragon без поля id
-     * @param name - имя дракона
-     * @param coordinates - координаты дракона
-     * @param age - возраст дракона
-     * @param type - тип дракона
-     * @param character - характер дракона
-     * @param head - голова дракона
-     * @see Dragon#Dragon()
-     */
+
     public Dragon(String name,
                   Coordinates coordinates,
                   Long age,
@@ -65,18 +56,8 @@ public class Dragon implements Comparable<Dragon>, Serializable {
         this.character = character;
         this.head = head;
     }
-    /** 
-     * Конструктор - создает непустой экземпляр класса Dragon 
-     * @param id - номер дракона
-     * @param name - имя дракона
-     * @param coordinates - координаты дракона
-     * @param age - возраст дракона
-     * @param type - тип дракона
-     * @param character - характер дракона
-     * @param head - голова дракона
-     * @see Dragon#Dragon()
-     */
-    public Dragon(Integer id,
+
+    public Dragon(Integer userID,
                   String name,
                   Coordinates coordinates,
                   Long age,
@@ -85,10 +66,24 @@ public class Dragon implements Comparable<Dragon>, Serializable {
                   DragonCharacter character,
                   DragonHead head) {
         this(name, coordinates, age, color, type, character, head);
+        this.userID = userID;
+    }
+
+    public Dragon(Integer id,
+                  Integer userID,
+                  String name,
+                  Coordinates coordinates,
+                  Long age,
+                  Color color,
+                  DragonType type,
+                  DragonCharacter character,
+                  DragonHead head) {
+        this(userID, name, coordinates, age, color, type, character, head);
         this.id = id;
     }
 
     public Dragon(Integer id,
+                  Integer userID,
                   String name,
                   Coordinates coordinates,
                   Long age,
@@ -97,15 +92,12 @@ public class Dragon implements Comparable<Dragon>, Serializable {
                   DragonType type,
                   DragonCharacter character,
                   DragonHead head) {
-        this(id, name, coordinates, age, color, type, character, head);
+        this(id, userID, name, coordinates, age, color, type, character, head);
         this.creationDate = creationDate;
     }
 
     public Integer getId() {
         return id;
-    }
-    public Integer getKey() {
-        return key;
     }
     public String getName() {
         return name;
@@ -134,6 +126,9 @@ public class Dragon implements Comparable<Dragon>, Serializable {
     public DragonCharacter getCharacter() {
         return character;
     }
+    public Integer getUserID() {
+        return userID;
+    }
 
     public void setId(Integer id) {
         this.id = id;
@@ -161,9 +156,6 @@ public class Dragon implements Comparable<Dragon>, Serializable {
     }
     public void setCreationDate() {
         this.creationDate = ZonedDateTime.now();
-    }
-    public void setKey(Integer key) {
-        this.key = key;
     }
 
     @Override

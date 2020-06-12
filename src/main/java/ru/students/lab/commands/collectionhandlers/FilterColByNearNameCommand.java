@@ -4,7 +4,7 @@ import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ExecutionContext;
 import ru.students.lab.database.Credentials;
 import ru.students.lab.database.UserModel;
-import ru.students.lab.util.ListEntrySerializable;
+import ru.students.lab.util.DragonEntrySerializable;
 
 import java.io.IOException;
 import java.util.List;
@@ -25,10 +25,10 @@ public class FilterColByNearNameCommand extends AbsCommand {
      @Override
      public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
 
-         if (context.collectionController().credentialsNotExist(credentials))
+         if (context.DBRequestManager().credentialsNotExist(credentials))
              return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
 
-         List<ListEntrySerializable> filteredCol = context.collectionManager().filterStartsWithName(args[0]);
+         List<DragonEntrySerializable> filteredCol = context.collectionManager().filterStartsWithName(args[0]);
          if (filteredCol.isEmpty())
              return "No elements found.";
          else

@@ -3,7 +3,7 @@ package ru.students.lab;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.commands.ExecutionContext;
-import ru.students.lab.database.DBManager;
+import ru.students.lab.database.DBRequestManager;
 import ru.students.lab.database.CollectionModel;
 import ru.students.lab.database.DatabaseConfigurer;
 import ru.students.lab.database.UserModel;
@@ -62,7 +62,7 @@ public class ServerMain {
 
             final CollectionModel collectionModel = new CollectionModel(dbConfigurer.getDbConnection());
             final UserModel userModel = new UserModel(dbConfigurer.getDbConnection());
-            final DBManager controller = new DBManager(collectionModel, userModel);
+            final DBRequestManager controller = new DBRequestManager(collectionModel, userModel);
 
             final FileManager fileManager = new FileManager();
             final CollectionManager collectionManager = new CollectionManager(controller.fetchCollectionFromDB());
@@ -73,7 +73,7 @@ public class ServerMain {
                     return collectionManager;
                 }
                 @Override
-                public DBManager collectionController() {
+                public DBRequestManager DBRequestManager() {
                     return controller;
                 }
                 @Override

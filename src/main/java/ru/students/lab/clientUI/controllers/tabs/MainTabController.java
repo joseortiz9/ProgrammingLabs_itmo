@@ -1,5 +1,6 @@
 package ru.students.lab.clientUI.controllers.tabs;
 
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,50 +9,50 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Control;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.clientUI.AlertMaker;
 import ru.students.lab.clientUI.ClientContext;
-import ru.students.lab.clientUI.controllers.LoginRegisterController;
 import ru.students.lab.clientUI.controllers.forms.AddDragonController;
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.models.*;
 import ru.students.lab.network.CommandPacket;
-import ru.students.lab.util.ListEntrySerializable;
+import ru.students.lab.util.DragonEntrySerializable;
 
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 
 public class MainTabController implements Initializable {
 
     private static final Logger LOG = LogManager.getLogger(MainTabController.class);
 
-    ObservableList<Dragon> dragonsList = FXCollections.observableArrayList();
+    ObservableList<DragonEntrySerializable> dragonsList = FXCollections.observableArrayList();
 
     @FXML public GridPane commandsBtnGrid;
-    @FXML public TableView<Dragon> dragonsTableView;
-    @FXML public TableColumn<Dragon, Integer> idCol;
-    @FXML public TableColumn<Dragon, Integer> keyCol;
-    @FXML public TableColumn<Dragon, String> nameCol;
-    @FXML public TableColumn<Dragon, Coordinates> coordinatesCol;
-    @FXML public TableColumn<Dragon, ZonedDateTime> dateCol;
-    @FXML public TableColumn<Dragon, Long> ageCol;
-    @FXML public TableColumn<Dragon, Color> colorCol;
-    @FXML public TableColumn<Dragon, DragonType> typeCol;
-    @FXML public TableColumn<Dragon, DragonCharacter> characterCol;
-    @FXML public TableColumn<Dragon, DragonHead> headCol;
+    @FXML public TableView<DragonEntrySerializable> dragonsTableView;
+    @FXML public TableColumn<DragonEntrySerializable, Integer> idCol;
+    @FXML public TableColumn<DragonEntrySerializable, Integer> keyCol;
+    @FXML public TableColumn<DragonEntrySerializable, String> nameCol;
+    @FXML public TableColumn<DragonEntrySerializable, Coordinates> coordinatesCol;
+    @FXML public TableColumn<DragonEntrySerializable, ZonedDateTime> dateCol;
+    @FXML public TableColumn<DragonEntrySerializable, Long> ageCol;
+    @FXML public TableColumn<DragonEntrySerializable, Color> colorCol;
+    @FXML public TableColumn<DragonEntrySerializable, DragonType> typeCol;
+    @FXML public TableColumn<DragonEntrySerializable, DragonCharacter> characterCol;
+    @FXML public TableColumn<DragonEntrySerializable, DragonHead> headCol;
 
     private final ClientContext clientContext;
 
@@ -102,16 +103,13 @@ public class MainTabController implements Initializable {
         Object response = clientContext.responseHandler().checkForResponse();
 
         if (response instanceof List) {
-            List<ListEntrySerializable> list = (List<ListEntrySerializable>) response;
-            for (ListEntrySerializable dragonEntry: list) {
-                dragonEntry.getDragon().setKey(dragonEntry.getKey());
-                dragonsList.add(dragonEntry.getDragon());
-            }
+            List<DragonEntrySerializable> responseList = (List<DragonEntrySerializable>) response;
+            dragonsList.addAll(responseList);
 
-            LOG.info("Successfully fetched collection: {} elements", list.size());
+            LOG.info("Successfully fetched collection: {} elements", responseList.size());
             clientContext.responseHandler().setReceivedObjectToNull();
         } else {
-            AlertMaker.showErrorMessage("Not possible to fetch data", (String)response);
+            AlertMaker.showErrorMessage("Not possible to fetch data, please check logs", (String)response);
         }
 
         dragonsTableView.setItems(dragonsList);
@@ -131,7 +129,7 @@ public class MainTabController implements Initializable {
     @FXML
     public void handleDragonEdit(ActionEvent actionEvent) {
         // Get selected row
-        Dragon selectedForEdit = dragonsTableView.getSelectionModel().getSelectedItem();
+        DragonEntrySerializable selectedForEdit = dragonsTableView.getSelectionModel().getSelectedItem();
         if (selectedForEdit == null) {
             AlertMaker.showErrorMessage("No dragon selected", "Please select a dragon for edit.");
             return;
@@ -160,6 +158,33 @@ public class MainTabController implements Initializable {
 
     @FXML
     public void handleDragonRemove(ActionEvent actionEvent) {
+        // Get selected row
+        DragonEntrySerializable selectedForRemove = dragonsTableView.getSelectionModel().getSelectedItem();
+        if (selectedForRemove == null) {
+            AlertMaker.showErrorMessage("No dragon selected", "Please select a dragon to remove.");
+            return;
+        }
 
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Removing Dragon");
+        alert.setContentText("Are you sure want to remove the dragon {ID="+ selectedForRemove.getId() +"} ?");
+        Optional<ButtonType> answer = alert.showAndWait();
+        if (answer.get() == ButtonType.OK) {
+            AbsCommand command = clientContext.commandManager().getCommand("remove_key");
+            command.setArgs(new String[]{String.valueOf(selectedForRemove.getKey())});
+
+            clientContext.clientChannel().sendCommand(new CommandPacket(command, clientContext.responseHandler().getCurrentUser().getCredentials()));
+
+            Object response = clientContext.responseHandler().checkForResponse();
+
+            if (response instanceof String) {
+                AlertMaker.showSimpleAlert("Result of the request", (String)response);
+                loadData();
+                clientContext.responseHandler().setReceivedObjectToNull();
+                LOG.info("Result of the deleting process: {}", (String) response);
+            }
+        } else {
+            AlertMaker.showSimpleAlert("Remove cancelled", "Remove process cancelled");
+        }
     }
 }

@@ -131,13 +131,12 @@ public class MainController implements Initializable {
      *
      * @param selectedForEdit dragon to edit
      * @param editMode trying to update the dragon
+     * @param passingKey if comes from the input where the key is passed
      */
-    public void loadEditDragonDialog(DragonEntrySerializable selectedForEdit, boolean editMode) {
-        if (selectedForEdit != null) {
-            if (selectedForEdit.getDragon() == null && editMode) {
-                AlertMaker.showErrorMessage("No dragon selected", "Please select a dragon for edit.");
-                return;
-            }
+    public void loadEditDragonDialog(DragonEntrySerializable selectedForEdit, boolean editMode, boolean passingKey) {
+        if (selectedForEdit == null && editMode) {
+            AlertMaker.showErrorMessage("No dragon selected", "Please select a dragon for edit.");
+            return;
         }
 
         try {
@@ -146,7 +145,7 @@ public class MainController implements Initializable {
             loader.setController(controller);
             Parent parent = loader.load();
             if (selectedForEdit != null)
-                if (editMode || selectedForEdit.getDragon() == null)
+                if (editMode || passingKey)
                     controller.inflateUI(selectedForEdit);
 
             Stage stage = new Stage(StageStyle.DECORATED);

@@ -73,7 +73,7 @@ public class MenubarController implements Initializable {
 
     @FXML
     public void handleMenuAddDragon(ActionEvent actionEvent) {
-        mainController.loadEditDragonDialog(null, false);
+        mainController.loadEditDragonDialog(null, false, false);
     }
 
     @FXML

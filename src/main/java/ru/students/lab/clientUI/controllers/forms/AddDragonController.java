@@ -2,6 +2,8 @@ package ru.students.lab.clientUI.controllers.forms;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.NumberValidator;
+import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -39,6 +41,7 @@ public class AddDragonController implements Initializable {
     @FXML public JFXComboBox<Label> typeBox;
     @FXML public JFXComboBox<Label> characterBox;
     @FXML public JFXTextField headTextField;
+    private ResourceBundle bundle;
 
     private final ClientContext clientContext;
     private boolean editMode = false;
@@ -51,6 +54,8 @@ public class AddDragonController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        this.bundle = resources;
+
         for (Color color: Color.values())
             colorBox.getItems().add(new Label(color.name()));
 
@@ -59,6 +64,8 @@ public class AddDragonController implements Initializable {
 
         for (DragonCharacter character: DragonCharacter.values())
             characterBox.getItems().add(new Label(character.name()));
+
+        initValidators();
     }
 
     @FXML
@@ -68,7 +75,8 @@ public class AddDragonController implements Initializable {
     }
 
     public boolean validationGetsError() {
-        return false;
+        return !(keyTextField.validate() && nameTextField.validate()
+                && validateAge() && validateX() && coordinateY.validate() && headTextField.validate());
     }
 
     @FXML
@@ -151,11 +159,35 @@ public class AddDragonController implements Initializable {
         autoSelectComboBoxValue(colorBox, dragon.getDragon().getColor(), (color, colorBoxVal) -> color.equals(Enum.valueOf(Color.class, colorBoxVal)));
         autoSelectComboBoxValue(typeBox, dragon.getDragon().getType(), (type, typeBoxVal) -> type.equals(Enum.valueOf(DragonType.class, typeBoxVal)));
         autoSelectComboBoxValue(characterBox, dragon.getDragon().getCharacter(), (character, characterBoxVal) -> character.equals(Enum.valueOf(DragonCharacter.class, characterBoxVal)));
+        keyTextField.setEditable(false);
     }
 
     public <T> void autoSelectComboBoxValue(JFXComboBox<Label> comboBox, T value, Func<T, String> f) {
         for (Label t : comboBox.getItems())
             if (f.compare(value, t.getText()))
                 comboBox.setValue(t);
+    }
+
+    public void initValidators() {
+        NumberValidator numValidator = new NumberValidator();
+        RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
+        keyTextField.getValidators().addAll(numValidator, requiredValidator);
+        nameTextField.getValidators().addAll(requiredValidator);
+        coordinateX.getValidators().addAll(numValidator, requiredValidator);
+        coordinateY.getValidators().addAll(numValidator, requiredValidator);
+        ageTextField.getValidators().addAll(numValidator, requiredValidator);
+        headTextField.getValidators().addAll(numValidator);
+    }
+
+    public boolean validateAge() {
+        if (!ageTextField.validate())
+            return false;
+        return Integer.parseInt(ageTextField.getText()) > 0;
+    }
+
+    public boolean validateX() {
+        if (!coordinateX.validate())
+            return false;
+        return Integer.parseInt(coordinateX.getText()) > -328;
     }
 }

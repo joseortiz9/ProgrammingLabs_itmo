@@ -2,6 +2,8 @@ package ru.students.lab.clientUI.controllers.tabs;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.NumberValidator;
+import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -75,12 +77,15 @@ public class MainTabController implements Initializable {
         initCol();
         refreshData();
         loadFilteringOption();
+
+        inputKeyDragon.getValidators().addAll(new NumberValidator(), new RequiredFieldValidator());
     }
 
     public void refreshData() {
         dragonsList.clear();
         dragonsList.addAll(mainController.getContext().localCollection().getLocalList());
         dragonsTableView.setItems(dragonsList);
+        loadFilteringOption();
     }
 
     @FXML
@@ -131,7 +136,7 @@ public class MainTabController implements Initializable {
     public void handleDragonEdit(ActionEvent actionEvent) {
         // Get selected row
         DragonEntrySerializable selectedForEdit = dragonsTableView.getSelectionModel().getSelectedItem();
-        mainController.loadEditDragonDialog(selectedForEdit, true);
+        mainController.loadEditDragonDialog(selectedForEdit, true, false);
         refreshData();
     }
 
@@ -147,10 +152,20 @@ public class MainTabController implements Initializable {
     public void handleCommandByKeyButtonAction(ActionEvent actionEvent) {
         String commandCalled = ((Control)actionEvent.getSource()).getId();
         AbsCommand command = mainController.getContext().commandManager().getCommand(commandCalled);
+
         String arg = inputKeyDragon.getText();
+        if (!inputKeyDragon.validate()) {
+            AlertMaker.showSimpleAlert("Validation Error!", "The input is not a valid number");
+            return;
+        }
 
         if (command.requireInput() == ICommand.TYPE_INPUT_DRAGON) {
-            mainController.loadEditDragonDialog(new DragonEntrySerializable(Integer.parseInt(arg), null), false);
+            if (commandCalled.equals("update")) {
+                DragonEntrySerializable selectedToEdit = mainController.getContext().localCollection().getByKey(Integer.parseInt(arg));
+                mainController.loadEditDragonDialog(selectedToEdit, true, false);
+            } else {
+                mainController.loadEditDragonDialog(new DragonEntrySerializable(Integer.parseInt(arg), null), false, true);
+            }
             return;
         }
 
@@ -161,6 +176,11 @@ public class MainTabController implements Initializable {
     @FXML
     public void handleRemoveDragonButtonAction(ActionEvent actionEvent) {
         String arg = inputKeyDragon.getText();
+        if (!inputKeyDragon.validate()) {
+            AlertMaker.showSimpleAlert("Validation Error!", "The input is not a valid number");
+            return;
+        }
+
         DragonEntrySerializable selectedForRemove = mainController.getContext().localCollection().getByKey(Integer.parseInt(arg));
         mainController.loadRemoveDragonDialog(selectedForRemove);
         refreshData();

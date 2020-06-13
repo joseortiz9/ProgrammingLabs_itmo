@@ -169,7 +169,7 @@ public class MapTabController implements Initializable {
 
     @FXML
     public void handleEditDragonButtonAction(ActionEvent actionEvent) {
-        mainController.loadEditDragonDialog(selectedDragon, true);
+        mainController.loadEditDragonDialog(selectedDragon, true, false);
         refreshData();
     }
 

@@ -67,9 +67,9 @@ public class ExecuteScriptCommand extends AbsCommand {
             } catch (DragonFormatException ex) {
                 result.add(ex.getMessage());
             } catch (NumberFormatException ex) {
-                result.add("Incorrect format of the entered value");
+                result.add("server.response.error.format.arguments");
             } catch (ArrayIndexOutOfBoundsException | NullPointerException ex) {
-                result.add("There is a problem in the amount of args passed");
+                result.add("server.response.error.amount.arguments");
             }
         }
         return result;

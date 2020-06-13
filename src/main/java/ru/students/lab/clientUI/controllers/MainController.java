@@ -28,10 +28,7 @@ import ru.students.lab.util.DragonEntrySerializable;
 import java.io.IOException;
 import java.net.URL;
 import java.text.MessageFormat;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MainController implements Initializable {
 
@@ -193,7 +190,13 @@ public class MainController implements Initializable {
         Object response = clientContext.responseHandler().checkForResponse();
 
         if (response instanceof String) {
-            AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.request.result"), bundle.getString((String)response));
+            String result = "";
+            try {
+                result = bundle.getString((String)response);
+            } catch (NullPointerException | MissingResourceException ex) {
+                result = (String)response;
+            }
+            AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.request.result"), result);
             refreshLocalCollection();
             mainTabController.refreshData();
             mapTabController.refreshData();

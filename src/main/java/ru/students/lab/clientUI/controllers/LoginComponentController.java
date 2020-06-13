@@ -45,6 +45,7 @@ public class LoginComponentController implements Initializable {
             if (languageOptions.getSelectedToggle() != null) {
                 String selectedID = ((RadioMenuItem) languageOptions.getSelectedToggle()).getId();
                 loginRegisterController.switchLanguage(selectedID);
+                languageOptions.selectToggle(languageOptions.getSelectedToggle());
             }
         };
     }

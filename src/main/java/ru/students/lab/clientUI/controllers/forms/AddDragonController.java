@@ -21,6 +21,7 @@ import ru.students.lab.network.CommandPacket;
 import ru.students.lab.util.DragonEntrySerializable;
 
 import java.net.URL;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class AddDragonController implements Initializable {
@@ -120,7 +121,14 @@ public class AddDragonController implements Initializable {
         Object response = clientContext.responseHandler().checkForResponse();
 
         if (response instanceof String) {
-            AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.request.result"), bundle.getString((String)response));
+            String result = "";
+            try {
+                result = bundle.getString((String)response);
+            } catch (NullPointerException | MissingResourceException ex) {
+                result = (String)response;
+            }
+
+            AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.request.result"), result);
             clientContext.responseHandler().setReceivedObjectToNull();
             cleanEntries();
             cancelOperation(new ActionEvent());

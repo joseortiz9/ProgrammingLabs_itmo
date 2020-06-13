@@ -41,9 +41,9 @@
                                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="400.0">
                                     <children>
                                         <JFXButton fx:id="editDragonButton" onAction="#handleEditDragonButtonAction"
-                                                   text="Edit" textAlignment="CENTER"/>
+                                                   text="%tab.main.table.context.edit" textAlignment="CENTER"/>
                                         <JFXButton fx:id="removeDragonButton" onAction="#handleRemoveDragonButtonAction"
-                                                   text="Remove" textAlignment="CENTER"/>
+                                                   text="%tab.main.table.context.delete" textAlignment="CENTER"/>
                                     </children>
                                 </HBox>
                             </children>

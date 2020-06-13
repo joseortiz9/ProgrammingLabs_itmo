@@ -7,6 +7,7 @@ import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -82,6 +83,7 @@ public class AddDragonController implements Initializable {
     @FXML
     public void addDragon(ActionEvent actionEvent) {
         if (validationGetsError()) {
+            AlertMaker.showSimpleAlert(bundle.getString("tab.main.alert.validation.error.title"), bundle.getString("form.add.validation.msg"));
             return;
         }
 
@@ -118,7 +120,7 @@ public class AddDragonController implements Initializable {
         Object response = clientContext.responseHandler().checkForResponse();
 
         if (response instanceof String) {
-            AlertMaker.showSimpleAlert("Result of the request", (String)response);
+            AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.request.result"), (String)response);
             clientContext.responseHandler().setReceivedObjectToNull();
             cleanEntries();
             cancelOperation(new ActionEvent());

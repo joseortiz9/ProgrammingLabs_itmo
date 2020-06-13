@@ -38,10 +38,11 @@ public class ClientUIMain extends Application {
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/login_register.fxml"));
         loader.setController(new LoginRegisterController(clientContext));
-        loader.setResources(ResourceBundle.getBundle("bundles.LangBundle", new Locale("en")));
+        ResourceBundle bundle = ResourceBundle.getBundle("bundles.LangBundle", new Locale("en"));
+        loader.setResources(bundle);
         Parent root = loader.load();
         Scene scene = new Scene(root);
-        primaryStage.setTitle("Dragons World");
+        primaryStage.setTitle(bundle.getString("login.window.title"));
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();

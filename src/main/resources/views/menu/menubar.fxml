@@ -16,47 +16,41 @@
             <menus>
                 <Menu fx:id="menuUser" mnemonicParsing="false" text="%menubar.title.user">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#handleMenuLogOut" text="Log Out"/>
+                        <MenuItem mnemonicParsing="false" onAction="#handleMenuLogOut" text="%menubar.user.logout"/>
                     </items>
                 </Menu>
-                <Menu fx:id="menuAdd" mnemonicParsing="false" text="Add">
+                <Menu fx:id="menuAdd" mnemonicParsing="false" text="%menubar.dragon.title">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#handleMenuAddDragon"
-                                  text="Add Dragon"/>
+                                  text="%menubar.dragon.add"/>
                     </items>
                 </Menu>
-                <Menu fx:id="menuLanguage" mnemonicParsing="false" text="Language">
+                <Menu fx:id="menuLanguage" mnemonicParsing="false" text="%menubar.languages.title">
                     <items>
-                        <RadioMenuItem fx:id="en" mnemonicParsing="false"
-                                       selected="true"
-                                       text="English">
+                        <RadioMenuItem fx:id="en" mnemonicParsing="false" selected="true" text="%menubar.languages.english">
                             <toggleGroup>
                                 <ToggleGroup fx:id="languageOptions"/>
                             </toggleGroup>
                         </RadioMenuItem>
-                        <RadioMenuItem fx:id="ru" mnemonicParsing="false"
-                                       text="Russian"
+                        <RadioMenuItem fx:id="ru" mnemonicParsing="false" text="%menubar.languages.russian"
                                        toggleGroup="$languageOptions"/>
-                        <RadioMenuItem fx:id="sr" mnemonicParsing="false"
-                                       text="Serbian"
+                        <RadioMenuItem fx:id="sr" mnemonicParsing="false" text="%menubar.languages.serbian"
                                        toggleGroup="$languageOptions"/>
-                        <RadioMenuItem fx:id="hr" mnemonicParsing="false"
-                                       text="Croatian"
+                        <RadioMenuItem fx:id="hr" mnemonicParsing="false" text="%menubar.languages.croatian"
                                        toggleGroup="$languageOptions"/>
-                        <RadioMenuItem fx:id="es" mnemonicParsing="false"
-                                       text="Spanish"
+                        <RadioMenuItem fx:id="es" mnemonicParsing="false" text="%menubar.languages.spanish"
                                        toggleGroup="$languageOptions"/>
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Help">
+                <Menu mnemonicParsing="false" text="%menubar.help.title">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#handleAboutMenu" text="About"/>
+                        <MenuItem mnemonicParsing="false" onAction="#handleAboutMenu" text="%menubar.help.element.about"/>
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
         <!-- label describing actual user -->
-        <Label fx:id="currentUserLabel" text="CurrentUser" StackPane.alignment="CENTER_RIGHT">
+        <Label fx:id="currentUserLabel" text="%menubar.current.user.title" StackPane.alignment="CENTER_RIGHT">
             <StackPane.margin>
                 <Insets right="10.0"/>
             </StackPane.margin>

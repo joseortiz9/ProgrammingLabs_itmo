@@ -116,7 +116,7 @@ public class MapTabController implements Initializable {
             loadingDragonFields();
         } catch (IllegalAccessException ex) {
             ex.printStackTrace();
-            AlertMaker.showErrorMessage("Problems fetching attrs of dragon", ex.getMessage());
+            AlertMaker.showErrorMessage(bundle.getString("tab.map.error.fetching"), ex.getMessage());
         }
     }
 
@@ -168,7 +168,8 @@ public class MapTabController implements Initializable {
                 continue;
 
             dragonField.setAccessible(true);
-            final Label attrTemp = new Label(dragonField.getName() + ": " + dragonField.get(selectedDragon.getDragon()).toString());
+            String str = bundle.getString("tab.main.table.col." + dragonField.getName());
+            final Label attrTemp = new Label(str + ": " + dragonField.get(selectedDragon.getDragon()).toString());
             attrTemp.getStyleClass().add("simple-text");
             if (x == 2) {
                 y++;

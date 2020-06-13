@@ -3,35 +3,24 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="367.0" prefWidth="419.0" stylesheets="@../styles.css"
-            xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
-            <!--fx:controller="ru.students.lab.clientUI.controllers.LoginRegisterController">-->
+<AnchorPane
+        xmlns="http://javafx.com/javafx/8.0.171"
+        xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+        minWidth="-Infinity" fx:id="rootAnchorPane"
+        prefHeight="367.0" prefWidth="419.0" stylesheets="@../styles.css">
+    <!--fx:controller="ru.students.lab.clientUI.controllers.LoginRegisterController">-->
     <children>
-        <JFXTextField fx:id="username" labelFloat="true" layoutX="67.0" layoutY="115.0" prefHeight="33.0"
-                      prefWidth="259.0" promptText="Username" text="root">
-            <font>
-                <Font size="16.0"/>
-            </font>
-        </JFXTextField>
-        <JFXPasswordField fx:id="password" labelFloat="true" layoutX="67.0" layoutY="184.0" prefHeight="34.0"
-                          prefWidth="259.0" promptText="Password" text="root">
-            <font>
-                <Font size="17.0"/>
-            </font>
-        </JFXPasswordField>
-        <JFXButton fx:id="login" layoutX="92.0" layoutY="258.0" onAction="#handleLoginRegisterButtonAction" prefHeight="40.0" prefWidth="90.0"
-                   styleClass="login-button" text="Login"/>
-        <JFXButton fx:id="register" layoutX="210.0" layoutY="258.0" onAction="#handleLoginRegisterButtonAction" prefHeight="40.0"
-                   prefWidth="102.0" styleClass="login-button" text="Register"/>
-        <Label fx:id="introTitle" layoutX="28.0" layoutY="51.0" styleClass="main-title"
-               text="Welcome to the Dragon's world">
-            <font>
-                <Font size="23.0"/>
-            </font>
-        </Label>
     </children>
 </AnchorPane>

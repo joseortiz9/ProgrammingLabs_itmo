@@ -38,6 +38,7 @@ import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -153,7 +154,7 @@ public class MainTabController implements Initializable {
 
         String arg = inputKeyDragon.getText();
         if (!inputKeyDragon.validate()) {
-            AlertMaker.showSimpleAlert("Validation Error!", "The input is not a valid number");
+            AlertMaker.showSimpleAlert(bundle.getString("tab.main.alert.validation.error.title"), bundle.getString("tab.main.alert.validation.error.content"));
             return;
         }
 
@@ -175,7 +176,7 @@ public class MainTabController implements Initializable {
     public void handleRemoveDragonButtonAction(ActionEvent actionEvent) {
         String arg = inputKeyDragon.getText();
         if (!inputKeyDragon.validate()) {
-            AlertMaker.showSimpleAlert("Validation Error!", "The input is not a valid number");
+            AlertMaker.showSimpleAlert(bundle.getString("tab.main.alert.validation.error.title"), bundle.getString("tab.main.alert.validation.error.content"));
             return;
         }
 
@@ -188,13 +189,14 @@ public class MainTabController implements Initializable {
         String commandCalled = ((Control)actionEvent.getSource()).getId();
         TextInputDialog dialog = new TextInputDialog("example.txt");
         dialog.setTitle(commandCalled);
-        dialog.setHeaderText("Executing '" + commandCalled + "'");
-        dialog.setContentText("Please specify the files name");
+        String content = MessageFormat.format(bundle.getString("dashboard.alert.commandwithfile.content"), commandCalled);
+        dialog.setHeaderText(content);
+        dialog.setContentText(bundle.getString("dashboard.alert.commandwithfile.input.label"));
         Optional<String> answer = dialog.showAndWait();
         if (answer.isPresent()) {
             mainController.sendRequest(commandCalled, new String[]{answer.get()});
         } else {
-            AlertMaker.showSimpleAlert("Remove cancelled", "Remove process cancelled");
+            AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.error.remove.cancelled.title"), bundle.getString("dashboard.alert.error.remove.cancelled.content"));
         }
     }
 
@@ -206,13 +208,13 @@ public class MainTabController implements Initializable {
     @FXML
     public void handleClearButtonAction(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Removing ALL Dragon");
-        alert.setContentText("Are you sure want to remove ALL dragons ?");
+        alert.setTitle(bundle.getString("dashboard.alert.command.clear.title"));
+        alert.setContentText(bundle.getString("dashboard.alert.command.clear.content"));
         Optional<ButtonType> answer = alert.showAndWait();
         if (answer.get() == ButtonType.OK) {
             mainController.sendRequest("clear", null);
         } else {
-            AlertMaker.showSimpleAlert("Remove cancelled", "Remove process cancelled");
+            AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.error.remove.cancelled.title"), bundle.getString("dashboard.alert.error.remove.cancelled.content"));
         }
     }
 

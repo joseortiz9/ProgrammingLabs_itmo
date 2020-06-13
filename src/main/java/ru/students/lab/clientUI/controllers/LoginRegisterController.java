@@ -2,14 +2,17 @@ package ru.students.lab.clientUI.controllers;
 
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Control;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +21,7 @@ import ru.students.lab.clientUI.AlertMaker;
 import ru.students.lab.clientUI.ClientContext;
 import ru.students.lab.clientUI.DashboardLoader;
 import ru.students.lab.commands.AbsCommand;
+import ru.students.lab.commands.LoginCommand;
 import ru.students.lab.database.Credentials;
 import ru.students.lab.network.CommandPacket;
 
@@ -30,8 +34,10 @@ public class LoginRegisterController implements Initializable {
 
     private static final Logger LOG = LogManager.getLogger(LoginRegisterController.class);
 
+    @FXML public AnchorPane rootAnchorPane;
     @FXML public JFXTextField username;
     @FXML public JFXPasswordField password;
+    private ResourceBundle bundle;
 
     private final ClientContext clientContext;
 
@@ -41,11 +47,26 @@ public class LoginRegisterController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        this.bundle = resources;
+        loadComponents();
     }
 
-    @FXML
-    public void handleLoginRegisterButtonAction(ActionEvent actionEvent) {
-        String buttonClicked = ((Control)actionEvent.getSource()).getId();
+    public void loadComponents() {
+        try {
+            LoginComponentController controller = new LoginComponentController(this);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/login_form_menu.fxml"));
+            loader.setController(controller);
+            loader.setResources(ResourceBundle.getBundle("bundles.LangBundle", bundle.getLocale()));
+            Parent menuRoot = loader.load();
+            rootAnchorPane.getChildren().setAll(menuRoot);
+            username = controller.getUsername();
+            password = controller.getPassword();
+        } catch (IOException e) {
+            LOG.error("reloading pane while changing language", e);
+        }
+    }
+
+    public void makeUserRequest(String buttonClicked) {
         String usernameText = username.getText();
         String passwordText = password.getText();
         AbsCommand command = clientContext.commandManager().getCommand(buttonClicked);
@@ -63,7 +84,7 @@ public class LoginRegisterController implements Initializable {
             loadMain();
         } else {
             setWrongCredentialsStyle();
-            AlertMaker.showErrorMessage("Not possible to Log In/Register", (String)response);
+            AlertMaker.showErrorMessage(bundle.getString("login.alert.error"), (String)response);
         }
     }
 
@@ -80,14 +101,20 @@ public class LoginRegisterController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main_layout.fxml"));
             loader.setController(new DashboardLoader(new MainController(clientContext)));
-            loader.setResources(ResourceBundle.getBundle("bundles.LangBundle", new Locale("en")));
+            loader.setResources(ResourceBundle.getBundle("bundles.LangBundle", bundle.getLocale()));
             Parent parent = loader.load();
             Stage stage = new Stage(StageStyle.DECORATED);
-            stage.setTitle("Dragons Dashboard");
+            stage.setTitle(bundle.getString("dashboard.window.title"));
             stage.setScene(new Scene(parent));
             stage.show();
         } catch (IOException ex) {
             LOG.error("Error loading the main dashboard", ex);
         }
+    }
+
+    public void switchLanguage(String languageCode)  {
+        Locale locale = Locale.forLanguageTag(languageCode);
+        bundle = ResourceBundle.getBundle("bundles.LangBundle", locale);
+        loadComponents();
     }
 }

@@ -42,7 +42,7 @@ public class MenubarController implements Initializable {
 
         languageOptions.selectedToggleProperty().addListener(switchLanguageListener());
 
-        currentUserLabel.setText(bundle.getString("menubar.currentUser") + ": " + mainController.getContext().responseHandler().getCurrentUser().getCredentials().username);
+        currentUserLabel.setText(bundle.getString("menubar.current.user.title") + ": " + mainController.getContext().responseHandler().getCurrentUser().getCredentials().username);
     }
 
     private ChangeListener<Toggle> switchLanguageListener() {
@@ -60,9 +60,10 @@ public class MenubarController implements Initializable {
             mainController.closeWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/login_register.fxml"));
             loader.setController(new LoginRegisterController(mainController.getContext()));
+            loader.setResources(ResourceBundle.getBundle("bundles.LangBundle", bundle.getLocale()));
             Parent root = loader.load();
             Stage stage = new Stage(StageStyle.DECORATED);
-            stage.setTitle("Dragons World");
+            stage.setTitle(bundle.getString("login.window.title"));
             stage.setScene(new Scene(root));
             stage.show();
             LOG.info("Logged out!");

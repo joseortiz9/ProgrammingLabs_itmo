@@ -18,7 +18,7 @@
                 <JFXTabPane fx:id="mainTabPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                             AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <tabs>
-                        <Tab fx:id="mainTab" closable="false" styleClass="tab-main" text="Main">
+                        <Tab fx:id="mainTab" closable="false" styleClass="tab-main" text="%dashboard.tab.main.title">
                             <content>
                                 <!--Main content (collection table and command buttons)
                                 <fx:include fx:id="mainViewResource" source="tabs/main_tab.fxml"/>-->
@@ -26,7 +26,7 @@
                         </Tab>
 
 
-                        <Tab fx:id="mapTab" closable="false" styleClass="tab-main" text="Map">
+                        <Tab fx:id="mapTab" closable="false" styleClass="tab-main" text="%dashboard.tab.map.title">
                             <content>
                                 <!--Map tab content
                                 <fx:include fx:id="mapTabResource" source="tabs/map_tab.fxml"/>-->
@@ -34,7 +34,7 @@
                         </Tab>
 
 
-                        <Tab fx:id="helpTab" closable="false" styleClass="tab-main" text="Help">
+                        <Tab fx:id="helpTab" closable="false" styleClass="tab-main" text="%dashboard.tab.help.title">
                             <content>
                                 <!--Help tab content
                                 <fx:include fx:id="helpTabResource" source="tabs/help_tab.fxml"/>-->

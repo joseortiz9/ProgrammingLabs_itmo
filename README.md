@@ -11,7 +11,7 @@
 
 First represents the mode of operating, second the port to the server we want to connect
 ```
-java -jar -Dmode=client Progra_Lab6.jar 5433
+java -jar -Dmode=client Progra_Lab8.jar 5433
 java -jar -Dmode=client Progra_Lab6.jar 5433 localhost
 ```
 
@@ -19,7 +19,7 @@ First represents the mode of operating, second the port to the server we want to
 
 **Server:** 
 ```
-java -jar -Dmode=server Progra_Lab6.jar 5433 data.xml
+java -jar -Dmode=server Progra_Lab8.jar 5433 data.xml
 ```
 
 **Database Structure:**

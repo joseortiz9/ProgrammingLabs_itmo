@@ -22,8 +22,8 @@ public class HelpTabController implements Initializable {
 
     @FXML public JFXTextField inputCommandKey;
     @FXML public JFXListView<Label> commandKeysListView;
-    @FXML public Label detailsTitle;
     @FXML public Label detailsText;
+    private ResourceBundle bundle;
 
     private final ClientContext clientContext;
 
@@ -33,6 +33,7 @@ public class HelpTabController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        this.bundle = resources;
         detailsText.setWrapText(true);
 
         // init components
@@ -57,8 +58,8 @@ public class HelpTabController implements Initializable {
         // print details of the selected command
         commandKeysListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             String selectedItem = commandKeysListView.getSelectionModel().getSelectedItem().getText();
-            String desc = clientContext.commandManager().getCommand(selectedItem).getDescription();
-            detailsText.setText(desc);
+            String description = bundle.getString("commands.description."+selectedItem);
+            detailsText.setText(description);
         });
     }
 }

@@ -27,6 +27,7 @@ import ru.students.lab.util.DragonEntrySerializable;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -36,7 +37,7 @@ public class MainController implements Initializable {
 
     private static final Logger LOG = LogManager.getLogger(MainController.class);
 
-    @FXML private StackPane rootPane;
+    @FXML private StackPane rootLayoutPane;
     @FXML private StackPane menubarPane;
     @FXML private JFXTabPane mainTabPane;
     @FXML private Tab mainTab, mapTab, helpTab;
@@ -118,7 +119,7 @@ public class MainController implements Initializable {
             LOG.info("Successfully fetched collection: {} elements", clientContext.localCollection().getLocalList().size());
             clientContext.responseHandler().setReceivedObjectToNull();
         } else {
-            AlertMaker.showErrorMessage("Not possible to fetch data, please check logs", (String)response);
+            AlertMaker.showErrorMessage(bundle.getString("dashboard.controller.error.fetching"), (String)response);
         }
     }
 
@@ -135,7 +136,7 @@ public class MainController implements Initializable {
      */
     public void loadEditDragonDialog(DragonEntrySerializable selectedForEdit, boolean editMode, boolean passingKey) {
         if (selectedForEdit == null && editMode) {
-            AlertMaker.showErrorMessage("No dragon selected", "Please select a dragon for edit.");
+            AlertMaker.showErrorMessage(bundle.getString("dashboard.alert.error.nodragon.selected.title"), bundle.getString("dashboard.alert.error.nodragon.selected.content"));
             return;
         }
 
@@ -149,7 +150,7 @@ public class MainController implements Initializable {
                     controller.inflateUI(selectedForEdit);
 
             Stage stage = new Stage(StageStyle.DECORATED);
-            stage.setTitle((editMode) ? "Edit Dragon" : "Insert Dragon");
+            stage.setTitle((editMode) ? bundle.getString("dashboard.alert.edit.title") : bundle.getString("dashboard.alert.insert.title"));
             stage.setScene(new Scene(parent));
             stage.show();
 
@@ -167,19 +168,20 @@ public class MainController implements Initializable {
 
     public void loadRemoveDragonDialog(DragonEntrySerializable selectedForRemove) {
         if (selectedForRemove == null) {
-            AlertMaker.showErrorMessage("No dragon selected", "Please select a dragon to remove or pass a correct key.");
+            AlertMaker.showErrorMessage(bundle.getString("dashboard.alert.error.nodragon.selected.title"), bundle.getString("dashboard.alert.error.nodragon.selected.content"));
             return;
         }
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Removing Dragon");
-        alert.setContentText("Are you sure want to remove the dragon {ID="+ selectedForRemove.getId() +"} ?");
+        alert.setTitle(bundle.getString("dashboard.alert.remove.title"));
+        String content = MessageFormat.format(bundle.getString("dashboard.alert.remove.content"), selectedForRemove.getId());
+        alert.setContentText(content);
         Optional<ButtonType> answer = alert.showAndWait();
         if (answer.get() == ButtonType.OK) {
             String[] args = new String[]{String.valueOf(selectedForRemove.getKey())};
             sendRequest("remove_key", args);
         } else {
-            AlertMaker.showSimpleAlert("Remove cancelled", "Remove process cancelled");
+            AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.error.remove.cancelled.title"), bundle.getString("dashboard.alert.error.remove.cancelled.content"));
         }
     }
 
@@ -190,7 +192,7 @@ public class MainController implements Initializable {
         Object response = clientContext.responseHandler().checkForResponse();
 
         if (response instanceof String) {
-            AlertMaker.showSimpleAlert("Result of the request", (String)response);
+            AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.request.result"), (String)response);
             refreshLocalCollection();
             mainTabController.refreshData();
             mapTabController.refreshData();
@@ -206,7 +208,7 @@ public class MainController implements Initializable {
 
     public void closeWindow() {
         clientContext.responseHandler().setCurrentUser(new Credentials(-1, UserModel.DEFAULT_USERNAME, ""));
-        Stage stage = (Stage) rootPane.getScene().getWindow();
+        Stage stage = (Stage) mainTab.getTabPane().getScene().getWindow();
         stage.close();
     }
 

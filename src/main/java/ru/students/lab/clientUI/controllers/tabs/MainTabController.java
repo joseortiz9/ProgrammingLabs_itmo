@@ -137,7 +137,6 @@ public class MainTabController implements Initializable {
         // Get selected row
         DragonEntrySerializable selectedForEdit = dragonsTableView.getSelectionModel().getSelectedItem();
         mainController.loadEditDragonDialog(selectedForEdit, true, false);
-        refreshData();
     }
 
     @FXML
@@ -145,7 +144,6 @@ public class MainTabController implements Initializable {
         // Get selected row
         DragonEntrySerializable selectedForRemove = dragonsTableView.getSelectionModel().getSelectedItem();
         mainController.loadRemoveDragonDialog(selectedForRemove);
-        refreshData();
     }
 
     @FXML
@@ -183,7 +181,6 @@ public class MainTabController implements Initializable {
 
         DragonEntrySerializable selectedForRemove = mainController.getContext().localCollection().getByKey(Integer.parseInt(arg));
         mainController.loadRemoveDragonDialog(selectedForRemove);
-        refreshData();
     }
 
     @FXML
@@ -196,7 +193,6 @@ public class MainTabController implements Initializable {
         Optional<String> answer = dialog.showAndWait();
         if (answer.isPresent()) {
             mainController.sendRequest(commandCalled, new String[]{answer.get()});
-            refreshData();
         } else {
             AlertMaker.showSimpleAlert("Remove cancelled", "Remove process cancelled");
         }
@@ -215,7 +211,6 @@ public class MainTabController implements Initializable {
         Optional<ButtonType> answer = alert.showAndWait();
         if (answer.get() == ButtonType.OK) {
             mainController.sendRequest("clear", null);
-            refreshData();
         } else {
             AlertMaker.showSimpleAlert("Remove cancelled", "Remove process cancelled");
         }

@@ -87,10 +87,22 @@ public class MapTabController implements Initializable {
     public void refreshData() {
         dragonsList.clear();
         dragonsList.addAll(mainController.getContext().localCollection().getLocalList());
+        dragonsMapCanvas.setObj(mainController.getContext().localCollection().getLocalList());
         dragonsMapCanvas.draw();
-        //dragonPictureCanvas.setObj(null);
-        dragonPictureCanvas.draw();
-        //dragonDetailsGrid.getChildren().clear();
+        if (selectedDragon != null)
+            updateDragonDetails();
+    }
+
+    public void updateDragonDetails() {
+        int oldSelectedDragonID = selectedDragon.getDragon().getId();
+        selectedDragon = mainController.getContext().localCollection().getByID(oldSelectedDragonID);
+        if (selectedDragon != null)
+            handleDetailDragon();
+        else {
+            dragonDetailsGrid.getChildren().clear();
+            dragonPictureCanvas.setObj(null);
+            dragonPictureCanvas.draw();
+        }
     }
 
     public void handleDetailDragon() {
@@ -140,10 +152,10 @@ public class MapTabController implements Initializable {
 
         //TODO: FIX ANIMATION
         RotateTransition rotateTransition = new RotateTransition();
-        rotateTransition.setDuration(Duration.millis(1000));
+        rotateTransition.setDuration(Duration.millis(200));
         rotateTransition.setNode(dragonPictureCanvas);
         rotateTransition.setByAngle(360);
-        rotateTransition.setCycleCount(2);
+        rotateTransition.setCycleCount(1);
         rotateTransition.setAutoReverse(false);
         rotateTransition.play();
     }
@@ -170,13 +182,11 @@ public class MapTabController implements Initializable {
     @FXML
     public void handleEditDragonButtonAction(ActionEvent actionEvent) {
         mainController.loadEditDragonDialog(selectedDragon, true, false);
-        refreshData();
     }
 
     @FXML
     public void handleRemoveDragonButtonAction(ActionEvent actionEvent) {
         mainController.loadRemoveDragonDialog(selectedDragon);
-        refreshData();
     }
 }
 

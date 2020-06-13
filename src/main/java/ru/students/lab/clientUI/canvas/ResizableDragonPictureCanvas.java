@@ -23,6 +23,11 @@ public class ResizableDragonPictureCanvas extends AbsResizableCanvas {
     }
 
     @Override
+    public Object getObj() {
+        return dragon;
+    }
+
+    @Override
     public void draw() {
         double width = getWidth();
         double height = getHeight();

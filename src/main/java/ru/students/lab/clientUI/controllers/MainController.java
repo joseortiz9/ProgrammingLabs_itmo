@@ -92,10 +92,10 @@ public class MainController implements Initializable {
             helpTab.setContent(helpRoot);
 
             mainTabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
-                    if(newTab == mainTab)
-                        mainTabController.refreshData();
-                    else if (newTab == mapTab)
-                        mapTabController.refreshData();
+                if(newTab == mainTab)
+                    mainTabController.refreshData();
+                else if (newTab == mapTab)
+                    mapTabController.refreshData();
             });
         }
         catch(IOException ex) {
@@ -153,7 +153,11 @@ public class MainController implements Initializable {
             stage.setScene(new Scene(parent));
             stage.show();
 
-            stage.setOnHiding((e) -> refreshLocalCollection());
+            stage.setOnHiding((e) -> {
+                refreshLocalCollection();
+                mainTabController.refreshData();
+                mapTabController.refreshData();
+            });
 
         } catch (IOException ex) {
             LOG.error("error trying to edit/insert a dragon, ", ex);
@@ -188,6 +192,8 @@ public class MainController implements Initializable {
         if (response instanceof String) {
             AlertMaker.showSimpleAlert("Result of the request", (String)response);
             refreshLocalCollection();
+            mainTabController.refreshData();
+            mapTabController.refreshData();
             clientContext.responseHandler().setReceivedObjectToNull();
             LOG.info("Result of the command {}: {}", commandKey, (String) response);
         }

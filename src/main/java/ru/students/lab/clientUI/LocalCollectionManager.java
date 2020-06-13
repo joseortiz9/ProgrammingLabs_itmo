@@ -17,6 +17,13 @@ public class LocalCollectionManager {
         localList = list;
     }
 
+    public DragonEntrySerializable getByID(int id) {
+        return  localList.stream()
+                .filter(dragonEntry -> dragonEntry.getDragon().getId() == id)
+                .findAny()
+                .orElse(null);
+    }
+
     public DragonEntrySerializable getByKey(int key) {
         return  localList.stream()
                 .filter(dragonEntry -> dragonEntry.getKey() == key)

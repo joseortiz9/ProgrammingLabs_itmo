@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import ru.students.lab.util.DragonEntrySerializable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ResizableMapCanvas extends AbsResizableCanvas {
 
@@ -91,5 +92,11 @@ public class ResizableMapCanvas extends AbsResizableCanvas {
 
     @Override
     public void setObj(Object obj) {
+        dragonsList = (ArrayList<DragonEntrySerializable>) obj;
+    }
+
+    @Override
+    public Object getObj() {
+        return dragonsList;
     }
 }

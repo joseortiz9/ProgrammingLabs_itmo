@@ -20,7 +20,7 @@
                 <menus>
                     <Menu fx:id="menuLanguage" mnemonicParsing="false" text="%menubar.languages.title">
                         <items>
-                            <RadioMenuItem fx:id="en" mnemonicParsing="false" selected="true" text="%menubar.languages.english">
+                            <RadioMenuItem fx:id="en" mnemonicParsing="false" text="%menubar.languages.english">
                                 <toggleGroup>
                                     <ToggleGroup fx:id="languageOptions"/>
                                 </toggleGroup>

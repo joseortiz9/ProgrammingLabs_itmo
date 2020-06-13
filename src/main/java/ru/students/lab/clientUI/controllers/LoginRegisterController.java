@@ -117,4 +117,5 @@ public class LoginRegisterController implements Initializable {
         bundle = ResourceBundle.getBundle("bundles.LangBundle", locale);
         loadComponents();
     }
+
 }

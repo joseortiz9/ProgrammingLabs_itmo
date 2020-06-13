@@ -19,7 +19,7 @@ public class LoginComponentController implements Initializable {
 
     @FXML public JFXTextField username;
     @FXML public JFXPasswordField password;
-    @FXML private ToggleGroup languageOptions;
+    @FXML public ToggleGroup languageOptions;
     private ResourceBundle bundle;
 
     private final LoginRegisterController loginRegisterController;
@@ -45,7 +45,6 @@ public class LoginComponentController implements Initializable {
             if (languageOptions.getSelectedToggle() != null) {
                 String selectedID = ((RadioMenuItem) languageOptions.getSelectedToggle()).getId();
                 loginRegisterController.switchLanguage(selectedID);
-                languageOptions.selectToggle(languageOptions.getSelectedToggle());
             }
         };
     }

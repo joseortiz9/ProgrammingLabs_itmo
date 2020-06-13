@@ -1,20 +1,12 @@
 package ru.students.lab.clientUI.controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXTabPane;
-import com.jfoenix.controls.events.JFXDialogEvent;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.effect.BoxBlur;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -23,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 import ru.students.lab.clientUI.AlertMaker;
 import ru.students.lab.clientUI.ClientContext;
 import ru.students.lab.clientUI.controllers.forms.AddDragonController;
+import ru.students.lab.clientUI.controllers.menu.MenubarController;
 import ru.students.lab.clientUI.controllers.tabs.HelpTabController;
 import ru.students.lab.clientUI.controllers.tabs.MainTabController;
 import ru.students.lab.clientUI.controllers.tabs.MapTabController;
@@ -32,10 +25,10 @@ import ru.students.lab.database.UserModel;
 import ru.students.lab.network.CommandPacket;
 import ru.students.lab.util.DragonEntrySerializable;
 
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -43,11 +36,16 @@ public class MainController implements Initializable {
 
     private static final Logger LOG = LogManager.getLogger(MainController.class);
 
-    @FXML private JFXTabPane mainTabPane;
     @FXML private StackPane rootPane;
+    @FXML private StackPane menubarPane;
+    @FXML private JFXTabPane mainTabPane;
     @FXML private Tab mainTab, mapTab, helpTab;
-    @FXML private Label currentUserLabel;
+    private ResourceBundle bundle;
+
     private final ClientContext clientContext;
+    private MenubarController menubarController;
+    private MainTabController mainTabController;
+    private MapTabController mapTabController;
 
     public MainController(ClientContext clientContext) {
         this.clientContext = clientContext;
@@ -55,56 +53,50 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        currentUserLabel.setText("Current User: " + clientContext.responseHandler().getCurrentUser().getCredentials().username);
-
-        //setLoadingPage(500);
-
-        // Load resources in the background
-        //new Thread(this::refreshLocalCollection);
-        refreshLocalCollection();
+        bundle = resources;
         loadComponents();
     }
 
-    /*public void setLoadingPage(int milliseconds) {
+    public void loadComponents() {
         try {
-            JFXDialogLayout loadingDialogLayout = new JFXDialogLayout();
-            JFXButton cancelButton = new JFXButton("Cancel");
-            JFXDialog loadingDialog = new JFXDialog(rootPane, loadingDialogLayout, JFXDialog.DialogTransition.CENTER);
-            cancelButton.setOnMouseClicked(event -> loadingDialog.close());
-            loadingDialogLayout.setHeading(new Label("Loading..."));
-            loadingDialogLayout.setActions(cancelButton);
-            loadingDialog.show();
-            loadingDialog.setOnDialogClosed((JFXDialogEvent event1) -> System.exit(0));
-            rootPane.setEffect(new BoxBlur(3, 3, 3));
-            Thread.sleep(milliseconds);
-            rootPane.setEffect(null);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }*/
+            menubarController = new MenubarController(this);
+            mainTabController = new MainTabController(this);
+            mapTabController = new MapTabController(this);
 
-    private void loadComponents() {
-        try {
-            FXMLLoader mainloader = new FXMLLoader(getClass().getResource("/views/tabs/main_tab.fxml"));
-            mainloader.setController(new MainTabController(this));
-            Parent root = mainloader.load();
-            mainTab.setContent(root);
+            // Menu loader
+            FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/views/menu/menubar.fxml"));
+            menuLoader.setController(menubarController);
+            menuLoader.setResources(ResourceBundle.getBundle("bundles.LangBundle", bundle.getLocale()));
+            Parent menuRoot = menuLoader.load();
+            menubarPane.getChildren().addAll(menuRoot);
 
+            // main tab loader
+            FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/views/tabs/main_tab.fxml"));
+            mainLoader.setController(mainTabController);
+            mainLoader.setResources(ResourceBundle.getBundle("bundles.LangBundle", bundle.getLocale()));
+            Parent mainRoot = mainLoader.load();
+            mainTab.setContent(mainRoot);
+
+            // map tab loader
             FXMLLoader mapLoader = new FXMLLoader(getClass().getResource("/views/tabs/map_tab.fxml"));
-            mapLoader.setController(new MapTabController(this));
+            mapLoader.setController(mapTabController);
+            mainLoader.setResources(ResourceBundle.getBundle("bundles.LangBundle", bundle.getLocale()));
             Parent mapRoot = mapLoader.load();
             mapTab.setContent(mapRoot);
 
-            /*mainTabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
-                if(newTab == mapTab) {
-
-                }
-            });*/
-
+            // help tab loader
             FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/views/tabs/help_tab.fxml"));
             helpLoader.setController(new HelpTabController(clientContext));
-            root = helpLoader.load();
-            helpTab.setContent(root);
+            mainLoader.setResources(ResourceBundle.getBundle("bundles.LangBundle", bundle.getLocale()));
+            Parent helpRoot = helpLoader.load();
+            helpTab.setContent(helpRoot);
+
+            mainTabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
+                    if(newTab == mainTab)
+                        mainTabController.refreshData();
+                    else if (newTab == mapTab)
+                        mapTabController.refreshData();
+            });
         }
         catch(IOException ex) {
             LOG.error("unable to load tabs", ex);
@@ -207,63 +199,15 @@ public class MainController implements Initializable {
         return clientContext;
     }
 
-
-    private void closeWindow() {
+    public void closeWindow() {
         clientContext.responseHandler().setCurrentUser(new Credentials(-1, UserModel.DEFAULT_USERNAME, ""));
         Stage stage = (Stage) rootPane.getScene().getWindow();
         stage.close();
     }
 
-    @FXML
-    public void handleMenuLogOut(ActionEvent actionEvent) {
-        try {
-            closeWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/login_register.fxml"));
-            loader.setController(new LoginRegisterController(clientContext));
-            Parent root = loader.load();
-            Stage stage = new Stage(StageStyle.DECORATED);
-            stage.setTitle("Dragons World");
-            stage.setScene(new Scene(root));
-            stage.show();
-            LOG.info("Logged out!");
-        } catch (IOException ex) {
-            LOG.error("Error logging out!", ex);
-        }
-    }
-
-
-    @FXML
-    public void handleMenuAddDragon(ActionEvent actionEvent) {
-        loadEditDragonDialog(null, false);
-    }
-
-    @FXML
-    public void changeLanguageToEnglish(ActionEvent actionEvent) {
-
-    }
-
-    @FXML
-    public void changeLanguageToRussian(ActionEvent actionEvent) {
-
-    }
-
-    @FXML
-    public void changeLanguageToSerbian(ActionEvent actionEvent) {
-
-    }
-
-    @FXML
-    public void changeLanguageToCroatian(ActionEvent actionEvent) {
-
-    }
-
-    @FXML
-    public void changeLanguageToSpanish(ActionEvent actionEvent) {
-
-    }
-
-    @FXML
-    public void handleAboutMenu(ActionEvent actionEvent) {
-
+    public void switchLanguage(String languageCode) {
+        Locale locale = Locale.forLanguageTag(languageCode);
+        bundle = ResourceBundle.getBundle("bundles.LangBundle", locale);
+        loadComponents();
     }
 }

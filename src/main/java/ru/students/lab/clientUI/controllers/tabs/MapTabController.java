@@ -50,6 +50,7 @@ public class MapTabController implements Initializable {
     @FXML public GridPane dragonDetailsGrid;
     private AbsResizableCanvas dragonsMapCanvas;
     private AbsResizableCanvas dragonPictureCanvas;
+    private ResourceBundle bundle;
 
     private final MainController mainController;
     private final ArrayList<DragonEntrySerializable> dragonsList = new ArrayList<>();
@@ -61,6 +62,8 @@ public class MapTabController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        bundle = resources;
+
         // Map canvas init
         int actualUserID = mainController.getContext().responseHandler().getCurrentUser().getCredentials().id;
         dragonsMapCanvas = new ResizableMapCanvas(dragonsList, actualUserID);
@@ -81,11 +84,13 @@ public class MapTabController implements Initializable {
         refreshData();
     }
 
-    private void refreshData() {
+    public void refreshData() {
         dragonsList.clear();
         dragonsList.addAll(mainController.getContext().localCollection().getLocalList());
         dragonsMapCanvas.draw();
+        //dragonPictureCanvas.setObj(null);
         dragonPictureCanvas.draw();
+        //dragonDetailsGrid.getChildren().clear();
     }
 
     public void handleDetailDragon() {

@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import ru.students.lab.clientUI.ClientContext;
 import ru.students.lab.clientUI.LocalCollectionManager;
 import ru.students.lab.clientUI.controllers.LoginRegisterController;
+import ru.students.lab.clientUI.controllers.MainController;
 import ru.students.lab.database.Credentials;
 import ru.students.lab.database.CurrentUser;
 import ru.students.lab.managers.CommandManager;
@@ -20,6 +21,8 @@ import ru.students.lab.network.ClientUdpChannel;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * Класс для запуска UI работы клиента
@@ -35,6 +38,7 @@ public class ClientUIMain extends Application {
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/login_register.fxml"));
         loader.setController(new LoginRegisterController(clientContext));
+        loader.setResources(ResourceBundle.getBundle("bundles.LangBundle", new Locale("en")));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         primaryStage.setTitle("Dragons World");

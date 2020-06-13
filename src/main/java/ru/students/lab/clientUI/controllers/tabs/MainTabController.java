@@ -61,6 +61,7 @@ public class MainTabController implements Initializable {
     @FXML public TableColumn<DragonEntrySerializable, DragonType> typeCol;
     @FXML public TableColumn<DragonEntrySerializable, DragonCharacter> characterCol;
     @FXML public TableColumn<DragonEntrySerializable, DragonHead> headCol;
+    private ResourceBundle bundle;
 
     private final MainController mainController;
 
@@ -70,12 +71,13 @@ public class MainTabController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        bundle = resources;
         initCol();
         refreshData();
         loadFilteringOption();
     }
 
-    private void refreshData() {
+    public void refreshData() {
         dragonsList.clear();
         dragonsList.addAll(mainController.getContext().localCollection().getLocalList());
         dragonsTableView.setItems(dragonsList);
@@ -83,7 +85,6 @@ public class MainTabController implements Initializable {
 
     @FXML
     public void handleRefresh(ActionEvent actionEvent) {
-        mainController.refreshLocalCollection();
         refreshData();
     }
 
@@ -184,7 +185,6 @@ public class MainTabController implements Initializable {
     @FXML
     public void handleInfoButtonAction(ActionEvent actionEvent) {
         mainController.sendRequest("info", null);
-        refreshData();
     }
 
     @FXML

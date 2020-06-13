@@ -16,12 +16,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.clientUI.AlertMaker;
 import ru.students.lab.clientUI.ClientContext;
+import ru.students.lab.clientUI.DashboardLoader;
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.database.Credentials;
 import ru.students.lab.network.CommandPacket;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class LoginRegisterController implements Initializable {
@@ -31,7 +33,7 @@ public class LoginRegisterController implements Initializable {
     @FXML public JFXTextField username;
     @FXML public JFXPasswordField password;
 
-    private ClientContext clientContext;
+    private final ClientContext clientContext;
 
     public LoginRegisterController(ClientContext clientContext) {
         this.clientContext = clientContext;
@@ -76,8 +78,9 @@ public class LoginRegisterController implements Initializable {
 
     void loadMain() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main.fxml"));
-            loader.setController(new MainController(clientContext));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main_layout.fxml"));
+            loader.setController(new DashboardLoader(new MainController(clientContext)));
+            loader.setResources(ResourceBundle.getBundle("bundles.LangBundle", new Locale("en")));
             Parent parent = loader.load();
             Stage stage = new Stage(StageStyle.DECORATED);
             stage.setTitle("Dragons Dashboard");

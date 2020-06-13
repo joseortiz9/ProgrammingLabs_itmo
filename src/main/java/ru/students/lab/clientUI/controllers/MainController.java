@@ -81,14 +81,14 @@ public class MainController implements Initializable {
             // map tab loader
             FXMLLoader mapLoader = new FXMLLoader(getClass().getResource("/views/tabs/map_tab.fxml"));
             mapLoader.setController(mapTabController);
-            mainLoader.setResources(ResourceBundle.getBundle("bundles.LangBundle", bundle.getLocale()));
+            mapLoader.setResources(ResourceBundle.getBundle("bundles.LangBundle", bundle.getLocale()));
             Parent mapRoot = mapLoader.load();
             mapTab.setContent(mapRoot);
 
             // help tab loader
             FXMLLoader helpLoader = new FXMLLoader(getClass().getResource("/views/tabs/help_tab.fxml"));
             helpLoader.setController(new HelpTabController(clientContext));
-            mainLoader.setResources(ResourceBundle.getBundle("bundles.LangBundle", bundle.getLocale()));
+            helpLoader.setResources(ResourceBundle.getBundle("bundles.LangBundle", bundle.getLocale()));
             Parent helpRoot = helpLoader.load();
             helpTab.setContent(helpRoot);
 
@@ -143,6 +143,7 @@ public class MainController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/forms/add_dragon.fxml"));
             AddDragonController controller = new AddDragonController(clientContext, editMode);
+            loader.setResources(bundle);
             loader.setController(controller);
             Parent parent = loader.load();
             if (selectedForEdit != null)
@@ -192,7 +193,7 @@ public class MainController implements Initializable {
         Object response = clientContext.responseHandler().checkForResponse();
 
         if (response instanceof String) {
-            AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.request.result"), (String)response);
+            AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.request.result"), bundle.getString((String)response));
             refreshLocalCollection();
             mainTabController.refreshData();
             mapTabController.refreshData();

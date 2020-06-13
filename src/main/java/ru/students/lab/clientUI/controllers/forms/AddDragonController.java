@@ -120,7 +120,7 @@ public class AddDragonController implements Initializable {
         Object response = clientContext.responseHandler().checkForResponse();
 
         if (response instanceof String) {
-            AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.request.result"), (String)response);
+            AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.request.result"), bundle.getString((String)response));
             clientContext.responseHandler().setReceivedObjectToNull();
             cleanEntries();
             cancelOperation(new ActionEvent());

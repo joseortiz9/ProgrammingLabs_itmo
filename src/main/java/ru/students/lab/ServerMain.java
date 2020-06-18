@@ -3,6 +3,7 @@ package ru.students.lab;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.commands.ExecutionContext;
+import ru.students.lab.commands.ExecutionContextImpl;
 import ru.students.lab.database.DBRequestManager;
 import ru.students.lab.database.CollectionModel;
 import ru.students.lab.database.DatabaseConfigurer;
@@ -16,7 +17,9 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.net.*;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.NoSuchElementException;
+import java.util.ResourceBundle;
 
 /**
  * Класс для запуска работы сервера
@@ -66,21 +69,9 @@ public class ServerMain {
 
             final FileManager fileManager = new FileManager();
             final CollectionManager collectionManager = new CollectionManager(controller.fetchCollectionFromDB());
+            final ResourceBundle bundle = ResourceBundle.getBundle("bundles.LangBundle", new Locale("en"));
+            final ExecutionContext executionContext = new ExecutionContextImpl(collectionManager, controller, fileManager, bundle);
 
-            final ExecutionContext executionContext = new ExecutionContext() {
-                @Override
-                public CollectionManager collectionManager() {
-                    return collectionManager;
-                }
-                @Override
-                public DBRequestManager DBRequestManager() {
-                    return controller;
-                }
-                @Override
-                public FileManager fileManager() {
-                    return fileManager;
-                }
-            };
             final ServerRequestHandler requestManager = new ServerRequestHandler(socket, executionContext);
 
             if (socket.getSocket().isBound()) {

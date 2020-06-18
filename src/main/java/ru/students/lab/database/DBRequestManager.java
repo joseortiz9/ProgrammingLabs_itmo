@@ -50,10 +50,10 @@ public class DBRequestManager {
             if (id > 0)
                 return new Credentials(id, credentials.username, credentials.password);
             else
-                return "server.response.error.notposible.login";
+                return "server.response.login.error.notposible";
         } catch (SQLException | NoSuchAlgorithmException ex) {
             LOG.error("logging in", ex);
-            return ex.getMessage();
+            return "server.response.login.error.sqlexception";
         }
     }
 

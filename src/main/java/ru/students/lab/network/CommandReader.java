@@ -15,6 +15,7 @@ import ru.students.lab.models.Dragon;
 
 import javax.security.sasl.AuthenticationException;
 import java.io.*;
+import java.util.Locale;
 
 /**
  * Класс для чтения и подтверждения правильности команд серверу
@@ -56,7 +57,7 @@ public class CommandReader {
                 throw new AuthorizationException("The default user can not execute special commands, please login");
 
             checkForInputs(command);
-            channel.sendCommand(new CommandPacket(command, credentials));
+            channel.sendCommand(new CommandPacket(command, credentials, new Locale("en")));
         }
     }
 

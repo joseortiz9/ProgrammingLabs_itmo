@@ -13,6 +13,8 @@ import java.io.ObjectInputStream;
 import java.net.SocketAddress;
 import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.concurrent.*;
 
 /**
@@ -88,6 +90,7 @@ public class ServerRequestHandler {
         requestReceiver.start();
     }
 
+
     /**
      * Функция для работы с командами клиента
      * @param obj - полученная от клиента команда
@@ -101,6 +104,7 @@ public class ServerRequestHandler {
             else {
                 AbsCommand command = ((CommandPacket) obj).getCommand();
                 Credentials credentials = ((CommandPacket) obj).getCredentials();
+                executionContext.setResourcesBundle(((CommandPacket) obj).getLocale());
                 try {
                     responseExecution = command.execute(executionContext, credentials);
                 }catch (DragonFormatException ex) {
@@ -128,9 +132,9 @@ public class ServerRequestHandler {
             System.out.println("Future Object gotten from executor: \n" + resulted.get().toString());
         } catch (InterruptedException | ExecutionException e) {
             LOG.error("Error getting result from executor", e);
-            System.out.println("Error getting result from executor: " + e.getMessage());
         }
     }
+
 
     /**
      * Функция для отключения сервера

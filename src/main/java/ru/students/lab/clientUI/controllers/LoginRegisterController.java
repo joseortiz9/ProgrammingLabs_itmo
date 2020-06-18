@@ -56,7 +56,7 @@ public class LoginRegisterController implements Initializable {
             LoginComponentController controller = new LoginComponentController(this);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/login_form_menu.fxml"));
             loader.setController(controller);
-            loader.setResources(ResourceBundle.getBundle("bundles.LangBundle", bundle.getLocale()));
+            loader.setResources(bundle);
             Parent menuRoot = loader.load();
             rootAnchorPane.getChildren().setAll(menuRoot);
             username = controller.getUsername();
@@ -72,7 +72,7 @@ public class LoginRegisterController implements Initializable {
         AbsCommand command = clientContext.commandManager().getCommand(buttonClicked);
         command.addInput(new Credentials(-1, usernameText, passwordText));
 
-        clientContext.clientChannel().sendCommand(new CommandPacket(command, clientContext.responseHandler().getCurrentUser().getCredentials()));
+        clientContext.clientChannel().sendCommand(new CommandPacket(command, clientContext.responseHandler().getCurrentUser().getCredentials(), bundle.getLocale()));
 
         Object response = clientContext.responseHandler().checkForResponse();
 
@@ -101,7 +101,7 @@ public class LoginRegisterController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main_layout.fxml"));
             loader.setController(new DashboardLoader(new MainController(clientContext)));
-            loader.setResources(ResourceBundle.getBundle("bundles.LangBundle", bundle.getLocale()));
+            loader.setResources(bundle);
             Parent parent = loader.load();
             Stage stage = new Stage(StageStyle.DECORATED);
             stage.setTitle(bundle.getString("dashboard.window.title"));

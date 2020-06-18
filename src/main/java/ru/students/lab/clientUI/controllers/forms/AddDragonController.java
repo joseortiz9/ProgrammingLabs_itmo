@@ -116,7 +116,7 @@ public class AddDragonController implements Initializable {
         command.setArgs(new String[]{arg});
         command.addInput(input);
 
-        clientContext.clientChannel().sendCommand(new CommandPacket(command, clientContext.responseHandler().getCurrentUser().getCredentials()));
+        clientContext.clientChannel().sendCommand(new CommandPacket(command, clientContext.responseHandler().getCurrentUser().getCredentials(), bundle.getLocale()));
 
         Object response = clientContext.responseHandler().checkForResponse();
 

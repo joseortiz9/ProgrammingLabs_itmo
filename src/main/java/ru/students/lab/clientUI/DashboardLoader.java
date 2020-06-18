@@ -37,6 +37,7 @@ public class DashboardLoader implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.bundle = resources;
+        mainController.setBundle(bundle);
         final Runnable fetchData = mainController::refreshLocalCollection;
         loadSplashScreen();
         new Thread(fetchData).start();

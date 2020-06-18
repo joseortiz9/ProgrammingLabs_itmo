@@ -39,7 +39,6 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
         DatagramPacket packet = new DatagramPacket(content, content.length, client);
         socket.send(packet);
 
-        System.out.println("Sent datagram from SERVER to " + client);
         LOG.info("Sent datagram from SERVER to " + client);
     }
     /**
@@ -54,7 +53,6 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
         socket.receive(packet);
 
-        System.out.println("\nReceived datagram in SERVER from " + packet.getSocketAddress());
         LOG.info("Received datagram in SERVER from " + packet.getSocketAddress());
         buffer.put(buf, 0, packet.getLength());
         return packet.getSocketAddress();
@@ -69,13 +67,10 @@ public class ServerUdpSocket /*extends AbsUdpSocket*/ {
             ObjectOutputStream objectStream = new ObjectOutputStream(byteArrayStream)) {
 
             objectStream.writeObject(response);
-            System.out.println("send object " + response.toString());
             LOG.info("send object " + response.toString());
-
             sendDatagram(byteArrayStream.toByteArray(), client);
 
         } catch (IOException e) {
-            System.err.println("Problem sending the response: " + e.getMessage());
             LOG.error("Problem sending the response", e);
         }
     }

@@ -60,7 +60,7 @@ public class MenubarController implements Initializable {
             mainController.closeWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/login_register.fxml"));
             loader.setController(new LoginRegisterController(mainController.getContext()));
-            loader.setResources(ResourceBundle.getBundle("bundles.LangBundle", bundle.getLocale()));
+            loader.setResources(bundle);
             Parent root = loader.load();
             Stage stage = new Stage(StageStyle.DECORATED);
             stage.setTitle(bundle.getString("login.window.title"));

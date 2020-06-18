@@ -106,7 +106,7 @@ public class MainController implements Initializable {
     public void refreshLocalCollection() {
         clientContext.localCollection().getLocalList().clear();
         AbsCommand command = clientContext.commandManager().getCommand("show");
-        clientContext.clientChannel().sendCommand(new CommandPacket(command, clientContext.responseHandler().getCurrentUser().getCredentials()));
+        clientContext.clientChannel().sendCommand(new CommandPacket(command, clientContext.responseHandler().getCurrentUser().getCredentials(), bundle.getLocale()));
 
         Object response = clientContext.responseHandler().checkForResponse();
 
@@ -186,7 +186,7 @@ public class MainController implements Initializable {
     public void sendRequest(String commandKey, String[] args) {
         AbsCommand command = clientContext.commandManager().getCommand(commandKey);
         command.setArgs(args);
-        clientContext.clientChannel().sendCommand(new CommandPacket(command, clientContext.responseHandler().getCurrentUser().getCredentials()));
+        clientContext.clientChannel().sendCommand(new CommandPacket(command, clientContext.responseHandler().getCurrentUser().getCredentials(), bundle.getLocale()));
         Object response = clientContext.responseHandler().checkForResponse();
 
         if (response instanceof String) {
@@ -220,5 +220,9 @@ public class MainController implements Initializable {
         Locale locale = Locale.forLanguageTag(languageCode);
         bundle = ResourceBundle.getBundle("bundles.LangBundle", locale);
         loadComponents();
+    }
+
+    public void setBundle(ResourceBundle bundle) {
+        this.bundle = bundle;
     }
 }

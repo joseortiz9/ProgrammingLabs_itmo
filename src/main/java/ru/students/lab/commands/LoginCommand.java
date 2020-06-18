@@ -20,7 +20,11 @@ public class LoginCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
-        return context.DBRequestManager().login(this.credentials);
+        Object response = context.DBRequestManager().login(this.credentials);
+        //TODO check the best way to return the translated text
+        if (response instanceof String)
+            response = context.resourcesBundle().getString((String) response);
+        return response;
     }
 
     @Override

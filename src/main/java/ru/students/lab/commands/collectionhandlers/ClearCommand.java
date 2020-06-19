@@ -7,6 +7,7 @@ import ru.students.lab.database.UserModel;
 import ru.students.lab.exceptions.AuthorizationException;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
 /**
  * Класс для выполнения и получения информации о функции очистки коллекции
@@ -26,16 +27,15 @@ public class ClearCommand extends AbsCommand {
         //AuthorizationException happens when the credentials passed are wrong and the user was already logged
         String resDeletingAll = "";
         try {
-            resDeletingAll = context.DBRequestManager().deleteAllDragons(credentials);
+            resDeletingAll = context.DBRequestManager().deleteAllDragons(credentials, context.resourcesBundle());
         } catch (AuthorizationException ex) {
             return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
         }
 
-
         if (resDeletingAll == null) {
             context.collectionManager().clear();
-            return "All elems deleted successfully!";
+            return context.resourcesBundle().getString("server.response.command.clear");
         } else
-            return "Problem clearing dragons: " + resDeletingAll;
+            return resDeletingAll;
     }
 }

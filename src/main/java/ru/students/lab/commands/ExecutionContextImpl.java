@@ -35,11 +35,15 @@ public class ExecutionContextImpl implements ExecutionContext {
     }
     @Override
     public ResourceBundle resourcesBundle() {
-        return resourcesBundle;
+        synchronized (this) {
+            return resourcesBundle;
+        }
     }
     @Override
     public void setResourcesBundle(Locale locale) {
-        if (!resourcesBundle.getLocale().equals(locale))
-            resourcesBundle = ResourceBundle.getBundle("bundles.LangBundle", locale);
+        synchronized (this) {
+            if (!resourcesBundle.getLocale().equals(locale))
+                resourcesBundle = ResourceBundle.getBundle("bundles.LangBundle", locale);
+        }
     }
 }

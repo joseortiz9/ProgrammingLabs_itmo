@@ -197,13 +197,7 @@ public class MainController implements Initializable {
             if (commandKey.equals("execute_script")) {
                 AlertMaker.showResponseScriptAlert(bundle.getString("tab.main.script.alert.title"), (String)response);
             } else {
-                String result = "";
-                try {
-                    result = bundle.getString((String)response);
-                } catch (NullPointerException | MissingResourceException ex) {
-                    result = (String)response;
-                }
-                AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.request.result"), result);
+                AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.request.result"), (String) response);
             }
             refreshLocalCollection();
             mainTabController.refreshData();

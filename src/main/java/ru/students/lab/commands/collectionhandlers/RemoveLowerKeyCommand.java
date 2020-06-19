@@ -9,6 +9,7 @@ import ru.students.lab.exceptions.AuthorizationException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.text.MessageFormat;
 
 /**
  * Класс для выполнения и получения информации о функции удаления из коллекции элементов, ключ которых меньше чем заданный
@@ -32,7 +33,7 @@ public class RemoveLowerKeyCommand extends AbsCommand {
         try {
             deletedIDs = context.DBRequestManager().deleteDragonsLowerThanKey(Integer.parseInt(args[0]), credentials);
         } catch (SQLException | NoSuchAlgorithmException ex) {
-            resultDeletedByKey = ex.getMessage();
+            resultDeletedByKey = context.DBRequestManager().getSQLErrorString("remove dragons lower than key", context.resourcesBundle(), ex);
         } catch (AuthorizationException ex) {
             return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
         }
@@ -40,14 +41,14 @@ public class RemoveLowerKeyCommand extends AbsCommand {
         if (deletedIDs != null)
             context.collectionManager().removeOnKey(deletedIDs);
         else
-            sb.append("Problems deleting dragons: ").append(resultDeletedByKey);
+            sb.append(resultDeletedByKey);
 
         int finalSize = context.collectionManager().getCollection().size();
-
         if (initialSize == finalSize)
-            sb.append("No Dragons removed");
+            sb.append(context.resourcesBundle().getString("server.response.command.remove.noremoved"));
         else
-            sb.append("A total of ").append(initialSize - finalSize).append(" dragons were removed");
+            sb.append(MessageFormat.format(context.resourcesBundle().getString("server.response.command.remove.total.removed"), (initialSize - finalSize)));
+
         return sb.toString();
     }
 }

@@ -2,6 +2,10 @@ package ru.students.lab.commands;
 
 import ru.students.lab.database.Credentials;
 
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Класс для выполнения и получения информации о функции вывода информации о коллекции
  * @autor Хосе Ортис
@@ -16,6 +20,11 @@ public class InfoCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context, Credentials credentials) {
-        return context.collectionManager().toString();
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+        return MessageFormat.format(
+                context.resourcesBundle().getString("server.response.command.info"),
+                context.collectionManager().getCollection().getClass(),
+                dateFormatter.format(context.collectionManager().getColCreationDate()),
+                context.collectionManager().getCollection().size());
     }
  }

@@ -20,7 +20,7 @@ public class RegisterCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
-        return context.DBRequestManager().register(this.credentials);
+        return context.DBRequestManager().register(this.credentials, context.resourcesBundle());
     }
 
     @Override

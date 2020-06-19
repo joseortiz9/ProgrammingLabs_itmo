@@ -50,7 +50,6 @@ public class ServerRequestHandler {
 
             } catch (SocketTimeoutException ignored) {
             } catch (IOException | ClassNotFoundException e) {
-                System.err.println("Weird errors, check log");
                 LOG.error("Weird errors processing the received data", e);
                 executeObj("Weird errors, check log. " + e.getMessage(), addressFromClient);
             }
@@ -111,13 +110,13 @@ public class ServerRequestHandler {
                     responseExecution = ex.getMessage();
                     LOG.error(ex.getMessage(), ex);
                 } catch (NumberFormatException ex) {
-                    responseExecution = "Incorrect format of the entered value";
+                    responseExecution = executionContext.resourcesBundle().getString("server.response.error.format.arguments");
                     LOG.error("Incorrect format of the entered value", ex);
                 } catch (ArrayIndexOutOfBoundsException ex) {
-                    responseExecution = "There is a problem in the amount of args passed";
+                    responseExecution = executionContext.resourcesBundle().getString("server.response.error.amount.arguments");
                     LOG.error("There is a problem in the amount of args passed", ex);
                 } catch (SecurityException ex) {
-                    responseExecution = "Security problems trying to access to the file (Can not be read or edited)";
+                    responseExecution = executionContext.resourcesBundle().getString("server.response.error.access.security");
                     LOG.error("Security problems trying to access to the file (Can not be read or edited)", ex);
                 } catch (IOException ex) {
                     responseExecution = ex.getMessage();

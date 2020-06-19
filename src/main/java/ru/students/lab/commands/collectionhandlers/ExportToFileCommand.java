@@ -8,6 +8,7 @@ import ru.students.lab.database.UserModel;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
+import java.text.MessageFormat;
 
 /**
  * Класс для выполнения и получения информации о функции сохранения коллекции в файл
@@ -24,19 +25,19 @@ public class ExportToFileCommand extends AbsCommand {
 
      @Override
      public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
-         StringBuilder sb = new StringBuilder();
+         String result = "";
 
          if (context.DBRequestManager().credentialsNotExist(credentials))
              return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
 
          try {
              context.fileManager().SaveCollectionInXML(context.collectionManager().getCollection(), args[0]);
-             sb.append("All elems saved in the file: ").append(args[0]);
+             result = MessageFormat.format(context.resourcesBundle().getString("server.response.command.export"), args[0]);
          } catch (JAXBException e) {
-             sb.append("Converter error saving the data");
+             result = context.resourcesBundle().getString("server.response.command.export.error.saving");
          } catch (InvalidPathException e) {
-             sb.append("Error finding the provided file");
+             result = context.resourcesBundle().getString("server.response.command.export.error.path");
          }
-         return sb.toString();
+         return result;
      }
 }

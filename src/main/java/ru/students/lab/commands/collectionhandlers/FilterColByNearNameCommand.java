@@ -30,7 +30,7 @@ public class FilterColByNearNameCommand extends AbsCommand {
 
          List<DragonEntrySerializable> filteredCol = context.collectionManager().filterStartsWithName(args[0]);
          if (filteredCol.isEmpty())
-             return "No elements found.";
+             return context.resourcesBundle().getString("server.response.command.filter.list.error.empty");
          else
              return filteredCol;
      }

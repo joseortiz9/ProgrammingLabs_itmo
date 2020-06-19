@@ -9,6 +9,7 @@ import ru.students.lab.exceptions.DragonFormatException;
 import ru.students.lab.models.Dragon;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
 /**
  * Класс для выполнения и получения информации о функции замены элемента коллекции по ключу в случае если его новое значение меньше старого
@@ -32,7 +33,7 @@ public class ReplaceIfLowerCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
-        StringBuilder sb = new StringBuilder();
+        String res = "";
         if (dragon == null)
             throw new DragonFormatException();
 
@@ -41,21 +42,20 @@ public class ReplaceIfLowerCommand extends AbsCommand {
             //AuthorizationException happens when the credentials passed are wrong and the user was already logged
             String resultDragonUpdated = "";
             try {
-                resultDragonUpdated = context.DBRequestManager().updateDragon(dragonID, dragon, credentials);
+                resultDragonUpdated = context.DBRequestManager().updateDragon(dragonID, dragon, credentials, context.resourcesBundle());
             } catch (AuthorizationException ex) {
                 return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
             }
 
-
             if (resultDragonUpdated == null) {
                 context.collectionManager().replaceIfLower(Integer.valueOf(args[0]), dragon);
-                sb.append(dragon.toString()).append(" replaced the young poor dragon!");
+                res = MessageFormat.format(context.resourcesBundle().getString("server.response.command.removeiflower"), dragon.getName());
             } else
-                sb.append("Problems updating dragon: ").append(resultDragonUpdated);
+                res = resultDragonUpdated;
         } else
-            sb.append("The given Dragon is not old enough! or the key is wrong!");
+            res = context.resourcesBundle().getString("server.response.command.removeiflower.error.notlower");
 
-        return sb.toString();
+        return res;
     }
 
     @Override

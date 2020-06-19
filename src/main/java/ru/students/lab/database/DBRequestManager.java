@@ -2,13 +2,17 @@ package ru.students.lab.database;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.postgresql.util.PSQLException;
 import ru.students.lab.exceptions.AuthorizationException;
+import ru.students.lab.exceptions.NotPermissionsException;
 import ru.students.lab.models.Dragon;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ResourceBundle;
 
 /**
  * Controls and organize all the database requests
@@ -44,20 +48,20 @@ public class DBRequestManager {
      * @param credentials to try in the database
      * @return the credentials if the user was checked successfully and a str if was failed
      */
-    public Object login(Credentials credentials) {
+    public Object login(Credentials credentials, ResourceBundle bundle) {
         try {
             int id = userModel.checkUserAndGetID(credentials);
             if (id > 0)
                 return new Credentials(id, credentials.username, credentials.password);
             else
-                return "server.response.login.error.notposible";
+                return bundle.getString("server.response.login.error.notposible");
         } catch (SQLException | NoSuchAlgorithmException ex) {
             LOG.error("logging in", ex);
-            return "server.response.login.error.sqlexception";
+            return getSQLErrorString("log in", bundle, ex);
         }
     }
 
-    public Object register(Credentials credentials) {
+    public Object register(Credentials credentials, ResourceBundle bundle) {
         try {
             int id = userModel.registerUser(credentials);
             if (id > 0)
@@ -66,11 +70,14 @@ public class DBRequestManager {
                 return credentials;
         } catch (Throwable ex) {
             LOG.error("registering user", ex);
-            return ex.getMessage();
+            if (ex instanceof PSQLException)
+                if (((PSQLException)ex).getSQLState().equalsIgnoreCase("23505"))
+                    return bundle.getString("server.response.register.error.duplicate");
+            return getSQLErrorString("register user", bundle, ex);
         }
     }
 
-    public String addDragon(int key, Dragon dragon, Credentials credentials) {
+    public String addDragon(int key, Dragon dragon, Credentials credentials, ResourceBundle bundle) {
         try {
             if (assertUserNotExist(credentials))
                 throw new AuthorizationException();
@@ -78,43 +85,49 @@ public class DBRequestManager {
             return collectionModel.insert(key, dragon, credentials);
         } catch (Throwable ex) {
             LOG.error("inserting dragon in db", ex);
-            return ex.getMessage();
+            return getSQLErrorString("insert dragon", bundle, ex);
         }
     }
 
-    public String updateDragon(int id, Dragon dragon, Credentials credentials) {
+    public String updateDragon(int id, Dragon dragon, Credentials credentials, ResourceBundle bundle) {
         try {
             if (assertUserNotExist(credentials))
                 throw new AuthorizationException();
 
             return collectionModel.update(id, dragon, credentials);
+        } catch (NotPermissionsException ex) {
+            return bundle.getString("server.response.error.not.permissions");
         } catch (Throwable ex) {
             LOG.error("updating dragon in db", ex);
-            return ex.getMessage();
+            return getSQLErrorString("update dragon", bundle, ex);
         }
     }
 
-    public String deleteAllDragons(Credentials credentials) {
+    public String deleteAllDragons(Credentials credentials, ResourceBundle bundle) {
         try {
             if (assertUserNotExist(credentials))
                 throw new AuthorizationException();
 
             return collectionModel.deleteAll(credentials);
+        } catch (NotPermissionsException ex) {
+            return bundle.getString("server.response.error.not.permissions");
         } catch (Throwable ex) {
             LOG.error("deleting all dragons in db", ex);
-            return ex.getMessage();
+            return getSQLErrorString("delete ALL dragons", bundle, ex);
         }
     }
 
-    public String deleteDragon(int key, Credentials credentials) {
+    public String deleteDragon(int key, Credentials credentials, ResourceBundle bundle) {
         try {
             if (assertUserNotExist(credentials))
                 throw new AuthorizationException();
 
             return collectionModel.delete(key, credentials);
+        } catch (NotPermissionsException ex) {
+            return bundle.getString("server.response.error.not.permissions");
         } catch (Throwable ex) {
             LOG.error("deleting dragon in db", ex);
-            return ex.getMessage();
+            return getSQLErrorString("delete dragon", bundle, ex);
         }
     }
 
@@ -144,5 +157,12 @@ public class DBRequestManager {
             return true;
         }
         return false;
+    }
+
+    public String getSQLErrorString(String methodName, ResourceBundle bundle, Throwable ex) {
+        return MessageFormat.format(
+                bundle.getString("server.response.error.sqlexception"),
+                methodName,
+                ex.getMessage());
     }
 }

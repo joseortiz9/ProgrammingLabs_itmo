@@ -129,14 +129,7 @@ public class AddDragonController implements Initializable {
         Object response = clientContext.responseHandler().checkForResponse();
 
         if (response instanceof String) {
-            String result = "";
-            try {
-                result = bundle.getString((String)response);
-            } catch (NullPointerException | MissingResourceException ex) {
-                result = (String)response;
-            }
-
-            AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.request.result"), result);
+            AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.request.result"), (String)response);
             clientContext.responseHandler().setReceivedObjectToNull();
             cleanEntries();
             cancelOperation(new ActionEvent());

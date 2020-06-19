@@ -51,7 +51,7 @@ public class MainTabController implements Initializable {
     @FXML public TableColumn<DragonEntrySerializable, Integer> keyCol;
     @FXML public TableColumn<DragonEntrySerializable, String> nameCol;
     @FXML public TableColumn<DragonEntrySerializable, Coordinates> coordinatesCol;
-    @FXML public TableColumn<DragonEntrySerializable, String> dateCol;
+    @FXML public TableColumn<DragonEntrySerializable, ZonedDateTime> dateCol;
     @FXML public TableColumn<DragonEntrySerializable, Long> ageCol;
     @FXML public TableColumn<DragonEntrySerializable, Color> colorCol;
     @FXML public TableColumn<DragonEntrySerializable, DragonType> typeCol;
@@ -93,12 +93,27 @@ public class MainTabController implements Initializable {
         keyCol.setCellValueFactory(new PropertyValueFactory<>("key"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         coordinatesCol.setCellValueFactory(new PropertyValueFactory<>("coordinates"));
-        dateCol.setCellValueFactory(col -> new SimpleStringProperty(col.getValue().getCreationDate().format(dateFormatter)));
+        //dateCol.setCellValueFactory(col -> new SimpleStringProperty(col.getValue().getCreationDate().format(dateFormatter)));
+        dateCol.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
+        dateCol.setCellFactory(column -> handleFormatCellDateCreation());
         ageCol.setCellValueFactory(new PropertyValueFactory<>("age"));
         colorCol.setCellValueFactory(new PropertyValueFactory<>("color"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         characterCol.setCellValueFactory(new PropertyValueFactory<>("character"));
         headCol.setCellValueFactory(new PropertyValueFactory<>("head"));
+    }
+
+    private TableCell<DragonEntrySerializable, ZonedDateTime> handleFormatCellDateCreation() {
+        return new TableCell<DragonEntrySerializable, ZonedDateTime>() {
+            @Override
+            protected void updateItem(ZonedDateTime item, boolean empty) {
+                super.updateItem(item, empty);
+                if(empty)
+                    setText(null);
+                else
+                    this.setText(dateFormatter.format(item));
+            }
+        };
     }
 
     public void loadFilteringOption() {

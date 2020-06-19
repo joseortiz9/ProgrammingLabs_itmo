@@ -1,5 +1,6 @@
 package ru.students.lab.database;
 
+import ru.students.lab.exceptions.NotPermissionsException;
 import ru.students.lab.models.*;
 
 import java.sql.*;
@@ -121,7 +122,7 @@ public class CollectionModel {
 
     public String update(int id, Dragon dragon, Credentials credentials) throws SQLException {
         if (!hasPermissions(credentials, id))
-            return "You have no permissions to edit this dragon";
+            throw new NotPermissionsException();
 
         mainLock.lock();
         final boolean oldAutoCommit = connection.getAutoCommit();
@@ -180,7 +181,7 @@ public class CollectionModel {
 
     public String deleteAll(Credentials credentials) throws SQLException {
         if (!credentials.username.equals(UserModel.ROOT_USERNAME))
-            return "You have no permissions to delete all dragons";
+            throw new NotPermissionsException();
 
         mainLock.lock();
         final boolean oldAutoCommit = connection.getAutoCommit();
@@ -203,7 +204,7 @@ public class CollectionModel {
     public String delete(int key, Credentials credentials) throws SQLException {
         int dragonID = getDragonByKey(key);
         if (!hasPermissions(credentials, dragonID))
-            return "You have no permissions to delete this dragon";
+            throw new NotPermissionsException();
 
         mainLock.lock();
         final boolean oldAutoCommit = connection.getAutoCommit();

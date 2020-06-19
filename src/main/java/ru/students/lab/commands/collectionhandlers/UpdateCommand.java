@@ -9,6 +9,7 @@ import ru.students.lab.exceptions.DragonFormatException;
 import ru.students.lab.models.Dragon;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
 /**
  * Класс для выполнения и получения информации о функции замены элемента коллекции, id которого равен заданному
@@ -31,7 +32,7 @@ public class UpdateCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
-        StringBuilder sb = new StringBuilder();
+        String res = "";
 
         if (dragon == null)
             throw new DragonFormatException();
@@ -39,7 +40,7 @@ public class UpdateCommand extends AbsCommand {
         //AuthorizationException happens when the credentials passed are wrong and the user was already logged
         String dragonIDaddedToDB = "";
         try {
-            dragonIDaddedToDB = context.DBRequestManager().updateDragon(Integer.parseInt(args[0]), dragon, credentials);
+            dragonIDaddedToDB = context.DBRequestManager().updateDragon(Integer.parseInt(args[0]), dragon, credentials, context.resourcesBundle());
         } catch (AuthorizationException ex) {
             return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
         }
@@ -47,11 +48,11 @@ public class UpdateCommand extends AbsCommand {
         // If it successfully replace it, returns the value of the old mapped object
         if (dragonIDaddedToDB == null) {
             if (context.collectionManager().update(Integer.valueOf(args[0]), dragon) != null)
-                sb.append("Dragon of ID: ").append(dragon.getId()).append(" Updated!");
+                res = MessageFormat.format(context.resourcesBundle().getString("server.response.command.update"), dragon.getId());
         } else
-            sb.append("Problems updating dragon: ").append(dragonIDaddedToDB);
+            res = dragonIDaddedToDB;
 
-        return sb.toString();
+        return res;
     }
 
     @Override

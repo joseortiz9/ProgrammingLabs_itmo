@@ -18,19 +18,19 @@ public class LoadFromFileCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
-        StringBuilder sb = new StringBuilder();
+        String result = "";
 
         if (context.DBRequestManager().credentialsNotExist(credentials))
             return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
 
         try {
             context.collectionManager().setCollection(context.fileManager().getCollectionFromFile(args[0]));
-            sb.append("All elems added to the collection!");
+            result = context.resourcesBundle().getString("server.response.command.import");
         } catch (JAXBException e) {
-            sb.append("Converter error adding the elems");
+            result = context.resourcesBundle().getString("server.response.command.export.error.saving");
         } catch (InvalidPathException e) {
-            sb.append("Error finding the provided file");
+            result = context.resourcesBundle().getString("server.response.command.export.error.path");
         }
-        return sb.toString();
+        return result;
     }
 }

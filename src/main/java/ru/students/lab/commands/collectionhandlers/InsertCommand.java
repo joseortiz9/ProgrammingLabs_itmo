@@ -9,6 +9,7 @@ import ru.students.lab.exceptions.DragonFormatException;
 import ru.students.lab.models.Dragon;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
 /**
  * Класс для выполнения и получения информации о функции добавления в коллекцию элемента с заданным ключем
@@ -35,11 +36,10 @@ public class InsertCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
-        StringBuilder sb = new StringBuilder();
+        String res = "";
 
         if (context.collectionManager().getCollection().containsKey(Integer.valueOf(args[0]))) {
-            sb.append("The key '").append(Integer.valueOf(args[0])).append("' already exist");
-            return sb.toString();
+            return MessageFormat.format(context.resourcesBundle().getString("server.response.command.insert.error.key"), args[0]);
         }
 
         if (dragon == null)
@@ -48,7 +48,7 @@ public class InsertCommand extends AbsCommand {
         //AuthorizationException happens when the credentials passed are wrong and the user was already logged
         String dragonIDaddedToDB = "";
         try {
-            dragonIDaddedToDB = context.DBRequestManager().addDragon(Integer.parseInt(args[0]), dragon, credentials);
+            dragonIDaddedToDB = context.DBRequestManager().addDragon(Integer.parseInt(args[0]), dragon, credentials, context.resourcesBundle());
         } catch (AuthorizationException ex) {
             return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
         }
@@ -57,10 +57,10 @@ public class InsertCommand extends AbsCommand {
         if (isNumeric(dragonIDaddedToDB)) {
             dragon.setId(Integer.valueOf(dragonIDaddedToDB));
             if (context.collectionManager().insert(Integer.valueOf(args[0]), dragon) == null)
-                sb.append("Dragon of ID: ").append(dragon.getId()).append(" successfully saved!");
+                res = MessageFormat.format(context.resourcesBundle().getString("server.response.command.insert"), dragon.getId());
         } else
-            sb.append("Error saving the Dragon: ").append(dragonIDaddedToDB);
-        return sb.toString();
+            res = dragonIDaddedToDB;
+        return res;
     }
 
     @Override

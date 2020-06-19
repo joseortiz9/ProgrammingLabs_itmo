@@ -7,6 +7,7 @@ import ru.students.lab.database.UserModel;
 import ru.students.lab.exceptions.AuthorizationException;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
 /**
  * Класс для выполнения и получения информации о функции удаления элемента из коллекции по его ключу
@@ -22,12 +23,12 @@ public class RemoveKeyCommand extends AbsCommand {
 
     @Override
     public Object execute(ExecutionContext context, Credentials credentials) throws IOException {
-        StringBuilder sb = new StringBuilder();
+        String res = "";
 
         //AuthorizationException happens when the credentials passed are wrong and the user was already logged
         String resultDeletedByKey = "";
         try {
-            resultDeletedByKey = context.DBRequestManager().deleteDragon(Integer.parseInt(args[0]), credentials);
+            resultDeletedByKey = context.DBRequestManager().deleteDragon(Integer.parseInt(args[0]), credentials, context.resourcesBundle());
         } catch (AuthorizationException ex) {
             return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
         }
@@ -35,9 +36,10 @@ public class RemoveKeyCommand extends AbsCommand {
         // If it successfully replace it, returns the value of the old mapped object
         if (resultDeletedByKey == null) {
             if (context.collectionManager().removeKey(Integer.valueOf(args[0])) != null)
-                sb.append("key:").append(args[0]).append(" Successfully removed!");
+                res = MessageFormat.format(context.resourcesBundle().getString("server.response.command.removebykey"), args[0]);
         } else
-            sb.append("Problems deleting dragon: ").append(resultDeletedByKey);
-        return sb.toString();
+            res = resultDeletedByKey;
+
+        return res;
     }
 }

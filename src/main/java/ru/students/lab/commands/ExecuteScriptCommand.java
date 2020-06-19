@@ -7,6 +7,7 @@ import ru.students.lab.factories.DragonFactory;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,12 +43,13 @@ public class ExecuteScriptCommand extends AbsCommand {
         String[] commands = commandsStr.trim().split("\n");
         for (int i = 0; i < commands.length; i++) {
             try {
-                result.add("\nCOMMAND #" + i);
+                String commandTitle = MessageFormat.format(context.resourcesBundle().getString("server.response.command.execscript.title"), i);
+                result.add("\n" + commandTitle);
                 boolean dragonInputSuccess = false;
                 String[] ss = commands[i].trim().split(" ");
                 AbsCommand command = getCommand(ss[0]);
                 if (command == null) {
-                    result.add("Not found command");
+                    result.add(context.resourcesBundle().getString("server.response.command.execscript.error.comm.notfound"));
                     continue;
                 }
                 command.setArgs(getCommandArgs(ss));
@@ -56,7 +58,7 @@ public class ExecuteScriptCommand extends AbsCommand {
                     inputsAfterInsert.add(0, String.valueOf(credentials.id));
                     command.addInput(factory.generateFromScript(inputsAfterInsert));
                     if (command.getInput() == null)
-                        result.add("An input was not in the correct format or The number of inputs is different from the needed");
+                        result.add(context.resourcesBundle().getString("server.response.command.execscript.error.dragoninput"));
                     else
                         dragonInputSuccess = true;
                 }
@@ -66,9 +68,9 @@ public class ExecuteScriptCommand extends AbsCommand {
             } catch (DragonFormatException ex) {
                 result.add(ex.getMessage());
             } catch (NumberFormatException ex) {
-                result.add("server.response.error.format.arguments");
+                result.add(context.resourcesBundle().getString("server.response.error.format.arguments"));
             } catch (ArrayIndexOutOfBoundsException | NullPointerException ex) {
-                result.add("server.response.error.amount.arguments");
+                result.add(context.resourcesBundle().getString("server.response.error.amount.arguments"));
             }
         }
         return String.join("\n ", result);

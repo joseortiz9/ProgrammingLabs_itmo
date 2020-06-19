@@ -27,7 +27,7 @@ public class PrintDescendingCommand extends AbsCommand {
          if (context.DBRequestManager().credentialsNotExist(credentials))
              return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
 
-         StringBuilder sb = new StringBuilder();
+         String res = "";
          List<DragonEntrySerializable> sortedDragons = null;
 
          switch (args[0]) {
@@ -49,11 +49,11 @@ public class PrintDescendingCommand extends AbsCommand {
                  sortedDragons = context.collectionManager().sortByCreationDate();
                  break;
              default:
-                 sb.append("This option is not available. Correct= -{k/i/n/d}");
+                 res = context.resourcesBundle().getString("server.response.command.printdescending.error.options");
          }
          if (sortedDragons != null)
              return sortedDragons;
-         return sb.toString();
+         return res;
      }
 
      @Override

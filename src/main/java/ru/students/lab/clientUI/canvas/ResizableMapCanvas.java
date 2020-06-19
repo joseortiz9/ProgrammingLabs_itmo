@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import ru.students.lab.util.DragonEntrySerializable;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ResizableMapCanvas extends AbsResizableCanvas {
@@ -52,7 +53,7 @@ public class ResizableMapCanvas extends AbsResizableCanvas {
         gc.fillText(String.valueOf((int)(scale / 4)), min * 3.0 / 4.0, min / 2 + 20);
 
         // Draw dragons
-        dragonsList.stream().sorted((o1, o2) -> o1.getDragon().getUserID() - o2.getDragon().getUserID())
+        dragonsList.stream().sorted(Comparator.comparingInt(o -> o.getDragon().getUserID()))
                 .forEach(d -> drawDragons(gc, d, min));
     }
 

@@ -1,3 +1,13 @@
+info
+insert 154
+pepito melito
+576
+-412
+21
+RED
+AIR
+EVIL
+1
 insert 3123
 mega_powered
 23
@@ -5,6 +15,7 @@ mega_powered
 21
 RED
 AIR
-EVIL
+EVIL32
 1
-insert
+insert -134
+remove_key 201

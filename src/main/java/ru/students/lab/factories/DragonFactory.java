@@ -6,6 +6,7 @@ import ru.students.lab.models.*;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -30,26 +31,26 @@ public class DragonFactory implements Serializable {
      * @param inputs fields from the file to fill the Dragon attrs
      * @return instance of a Dragon with the input entered or null if error
      */
-    public Dragon generateFromScript(String[] inputs) {
+    public Dragon generateFromScript(ArrayList<String> inputs) {
         try {
-            Integer userID = (Integer) getValueOf(Integer.class, inputs[0]);
-            String name = (String) getValueOf(String.class, inputs[1]);
+            Integer userID = (Integer) getValueOf(Integer.class, inputs.get(0));
+            String name = (String) getValueOf(String.class, inputs.get(1));
 
-            Long x = (Long) getValueOf(Long.class, inputs[2]);
-            Float y = (Float) getValueOf(Float.class, inputs[3]);
+            Long x = (Long) getValueOf(Long.class, inputs.get(2));
+            Float y = (Float) getValueOf(Float.class, inputs.get(3));
             Coordinates coordinates = new Coordinates(x,y);
 
-            Long age = (Long) getValueOf(Long.class, inputs[4]);
-            Color dColor = (Color) getValueOf(Color.class, inputs[5]);
-            DragonType dType = (DragonType) getValueOf(DragonType.class, inputs[6]);
-            DragonCharacter dCharacter = (DragonCharacter) getValueOf(DragonCharacter.class, inputs[7]);
+            Long age = (Long) getValueOf(Long.class, inputs.get(4));
+            Color dColor = (Color) getValueOf(Color.class, inputs.get(5));
+            DragonType dType = (DragonType) getValueOf(DragonType.class, inputs.get(6));
+            DragonCharacter dCharacter = (DragonCharacter) getValueOf(DragonCharacter.class, inputs.get(7));
 
-            Double numEyes =(Double) getValueOf(Double.class, inputs[8]);
+            Double numEyes =(Double) getValueOf(Double.class, inputs.get(8));
             DragonHead dHead = new DragonHead(numEyes);
 
             if (x > -328 && age > 0 && numEyes > 0)
                 return new Dragon(userID, name, coordinates, age, dColor, dType, dCharacter, dHead);
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException | ArrayIndexOutOfBoundsException | NullPointerException ex) {
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException | IndexOutOfBoundsException | NullPointerException ex) {
             return null;
         }
         return null;

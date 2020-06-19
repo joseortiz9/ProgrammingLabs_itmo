@@ -4,6 +4,8 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.NumberValidator;
 import com.jfoenix.validation.RequiredFieldValidator;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,7 +31,9 @@ import ru.students.lab.util.DragonEntrySerializable;
 import java.io.File;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -47,7 +51,7 @@ public class MainTabController implements Initializable {
     @FXML public TableColumn<DragonEntrySerializable, Integer> keyCol;
     @FXML public TableColumn<DragonEntrySerializable, String> nameCol;
     @FXML public TableColumn<DragonEntrySerializable, Coordinates> coordinatesCol;
-    @FXML public TableColumn<DragonEntrySerializable, ZonedDateTime> dateCol;
+    @FXML public TableColumn<DragonEntrySerializable, String> dateCol;
     @FXML public TableColumn<DragonEntrySerializable, Long> ageCol;
     @FXML public TableColumn<DragonEntrySerializable, Color> colorCol;
     @FXML public TableColumn<DragonEntrySerializable, DragonType> typeCol;
@@ -55,6 +59,7 @@ public class MainTabController implements Initializable {
     @FXML public TableColumn<DragonEntrySerializable, DragonHead> headCol;
     private ResourceBundle bundle;
 
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM HH:mm z");
     private final MainController mainController;
 
     public MainTabController(MainController mainController) {
@@ -88,7 +93,7 @@ public class MainTabController implements Initializable {
         keyCol.setCellValueFactory(new PropertyValueFactory<>("key"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         coordinatesCol.setCellValueFactory(new PropertyValueFactory<>("coordinates"));
-        dateCol.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
+        dateCol.setCellValueFactory(col -> new SimpleStringProperty(col.getValue().getCreationDate().format(dateFormatter)));
         ageCol.setCellValueFactory(new PropertyValueFactory<>("age"));
         colorCol.setCellValueFactory(new PropertyValueFactory<>("color"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));

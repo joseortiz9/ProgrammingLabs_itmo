@@ -37,7 +37,6 @@ public class ExecuteScriptCommand extends AbsCommand {
             return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
 
         ArrayList<String> result = new ArrayList<>();
-
         String commandsStr = context.fileManager().getStrFromFile(args[0]);
 
         String[] commands = commandsStr.trim().split("\n");
@@ -49,11 +48,12 @@ public class ExecuteScriptCommand extends AbsCommand {
                 AbsCommand command = getCommand(ss[0]);
                 if (command == null) {
                     result.add("Not found command");
-                    break;
+                    continue;
                 }
                 command.setArgs(getCommandArgs(ss));
                 if (command.requireInput() == ICommand.TYPE_INPUT_DRAGON) {
-                    String[] inputsAfterInsert = Arrays.copyOfRange(commands, i + 1, commands.length);
+                    ArrayList<String> inputsAfterInsert = new ArrayList<>(Arrays.asList(Arrays.copyOfRange(commands, i + 1, commands.length)));
+                    inputsAfterInsert.add(0, String.valueOf(credentials.id));
                     command.addInput(factory.generateFromScript(inputsAfterInsert));
                     if (command.getInput() == null)
                         result.add("An input was not in the correct format or The number of inputs is different from the needed");
@@ -62,7 +62,7 @@ public class ExecuteScriptCommand extends AbsCommand {
                 }
                 result.add((String) command.execute(context, credentials));
                 if (dragonInputSuccess)
-                    i+=9;
+                    i+=8;
             } catch (DragonFormatException ex) {
                 result.add(ex.getMessage());
             } catch (NumberFormatException ex) {

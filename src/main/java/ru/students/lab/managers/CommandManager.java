@@ -89,7 +89,7 @@ public class CommandManager {
 
     private List<AbsCommand> getCommandsValues() {
         List<AbsCommand> l = new ArrayList<>();
-        commands.values().stream().forEach(e -> {
+        commands.values().forEach(e -> {
             if(!(e.getCommandKey().equals("help")) && !(e.getCommandKey().equals("man")))
                 l.add(e);
         });

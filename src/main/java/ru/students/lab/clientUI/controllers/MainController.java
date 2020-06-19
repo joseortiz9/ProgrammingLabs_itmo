@@ -1,6 +1,7 @@
 package ru.students.lab.clientUI.controllers;
 
 import com.jfoenix.controls.JFXTabPane;
+import javafx.beans.binding.ObjectExpression;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -188,15 +189,22 @@ public class MainController implements Initializable {
         command.setArgs(args);
         clientContext.clientChannel().sendCommand(new CommandPacket(command, clientContext.responseHandler().getCurrentUser().getCredentials(), bundle.getLocale()));
         Object response = clientContext.responseHandler().checkForResponse();
+        handleResponse(commandKey, response);
+    }
 
+    public void handleResponse(String commandKey, Object response) {
         if (response instanceof String) {
-            String result = "";
-            try {
-                result = bundle.getString((String)response);
-            } catch (NullPointerException | MissingResourceException ex) {
-                result = (String)response;
+            if (commandKey.equals("execute_script")) {
+                AlertMaker.showResponseScriptAlert(bundle.getString("tab.main.script.alert.title"), (String)response);
+            } else {
+                String result = "";
+                try {
+                    result = bundle.getString((String)response);
+                } catch (NullPointerException | MissingResourceException ex) {
+                    result = (String)response;
+                }
+                AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.request.result"), result);
             }
-            AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.request.result"), result);
             refreshLocalCollection();
             mainTabController.refreshData();
             mapTabController.refreshData();

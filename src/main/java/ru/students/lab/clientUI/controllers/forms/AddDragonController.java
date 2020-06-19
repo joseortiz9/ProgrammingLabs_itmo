@@ -3,7 +3,10 @@ package ru.students.lab.clientUI.controllers.forms;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.NumberValidator;
+import com.jfoenix.validation.RegexValidator;
 import com.jfoenix.validation.RequiredFieldValidator;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -70,32 +73,36 @@ public class AddDragonController implements Initializable {
         initValidators();
     }
 
+
     @FXML
     private void cancelOperation(ActionEvent event) {
         Stage stage = (Stage) rootPane.getScene().getWindow();
         stage.close();
     }
 
+
     public boolean validationGetsError() {
         return !(keyTextField.validate() && nameTextField.validate()
-                && validateAge() && validateX() && coordinateY.validate() && headTextField.validate());
+                && coordinateX.validate() && ageTextField.validate()
+                && coordinateY.validate() && colorBox.validate()
+                && typeBox.validate() && characterBox.validate() && headTextField.validate());
     }
+
 
     @FXML
     public void addDragon(ActionEvent actionEvent) {
         if (validationGetsError()) {
-            AlertMaker.showSimpleAlert(bundle.getString("tab.main.alert.validation.error.title"), bundle.getString("form.add.validation.msg"));
             return;
         }
 
         DragonHead head = new DragonHead(
-                (headTextField.getText().equals("null") || Double.parseDouble(headTextField.getText()) == 0)
+                (headTextField.getText().equals("null") || headTextField.getText().length() == 0)
                     ? null
-                    : (Double.parseDouble(headTextField.getText()))) ;
+                    : (Double.parseDouble(headTextField.getText())));
+
         Dragon dragon = new Dragon(
                 editingID,
                 Integer.parseInt(keyTextField.getText()),
-                
                 nameTextField.getText(),
                 new Coordinates(Long.parseLong(coordinateX.getText()), Float.parseFloat(coordinateY.getText())),
                 Long.parseLong(ageTextField.getText()),
@@ -110,6 +117,7 @@ public class AddDragonController implements Initializable {
         } else
             sendRequest(dragon, keyTextField.getText(), "insert");
     }
+
 
     public void sendRequest(Dragon input, String arg, String commandKey) {
         AbsCommand command = clientContext.commandManager().getCommand(commandKey);
@@ -136,6 +144,7 @@ public class AddDragonController implements Initializable {
         }
     }
 
+
     public void cleanEntries() {
         idLabel.setText("ID = ?");
         keyTextField.setText("");
@@ -148,6 +157,7 @@ public class AddDragonController implements Initializable {
         characterBox.getSelectionModel().clearSelection();
         headTextField.setText("");
     }
+
 
     public void inflateUI(DragonEntrySerializable dragon) {
         if (dragon.getDragon() == null) {
@@ -178,26 +188,24 @@ public class AddDragonController implements Initializable {
                 comboBox.setValue(t);
     }
 
+
     public void initValidators() {
-        NumberValidator numValidator = new NumberValidator();
-        RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
+        NumberValidator numValidator = new NumberValidator(bundle.getString("form.add.validation.format.msg"));
+        RequiredFieldValidator requiredValidator = new RequiredFieldValidator(bundle.getString("form.add.validation.required.msg"));
+        RegexValidator ageValidator = new RegexValidator(bundle.getString("form.add.validation.age.msg"));
+        ageValidator.setRegexPattern("^[1-9]\\d*$");
+        RegexValidator coordXValidator = new RegexValidator(bundle.getString("form.add.validation.coord.x.msg"));
+        coordXValidator.setRegexPattern("^-(32[0-7]|3[0-1]\\d|[1-2]\\d\\d|\\d{1,2})|\\d+$");
+
         keyTextField.getValidators().addAll(numValidator, requiredValidator);
         nameTextField.getValidators().addAll(requiredValidator);
-        coordinateX.getValidators().addAll(numValidator, requiredValidator);
+        coordinateX.getValidators().addAll(numValidator, requiredValidator, coordXValidator);
         coordinateY.getValidators().addAll(numValidator, requiredValidator);
-        ageTextField.getValidators().addAll(numValidator, requiredValidator);
+        ageTextField.getValidators().addAll(numValidator, requiredValidator, ageValidator);
+        colorBox.getValidators().addAll(requiredValidator);
+        typeBox.getValidators().addAll(requiredValidator);
+        characterBox.getValidators().addAll(requiredValidator);
         headTextField.getValidators().addAll(numValidator);
     }
 
-    public boolean validateAge() {
-        if (!ageTextField.validate())
-            return false;
-        return Integer.parseInt(ageTextField.getText()) > 0;
-    }
-
-    public boolean validateX() {
-        if (!coordinateX.validate())
-            return false;
-        return Integer.parseInt(coordinateX.getText()) > -328;
-    }
 }

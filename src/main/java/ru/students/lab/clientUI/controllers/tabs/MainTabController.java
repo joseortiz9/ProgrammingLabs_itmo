@@ -11,36 +11,25 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Callback;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.clientUI.AlertMaker;
-import ru.students.lab.clientUI.ClientContext;
 import ru.students.lab.clientUI.controllers.MainController;
-import ru.students.lab.clientUI.controllers.forms.AddDragonController;
 import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ICommand;
 import ru.students.lab.models.*;
-import ru.students.lab.network.CommandPacket;
 import ru.students.lab.util.DragonEntrySerializable;
 
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import java.io.File;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.time.ZonedDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -187,14 +176,12 @@ public class MainTabController implements Initializable {
     @FXML
     public void handleCommandWithFileButtonAction(ActionEvent actionEvent) {
         String commandCalled = ((Control)actionEvent.getSource()).getId();
-        TextInputDialog dialog = new TextInputDialog("example.txt");
-        dialog.setTitle(commandCalled);
-        String content = MessageFormat.format(bundle.getString("dashboard.alert.commandwithfile.content"), commandCalled);
-        dialog.setHeaderText(content);
-        dialog.setContentText(bundle.getString("dashboard.alert.commandwithfile.input.label"));
-        Optional<String> answer = dialog.showAndWait();
-        if (answer.isPresent()) {
-            mainController.sendRequest(commandCalled, new String[]{answer.get()});
+        String title = MessageFormat.format(bundle.getString("dashboard.alert.commandwithfile.content"), commandCalled);
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(title);
+        File selectedFile = fileChooser.showOpenDialog(dragonsTableView.getScene().getWindow());
+        if (selectedFile != null) {
+            mainController.sendRequest(commandCalled, new String[]{selectedFile.getAbsolutePath()});
         } else {
             AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.error.remove.cancelled.title"), bundle.getString("dashboard.alert.error.remove.cancelled.content"));
         }
@@ -211,11 +198,10 @@ public class MainTabController implements Initializable {
         alert.setTitle(bundle.getString("dashboard.alert.command.clear.title"));
         alert.setContentText(bundle.getString("dashboard.alert.command.clear.content"));
         Optional<ButtonType> answer = alert.showAndWait();
-        if (answer.get() == ButtonType.OK) {
+        if (answer.get() == ButtonType.OK)
             mainController.sendRequest("clear", null);
-        } else {
+        else
             AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.error.remove.cancelled.title"), bundle.getString("dashboard.alert.error.remove.cancelled.content"));
-        }
     }
 
     @FXML

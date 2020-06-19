@@ -31,47 +31,47 @@
                         </Label>
                         <JFXTextField fx:id="keyTextField" labelFloat="true" promptText="%form.add.input.key">
                             <VBox.margin>
-                                <Insets left="10.0" right="10.0" top="20.0"/>
+                                <Insets left="10.0" right="10.0" top="25.0"/>
                             </VBox.margin>
                         </JFXTextField>
                         <JFXTextField fx:id="nameTextField" labelFloat="true" promptText="%form.add.input.name">
                             <VBox.margin>
-                                <Insets left="10.0" right="10.0" top="20.0"/>
+                                <Insets left="10.0" right="10.0" top="25.0"/>
                             </VBox.margin>
                         </JFXTextField>
                         <JFXTextField fx:id="coordinateX" labelFloat="true" promptText="%form.add.input.coordinate.x">
                             <VBox.margin>
-                                <Insets left="10.0" right="10.0" top="20.0"/>
+                                <Insets left="10.0" right="10.0" top="25.0"/>
                             </VBox.margin>
                         </JFXTextField>
                         <JFXTextField fx:id="coordinateY" labelFloat="true" promptText="%form.add.input.coordinate.y">
                             <VBox.margin>
-                                <Insets left="10.0" right="10.0" top="20.0"/>
+                                <Insets left="10.0" right="10.0" top="25.0"/>
                             </VBox.margin>
                         </JFXTextField>
                         <JFXTextField fx:id="ageTextField" labelFloat="true" promptText="%form.add.input.age">
                             <VBox.margin>
-                                <Insets left="10.0" right="10.0" top="20.0"/>
+                                <Insets left="10.0" right="10.0" top="25.0"/>
                             </VBox.margin>
                         </JFXTextField>
                         <JFXComboBox fx:id="colorBox" labelFloat="true" promptText="%form.add.input.color">
                             <VBox.margin>
-                                <Insets left="10.0" right="10.0" top="20.0"/>
+                                <Insets left="10.0" right="10.0" top="25.0"/>
                             </VBox.margin>
                         </JFXComboBox>
                         <JFXComboBox fx:id="typeBox" labelFloat="true" promptText="%form.add.input.type">
                             <VBox.margin>
-                                <Insets left="10.0" right="10.0" top="20.0"/>
+                                <Insets left="10.0" right="10.0" top="25.0"/>
                             </VBox.margin>
                         </JFXComboBox>
                         <JFXComboBox fx:id="characterBox" labelFloat="true" promptText="%form.add.input.character">
                             <VBox.margin>
-                                <Insets left="10.0" right="10.0" top="20.0"/>
+                                <Insets left="10.0" right="10.0" top="25.0"/>
                             </VBox.margin>
                         </JFXComboBox>
                         <JFXTextField fx:id="headTextField" labelFloat="true" promptText="%form.add.input.head">
                             <VBox.margin>
-                                <Insets left="10.0" right="10.0" top="20.0"/>
+                                <Insets left="10.0" right="10.0" top="25.0"/>
                             </VBox.margin>
                         </JFXTextField>
                         <HBox alignment="CENTER" prefHeight="47.0" prefWidth="404.0" spacing="30.0">

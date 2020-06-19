@@ -36,10 +36,9 @@ public class ExecuteScriptCommand extends AbsCommand {
         if (context.DBRequestManager().credentialsNotExist(credentials))
             return new Credentials(-1, UserModel.DEFAULT_USERNAME, "");
 
-        ArrayList<Object> result = new ArrayList<Object>();
+        ArrayList<String> result = new ArrayList<>();
 
-        String pathToFile = Paths.get(args[0]).toAbsolutePath().toString();
-        String commandsStr = context.fileManager().getStrFromFile(pathToFile);
+        String commandsStr = context.fileManager().getStrFromFile(args[0]);
 
         String[] commands = commandsStr.trim().split("\n");
         for (int i = 0; i < commands.length; i++) {
@@ -61,7 +60,7 @@ public class ExecuteScriptCommand extends AbsCommand {
                     else
                         dragonInputSuccess = true;
                 }
-                result.add(command.execute(context, credentials));
+                result.add((String) command.execute(context, credentials));
                 if (dragonInputSuccess)
                     i+=9;
             } catch (DragonFormatException ex) {
@@ -72,7 +71,7 @@ public class ExecuteScriptCommand extends AbsCommand {
                 result.add("server.response.error.amount.arguments");
             }
         }
-        return result;
+        return String.join("\n ", result);
     }
 
     private AbsCommand getCommand(String s) {

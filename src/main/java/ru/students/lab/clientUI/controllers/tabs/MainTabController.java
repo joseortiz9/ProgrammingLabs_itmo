@@ -27,6 +27,7 @@ import ru.students.lab.commands.AbsCommand;
 import ru.students.lab.commands.ICommand;
 import ru.students.lab.models.*;
 import ru.students.lab.util.DragonEntrySerializable;
+import ru.students.lab.util.FxUtils;
 
 import java.io.File;
 import java.net.URL;
@@ -43,7 +44,6 @@ public class MainTabController implements Initializable {
 
     private final ObservableList<DragonEntrySerializable> dragonsList = FXCollections.observableArrayList();
 
-    @FXML public GridPane commandsBtnGrid;
     @FXML public JFXTextField inputDragonSearch;
     @FXML public JFXTextField inputKeyDragon;
     @FXML public TableView<DragonEntrySerializable> dragonsTableView;
@@ -59,7 +59,6 @@ public class MainTabController implements Initializable {
     @FXML public TableColumn<DragonEntrySerializable, DragonHead> headCol;
     private ResourceBundle bundle;
 
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM HH:mm z");
     private final MainController mainController;
 
     public MainTabController(MainController mainController) {
@@ -111,7 +110,7 @@ public class MainTabController implements Initializable {
                 if(empty)
                     setText(null);
                 else
-                    this.setText(dateFormatter.format(item));
+                    this.setText(FxUtils.formatZonedDateTimeValue(item));
             }
         };
     }

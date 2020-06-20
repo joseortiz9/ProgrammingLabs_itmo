@@ -1,7 +1,7 @@
 package ru.students.lab.clientUI.controllers;
 
 import com.jfoenix.controls.JFXTabPane;
-import javafx.beans.binding.ObjectExpression;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -26,12 +26,29 @@ import ru.students.lab.database.UserModel;
 import ru.students.lab.network.CommandPacket;
 import ru.students.lab.util.DragonEntrySerializable;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.channels.ClosedChannelException;
 import java.text.MessageFormat;
 import java.util.*;
 
 public class MainController implements Initializable {
+
+    public class CollectionRefresher extends Thread {
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    Thread.sleep(2500);
+                    refreshInterface();
+                } catch (InterruptedException e) {
+                    LOG.error("I/O Problems", e);
+                }
+            }
+        }
+    }
 
     private static final Logger LOG = LogManager.getLogger(MainController.class);
 
@@ -41,6 +58,7 @@ public class MainController implements Initializable {
     @FXML private Tab mainTab, mapTab, helpTab;
     private ResourceBundle bundle;
 
+    public final CollectionRefresher refresherThread;
     private final ClientContext clientContext;
     private MenubarController menubarController;
     private MainTabController mainTabController;
@@ -48,12 +66,16 @@ public class MainController implements Initializable {
 
     public MainController(ClientContext clientContext) {
         this.clientContext = clientContext;
+        this.refresherThread = new CollectionRefresher();
+        refresherThread.setName("CollectionRefresherThread");
+        refresherThread.setDaemon(true);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bundle = resources;
         loadComponents();
+        refresherThread.start();
     }
 
     public void loadComponents() {
@@ -103,22 +125,38 @@ public class MainController implements Initializable {
         }
     }
 
+    public void refreshInterface() {
+        if (refreshLocalCollection()) {
+            Platform.runLater(() -> {
+                mainTabController.refreshData();
+                mapTabController.refreshData();
+            });
+        }
+    }
 
-    public void refreshLocalCollection() {
-        clientContext.localCollection().getLocalList().clear();
+
+    public boolean refreshLocalCollection() {
+        boolean changeMade = false;
         AbsCommand command = clientContext.commandManager().getCommand("show");
         clientContext.clientChannel().sendCommand(new CommandPacket(command, clientContext.responseHandler().getCurrentUser().getCredentials(), bundle.getLocale()));
 
         Object response = clientContext.responseHandler().checkForResponse();
 
         if (response instanceof List) {
-            clientContext.localCollection().getLocalList().addAll((List<DragonEntrySerializable>) response);
+            List<DragonEntrySerializable> receivedList = (List<DragonEntrySerializable>) response;
+            if (clientContext.localCollection().getLocalList().size() != receivedList.size()) {
+                clientContext.localCollection().getLocalList().clear();
+                clientContext.localCollection().getLocalList().addAll(receivedList);
+                changeMade = true;
+            }
 
             LOG.info("Successfully fetched collection: {} elements", clientContext.localCollection().getLocalList().size());
             clientContext.responseHandler().setReceivedObjectToNull();
         } else {
             AlertMaker.showErrorMessage(bundle.getString("dashboard.controller.error.fetching"), (String)response);
         }
+
+        return changeMade;
     }
 
 
@@ -153,11 +191,7 @@ public class MainController implements Initializable {
             stage.setScene(new Scene(parent));
             stage.show();
 
-            stage.setOnHiding((e) -> {
-                refreshLocalCollection();
-                mainTabController.refreshData();
-                mapTabController.refreshData();
-            });
+            stage.setOnHiding((e) -> refreshInterface());
 
         } catch (IOException ex) {
             LOG.error("error trying to edit/insert a dragon, ", ex);
@@ -199,9 +233,7 @@ public class MainController implements Initializable {
             } else {
                 AlertMaker.showSimpleAlert(bundle.getString("dashboard.alert.request.result"), (String) response);
             }
-            refreshLocalCollection();
-            mainTabController.refreshData();
-            mapTabController.refreshData();
+            refreshInterface();
             clientContext.responseHandler().setReceivedObjectToNull();
             LOG.info("Result of the command {}: {}", commandKey, (String) response);
         }

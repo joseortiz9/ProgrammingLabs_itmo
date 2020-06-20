@@ -95,27 +95,31 @@ public class AddDragonController implements Initializable {
             return;
         }
 
-        DragonHead head = new DragonHead(
-                (headTextField.getText().equals("null") || headTextField.getText().length() == 0)
-                    ? null
-                    : (Double.parseDouble(headTextField.getText())));
+        try {
+            DragonHead head = new DragonHead(
+                    (headTextField.getText().equals("null") || headTextField.getText().length() == 0)
+                            ? null
+                            : (Double.parseDouble(headTextField.getText())));
 
-        Dragon dragon = new Dragon(
-                editingID,
-                Integer.parseInt(keyTextField.getText()),
-                nameTextField.getText(),
-                new Coordinates(Long.parseLong(coordinateX.getText()), Float.parseFloat(coordinateY.getText())),
-                Long.parseLong(ageTextField.getText()),
-                Color.valueOf(colorBox.getSelectionModel().getSelectedItem().getText()),
-                DragonType.valueOf(typeBox.getSelectionModel().getSelectedItem().getText()),
-                DragonCharacter.valueOf(characterBox.getSelectionModel().getSelectedItem().getText()),
-                head);
+            Dragon dragon = new Dragon(
+                    editingID,
+                    Integer.parseInt(keyTextField.getText()),
+                    nameTextField.getText(),
+                    new Coordinates(Long.parseLong(coordinateX.getText()), Float.parseFloat(coordinateY.getText())),
+                    Long.parseLong(ageTextField.getText()),
+                    Color.valueOf(colorBox.getSelectionModel().getSelectedItem().getText()),
+                    DragonType.valueOf(typeBox.getSelectionModel().getSelectedItem().getText()),
+                    DragonCharacter.valueOf(characterBox.getSelectionModel().getSelectedItem().getText()),
+                    head);
 
-        if (editMode) {
-            sendRequest(dragon, dragon.getId().toString(), "update");
-            editMode = false;
-        } else
-            sendRequest(dragon, keyTextField.getText(), "insert");
+            if (editMode) {
+                sendRequest(dragon, dragon.getId().toString(), "update");
+                editMode = false;
+            } else
+                sendRequest(dragon, keyTextField.getText(), "insert");
+        } catch (NumberFormatException ex) {
+            AlertMaker.showErrorMessage(bundle.getString("tab.main.alert.validation.error.title"), bundle.getString("tab.main.alert.validation.error.content"));
+        }
     }
 
 

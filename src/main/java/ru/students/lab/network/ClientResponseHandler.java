@@ -87,6 +87,7 @@ public class ClientResponseHandler {
         LOG.info("starting receiver");
         receiverThread = new ResponseReceiver();
         receiverThread.setName("ClientReceiverThread");
+        receiverThread.setDaemon(true);
         receiverThread.start();
     }
 

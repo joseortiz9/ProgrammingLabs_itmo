@@ -40,6 +40,7 @@ public class DashboardLoader implements Initializable {
         mainController.setBundle(bundle);
         final Runnable fetchData = mainController::refreshLocalCollection;
         loadSplashScreen();
+
         new Thread(fetchData).start();
     }
 

@@ -240,6 +240,7 @@ public class CollectionManager {
                 .entrySet()
                 .stream()
                 .map(e -> new DragonEntrySerializable(e.getKey(), e.getValue()))
+                .sorted()
                 .collect(Collectors.toList());
     }
 

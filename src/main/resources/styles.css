@@ -29,6 +29,12 @@
     -fx-text-fill: -fx-primarytext;
 }
 
+.detail-dragon {
+    -fx-text-fill: -fx-primarytext;
+    -fx-font-size: 18;
+    -fx-padding: 10 15 3 0;
+}
+
 .button {
     -fx-text-fill: -fx-primarytext;
     -fx-background-color: -fx-primary;

@@ -36,6 +36,7 @@ import ru.students.lab.util.FxUtils;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -168,9 +169,12 @@ public class MapTabController implements Initializable {
                 continue;
 
             dragonField.setAccessible(true);
-            String str = bundle.getString("tab.main.table.col." + dragonField.getName());
-            final Label attrTemp = new Label(str + ": " + dragonField.get(selectedDragon.getDragon()).toString());
-            attrTemp.getStyleClass().add("simple-text");
+            String title = bundle.getString("tab.main.table.col." + dragonField.getName());
+            String content = dragonField.get(selectedDragon.getDragon()).toString();
+            if (dragonField.getName().equalsIgnoreCase("creationDate"))
+                content = FxUtils.formatZonedDateTimeValue((ZonedDateTime) dragonField.get(selectedDragon.getDragon()));
+            final Label attrTemp = new Label(title + ": " + content);
+            attrTemp.getStyleClass().add("detail-dragon");
             if (x == 2) {
                 y++;
                 x = 0;

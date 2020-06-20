@@ -1,47 +1,29 @@
 package ru.students.lab.clientUI.controllers.tabs;
 
 import com.jfoenix.controls.JFXButton;
-import javafx.animation.FadeTransition;
-import javafx.animation.RotateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.clientUI.AlertMaker;
-import ru.students.lab.clientUI.ClientContext;
 import ru.students.lab.clientUI.canvas.AbsResizableCanvas;
 import ru.students.lab.clientUI.canvas.ResizableDragonPictureCanvas;
 import ru.students.lab.clientUI.canvas.ResizableMapCanvas;
 import ru.students.lab.clientUI.controllers.MainController;
-import ru.students.lab.clientUI.controllers.forms.AddDragonController;
-import ru.students.lab.commands.AbsCommand;
-import ru.students.lab.models.Dragon;
 import ru.students.lab.models.DragonType;
-import ru.students.lab.network.CommandPacket;
 import ru.students.lab.util.DragonEntrySerializable;
 import ru.students.lab.util.FxUtils;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MapTabController implements Initializable {
@@ -191,7 +173,7 @@ public class MapTabController implements Initializable {
             String title = bundle.getString("tab.main.table.col." + dragonField.getName());
             String content = dragonField.get(selectedDragon.getDragon()).toString();
             if (dragonField.getName().equalsIgnoreCase("creationDate"))
-                content = FxUtils.formatZonedDateTimeValue((ZonedDateTime) dragonField.get(selectedDragon.getDragon()));
+                content = FxUtils.formatZonedDateTimeValue((ZonedDateTime) dragonField.get(selectedDragon.getDragon()), bundle.getLocale());
             final Label attrTemp = new Label(title + ": " + content);
             attrTemp.getStyleClass().add("detail-dragon");
             if (x == 2) {

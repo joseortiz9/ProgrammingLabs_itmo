@@ -1,12 +1,8 @@
 package ru.students.lab.clientUI.controllers.tabs;
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.NumberValidator;
 import com.jfoenix.validation.RequiredFieldValidator;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -16,9 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.clientUI.AlertMaker;
@@ -32,9 +26,7 @@ import ru.students.lab.util.FxUtils;
 import java.io.File;
 import java.net.URL;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -110,7 +102,7 @@ public class MainTabController implements Initializable {
                 if(empty)
                     setText(null);
                 else
-                    this.setText(FxUtils.formatZonedDateTimeValue(item));
+                    this.setText(FxUtils.formatZonedDateTimeValue(item, bundle.getLocale()));
             }
         };
     }

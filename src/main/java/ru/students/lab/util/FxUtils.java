@@ -2,12 +2,13 @@ package ru.students.lab.util;
 
 import javafx.scene.paint.Color;
 
+import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Locale;
 
 public class FxUtils {
-
-    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM HH:mm z");
 
     public static String toHexString(Color value) {
         return "#" + (format(value.getRed()) + format(value.getGreen()) + format(value.getBlue()) + format(value.getOpacity()))
@@ -18,7 +19,8 @@ public class FxUtils {
         return in.length() == 1 ? "0" + in : in;
     }
 
-    public static String formatZonedDateTimeValue(ZonedDateTime time) {
+    public static String formatZonedDateTimeValue(ZonedDateTime time, Locale locale) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MMM HH:mm z").withLocale(locale);
         return dateFormatter.format(time);
     }
 }

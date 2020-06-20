@@ -101,6 +101,7 @@ public class ResizableMapCanvas extends AbsResizableCanvas {
         drawEyes(gc, dragon, size, x, y);
         drawCharacter(gc, dragon, size, x, y);
     }
+
     private double setSize(DragonEntrySerializable dragon) {
         if (dragon.getAge()<50) return 0.05D*min/400;
         if (dragon.getAge() > 1000) {
@@ -173,15 +174,15 @@ public class ResizableMapCanvas extends AbsResizableCanvas {
     public void animateEntry(DragonEntrySerializable dragon) {
         double x = ((dragon.getDragon().getCoordinates().getX() + scale / 2.0) * (min / scale));
         double y = ((scale / 2.0 - dragon.getDragon().getCoordinates().getY()) * (min / scale));
-        Circle circle = new Circle(x, y, 20/*setSize(dragon)*/, Color.valueOf(dragon.getColor().toString()));
+        Circle circle = new Circle(x, y, setSize(dragon) * 120, Color.valueOf(dragon.getColor().toString()));
         wrapperMapPane.getChildren().add(circle);
-        FadeTransition fadeIn = new FadeTransition(Duration.seconds(4), circle);
-        fadeIn.setFromValue(0);
-        fadeIn.setToValue(1);
-        fadeIn.setCycleCount(1);
-        fadeIn.play();
+        FadeTransition fadeOut = new FadeTransition(Duration.seconds(4), circle);
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+        fadeOut.setCycleCount(1);
+        fadeOut.play();
 
-        fadeIn.setOnFinished(e -> {
+        fadeOut.setOnFinished(e -> {
             wrapperMapPane.getChildren().remove(circle);
             drawDragons(dragon);
         });

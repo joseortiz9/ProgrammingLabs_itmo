@@ -42,7 +42,7 @@ public class MainController implements Initializable {
         public void run() {
             while (true) {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(3000);
                     refreshInterface();
                 } catch (InterruptedException e) {
                     LOG.error("I/O Problems", e);

@@ -103,7 +103,7 @@ public class AddDragonController implements Initializable {
 
             Dragon dragon = new Dragon(
                     editingID,
-                    Integer.parseInt(keyTextField.getText()),
+                    clientContext.responseHandler().getCurrentUser().getCredentials().id,
                     nameTextField.getText(),
                     new Coordinates(Long.parseLong(coordinateX.getText()), Float.parseFloat(coordinateY.getText())),
                     Long.parseLong(ageTextField.getText()),

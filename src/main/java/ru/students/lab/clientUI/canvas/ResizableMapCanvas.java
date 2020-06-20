@@ -1,27 +1,35 @@
 package ru.students.lab.clientUI.canvas;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 import ru.students.lab.util.DragonEntrySerializable;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 public class ResizableMapCanvas extends AbsResizableCanvas {
 
     private static final int SCREEN_START_MARGIN_ERROR_X = 10;
     private static final int SCREEN_START_MARGIN_ERROR_Y = 90;
 
-    private ArrayList<DragonEntrySerializable> dragonsList = new ArrayList<>();
-    private int lastID = -1;
-    private int actualUserID = -1;
+    public ArrayList<DragonEntrySerializable> dragonsList = new ArrayList<>();
     private double scale = 0;
+    private GraphicsContext gc;
+    private double min;
+    private final Pane wrapperMapPane;
 
-    public ResizableMapCanvas(ArrayList<DragonEntrySerializable> dragonsList, int actualUserID) {
+    public ResizableMapCanvas(ArrayList<DragonEntrySerializable> dragonsList, Pane wrapperMapPane) {
         super();
         this.dragonsList = dragonsList;
-        this.actualUserID = actualUserID;
+        this.wrapperMapPane = wrapperMapPane;
     }
 
     @Override
@@ -51,9 +59,9 @@ public class ResizableMapCanvas extends AbsResizableCanvas {
     public void draw() {
         double width = getWidth();
         double height = getHeight();
-        double min = Math.min(width, height);
+        min = Math.min(width, height);
 
-        GraphicsContext gc = getGraphicsContext2D();
+        gc = getGraphicsContext2D();
         gc.clearRect(0, 0, width, height);
 
         // scale the map
@@ -76,24 +84,16 @@ public class ResizableMapCanvas extends AbsResizableCanvas {
         gc.fillText(String.valueOf((int)(scale*2/2.2 / 4)), min * 3.0 / 4.0, min / 2 + 20);
 
         // Draw dragons
-        dragonsList.stream().sorted(Comparator.comparingInt(o -> o.getDragon().getUserID()))
-                .forEach(d -> drawDragons(gc, d, min));
+        dragonsList.forEach(this::drawDragons);
     }
 
-    private void drawDragons(GraphicsContext gc, DragonEntrySerializable dragon, double width) {
-        if (actualUserID == dragon.getDragon().getUserID()) {
-            drawDragon(((dragon.getDragon().getCoordinates().getX() + scale / 2.0) * (width / scale)),
-                    ((scale / 2.0 - dragon.getDragon().getCoordinates().getY()) * (width / scale)), gc,  dragon, width);
-        }
-        else {
-            drawDragon(((dragon.getDragon().getCoordinates().getX() + scale / 2.0) * (width / scale)),
-                    ((scale / 2.0 - dragon.getDragon().getCoordinates().getY()) * (width / scale)), gc,  dragon, width);
-        }
-        lastID = dragon.getDragon().getUserID();
+    private void drawDragons(DragonEntrySerializable dragon) {
+            drawDragon(((dragon.getDragon().getCoordinates().getX() + scale / 2.0) * (min / scale)),
+                    ((scale / 2.0 - dragon.getDragon().getCoordinates().getY()) * (min / scale)), gc,  dragon);
     }
 
-    public void drawDragon(double x, double y, GraphicsContext gc, DragonEntrySerializable dragon, double width) {
-        double size = setSize(dragon, width);
+    public void drawDragon(double x, double y, GraphicsContext gc, DragonEntrySerializable dragon) {
+        double size = setSize(dragon);
         x = x - size*120/2D;
         y = y - size*120/2D;
         gc.setFill(Color.valueOf(dragon.getColor().toString()));
@@ -101,12 +101,12 @@ public class ResizableMapCanvas extends AbsResizableCanvas {
         drawEyes(gc, dragon, size, x, y);
         drawCharacter(gc, dragon, size, x, y);
     }
-    private Double setSize(DragonEntrySerializable dragon, double width) {
-        if (dragon.getAge()<50) return 0.05D*width/400;
-        if (dragon.getAge() > 1000){
-            return 1D*width/400;
+    private double setSize(DragonEntrySerializable dragon) {
+        if (dragon.getAge()<50) return 0.05D*min/400;
+        if (dragon.getAge() > 1000) {
+            return 1D*min/400;
         }
-        return dragon.getAge()*width/400000D;
+        return dragon.getAge()*min/400000D;
     }
 
     private void drawEyes(GraphicsContext gc, DragonEntrySerializable dragon, double size, double x, double y) {
@@ -115,8 +115,8 @@ public class ResizableMapCanvas extends AbsResizableCanvas {
         double numEyesToDraw = (dragon.getHead().getEyesCount() == null)
                 ? 0D
                 : ((dragon.getHead().getEyesCount() > 200)
-                ? 200D
-                : dragon.getHead().getEyesCount());
+                    ? 200D
+                    : dragon.getHead().getEyesCount());
         for (int i = 0; i < numEyesToDraw; i++) {
             int xeyes = (int)(40+Math.random()*30);
             int yeyes = (int)(40+Math.random()*20);
@@ -167,5 +167,23 @@ public class ResizableMapCanvas extends AbsResizableCanvas {
         gc.fillOval(65 * size + x, 110 * size + y, 20 * size, 40 * size);
         gc.fillPolygon(new double[]{70 * size + x, 80 * size + x, 110 * size + x, 100 * size + x, 115 * size + x, 90 * size + x, 105 * size + x, 70 * size + x}, new double[]{110 * size + y, 70 * size + y, 65 * size + y, 75 * size + y, 80 * size + y, 88 * size + y, 98 * size + y, 110 * size + y}, 8);
         gc.fillPolygon(new double[]{45 * size + x, 35 * size + x, 5 * size + x, 15 * size + x, 0 * size + x, 25 * size + x, 10 * size + x, 45 * size + x}, new double[]{110 * size + y, 70 * size + y, 65 * size + y, 75 * size + y, 80 * size + y, 88 * size + y, 98 * size + y, 110 * size + y}, 8);
+    }
+
+    @Override
+    public void animateEntry(DragonEntrySerializable dragon) {
+        double x = ((dragon.getDragon().getCoordinates().getX() + scale / 2.0) * (min / scale));
+        double y = ((scale / 2.0 - dragon.getDragon().getCoordinates().getY()) * (min / scale));
+        Circle circle = new Circle(x, y, 20/*setSize(dragon)*/, Color.valueOf(dragon.getColor().toString()));
+        wrapperMapPane.getChildren().add(circle);
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(4), circle);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+        fadeIn.setCycleCount(1);
+        fadeIn.play();
+
+        fadeIn.setOnFinished(e -> {
+            wrapperMapPane.getChildren().remove(circle);
+            drawDragons(dragon);
+        });
     }
 }

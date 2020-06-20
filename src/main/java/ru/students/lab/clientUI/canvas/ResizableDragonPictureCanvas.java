@@ -1,8 +1,11 @@
 package ru.students.lab.clientUI.canvas;
 
+import javafx.animation.RotateTransition;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import ru.students.lab.models.Dragon;
+import ru.students.lab.util.DragonEntrySerializable;
 
 public class ResizableDragonPictureCanvas extends AbsResizableCanvas {
 
@@ -110,5 +113,16 @@ public class ResizableDragonPictureCanvas extends AbsResizableCanvas {
         gc.fillPolygon(new double[]{70, 80, 110, 100, 115, 90, 105, 70}, new double[]{110, 70, 65, 75, 80, 88, 98, 110}, 8);
         gc.fillPolygon(new double[]{45, 35, 5, 15, 0, 25, 10, 45}, new double[]{110, 70, 65, 75, 80, 88, 98, 110}, 8);
         gc.fillPolygon(new double[]{45, 35, 5, 15, 0, 25, 10, 45}, new double[]{110, 70, 65, 75, 80, 88, 98, 110}, 8);
+    }
+
+    @Override
+    public void animateEntry(DragonEntrySerializable dragon) {
+        RotateTransition rotateTransition = new RotateTransition();
+        rotateTransition.setDuration(Duration.millis(200));
+        rotateTransition.setNode(this);
+        rotateTransition.setByAngle(360);
+        rotateTransition.setCycleCount(1);
+        rotateTransition.setAutoReverse(false);
+        rotateTransition.play();
     }
 }

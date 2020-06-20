@@ -56,4 +56,12 @@ public class DragonEntrySerializable implements Serializable {
     public Integer getUserID() {
         return dragon.getUserID();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof DragonEntrySerializable)) return false;
+        if (obj == this) return true;
+        DragonEntrySerializable objDragon = (DragonEntrySerializable) obj;
+        return this.getKey() == objDragon.getKey() && this.getDragon().equals(objDragon.getDragon());
+    }
 }

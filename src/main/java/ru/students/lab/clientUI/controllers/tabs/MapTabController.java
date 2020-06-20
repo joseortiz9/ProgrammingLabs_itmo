@@ -1,6 +1,7 @@
 package ru.students.lab.clientUI.controllers.tabs;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -66,8 +68,7 @@ public class MapTabController implements Initializable {
         bundle = resources;
 
         // Map canvas init
-        int actualUserID = mainController.getContext().responseHandler().getCurrentUser().getCredentials().id;
-        dragonsMapCanvas = new ResizableMapCanvas(dragonsList, actualUserID);
+        dragonsMapCanvas = new ResizableMapCanvas(dragonsList, wrapperMapPane);
         wrapperMapPane.getChildren().add(dragonsMapCanvas);
         dragonsMapCanvas.widthProperty().bind(wrapperMapPane.widthProperty());
         dragonsMapCanvas.heightProperty().bind(wrapperMapPane.heightProperty());
@@ -86,12 +87,37 @@ public class MapTabController implements Initializable {
     }
 
     public void refreshData() {
-        dragonsList.clear();
-        dragonsList.addAll(mainController.getContext().localCollection().getLocalList());
-        dragonsMapCanvas.setObj(mainController.getContext().localCollection().getLocalList());
-        dragonsMapCanvas.draw();
+        if (needAddDragon() && dragonsList.size() > 0)
+            checkForNewDragons();
+        else {
+            dragonsList.clear();
+            dragonsList.addAll(mainController.getContext().localCollection().getLocalList());
+            dragonsMapCanvas.setObj(mainController.getContext().localCollection().getLocalList());
+            dragonsMapCanvas.draw();
+        }
         if (selectedDragon != null)
             updateDragonDetails();
+    }
+
+    public boolean needAddDragon() {
+        return dragonsList.size() < mainController.getContext().localCollection().getLocalList().size();
+    }
+
+    public void checkForNewDragons() {
+        List<DragonEntrySerializable> diff = new ArrayList<>();
+        outer: for (DragonEntrySerializable fetched : mainController.getContext().localCollection().getLocalList()) {
+            for (DragonEntrySerializable elemMap : dragonsList)
+                if (fetched.equals(elemMap))
+                    continue outer;
+            diff.add(fetched);
+        }
+
+        for (DragonEntrySerializable newElem : diff) {
+            System.out.println(newElem.toString());
+            dragonsList.add(newElem);
+            ((List<DragonEntrySerializable>) dragonsMapCanvas.getObj()).add(newElem);
+            dragonsMapCanvas.animateEntry(newElem);
+        }
     }
 
     public void updateDragonDetails() {
@@ -151,14 +177,7 @@ public class MapTabController implements Initializable {
             dragonPicturePane.setStyle("-fx-background-color: " + FxUtils.toHexString(Color.MAROON));
         }
 
-        //TODO: FIX ANIMATION
-        RotateTransition rotateTransition = new RotateTransition();
-        rotateTransition.setDuration(Duration.millis(200));
-        rotateTransition.setNode(dragonPictureCanvas);
-        rotateTransition.setByAngle(360);
-        rotateTransition.setCycleCount(1);
-        rotateTransition.setAutoReverse(false);
-        rotateTransition.play();
+        dragonPictureCanvas.animateEntry(selectedDragon);
     }
 
     private void loadingDragonFields() throws IllegalAccessException {

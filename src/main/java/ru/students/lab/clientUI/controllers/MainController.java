@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.students.lab.clientUI.AlertMaker;
 import ru.students.lab.clientUI.ClientContext;
+import ru.students.lab.clientUI.LocalCollectionManager;
 import ru.students.lab.clientUI.controllers.forms.AddDragonController;
 import ru.students.lab.clientUI.controllers.menu.MenubarController;
 import ru.students.lab.clientUI.controllers.tabs.HelpTabController;
@@ -41,7 +42,7 @@ public class MainController implements Initializable {
         public void run() {
             while (true) {
                 try {
-                    Thread.sleep(2500);
+                    Thread.sleep(2000);
                     refreshInterface();
                 } catch (InterruptedException e) {
                     LOG.error("I/O Problems", e);
@@ -68,6 +69,7 @@ public class MainController implements Initializable {
         this.clientContext = clientContext;
         this.refresherThread = new CollectionRefresher();
         refresherThread.setName("CollectionRefresherThread");
+        refresherThread.setPriority(Thread.MIN_PRIORITY);
         refresherThread.setDaemon(true);
     }
 
@@ -83,6 +85,10 @@ public class MainController implements Initializable {
             menubarController = new MenubarController(this);
             mainTabController = new MainTabController(this);
             mapTabController = new MapTabController(this);
+
+            mainTab.setText(bundle.getString("dashboard.tab.main.title"));
+            mapTab.setText(bundle.getString("dashboard.tab.map.title"));
+            helpTab.setText(bundle.getString("dashboard.tab.help.title"));
 
             // Menu loader
             FXMLLoader menuLoader = new FXMLLoader(getClass().getResource("/views/menu/menubar.fxml"));
@@ -125,7 +131,7 @@ public class MainController implements Initializable {
         }
     }
 
-    public void refreshInterface() {
+    public synchronized void refreshInterface() {
         if (refreshLocalCollection()) {
             Platform.runLater(() -> {
                 mainTabController.refreshData();
@@ -144,7 +150,7 @@ public class MainController implements Initializable {
 
         if (response instanceof List) {
             List<DragonEntrySerializable> receivedList = (List<DragonEntrySerializable>) response;
-            if (clientContext.localCollection().getLocalList().size() != receivedList.size()) {
+            if (!clientContext.localCollection().equals(new LocalCollectionManager(receivedList))) {
                 clientContext.localCollection().getLocalList().clear();
                 clientContext.localCollection().getLocalList().addAll(receivedList);
                 changeMade = true;
@@ -152,8 +158,6 @@ public class MainController implements Initializable {
 
             LOG.info("Successfully fetched collection: {} elements", clientContext.localCollection().getLocalList().size());
             clientContext.responseHandler().setReceivedObjectToNull();
-        } else {
-            AlertMaker.showErrorMessage(bundle.getString("dashboard.controller.error.fetching"), (String)response);
         }
 
         return changeMade;

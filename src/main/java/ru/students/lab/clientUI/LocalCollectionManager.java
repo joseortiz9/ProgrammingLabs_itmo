@@ -5,6 +5,7 @@ import ru.students.lab.util.DragonEntrySerializable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class LocalCollectionManager {
     private final List<DragonEntrySerializable> localList;
@@ -33,5 +34,39 @@ public class LocalCollectionManager {
 
     public List<DragonEntrySerializable> getLocalList() {
         return localList;
+    }
+
+
+    public long getSumNumFields() {
+        return localList.stream()
+                .mapToLong(e ->
+                        (long) (e.getCoordinates().getX()
+                                + e.getCoordinates().getY()
+                                + e.getAge()))
+                .sum();
+    }
+
+    public long getSumNames() {
+        return localList.stream()
+                .mapToLong(e ->
+                        (long) (e.getDragon().getName().length())
+                                + e.getDragon().getColor().ordinal()
+                                + e.getDragon().getType().ordinal()
+                                + e.getDragon().getCharacter().ordinal())
+                .sum() << 2;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LocalCollectionManager that = (LocalCollectionManager) o;
+        return this.getSumNumFields() == that.getSumNumFields() &&
+                this.getSumNames() == that.getSumNames();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(localList);
     }
 }

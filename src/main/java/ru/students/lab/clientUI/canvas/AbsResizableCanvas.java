@@ -1,6 +1,7 @@
 package ru.students.lab.clientUI.canvas;
 
 import javafx.scene.canvas.Canvas;
+import ru.students.lab.util.DragonEntrySerializable;
 
 public abstract class AbsResizableCanvas extends Canvas {
 
@@ -16,6 +17,8 @@ public abstract class AbsResizableCanvas extends Canvas {
 
     public abstract void setObj(Object obj);
     public abstract Object getObj();
+
+    public abstract void animateEntry(DragonEntrySerializable object);
 
     @Override
     public boolean isResizable() {

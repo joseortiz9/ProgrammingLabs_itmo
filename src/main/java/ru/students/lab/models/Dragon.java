@@ -171,14 +171,18 @@ public class Dragon implements Comparable<Dragon>, Serializable {
         if (!(obj instanceof Dragon)) return false;
         if (obj == this) return true;
         Dragon objDragon = (Dragon) obj;
-        return this.getId().equals(objDragon.getId()) &&
-                this.getName().equals(objDragon.getName()) &&
-                this.getCoordinates().equals(objDragon.getCoordinates());
+        return this.getId().equals(objDragon.getId())
+                && this.getName().equals(objDragon.getName())
+                && this.getCoordinates().equals(objDragon.getCoordinates())
+                && this.getAge().equals(objDragon.getAge())
+                && this.getColor().equals(objDragon.getColor())
+                && this.getType().equals(objDragon.getType());
     }
 
     @Override
     public String toString() {
         return "{ID=" + this.getId() + "," +
+                "{UserID=" + this.getUserID() + "," +
                 "name=" + this.getName() + ", " +
                 "creationDate=[" + this.getFormattedCDate() + "], " +
                 "Color=" + this.getColor().toString() + ", " +
